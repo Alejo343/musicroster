@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Buscar artistas — Billboard MusicRoster</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Billboard MusicRoster — Inicio">
+      <span class="brand-bb">billboard<sup>®</sup></span>
+      <span class="brand-mr">MUSICROSTER<sup>®</sup></span>
+    </a>
+    <nav class="main-nav" id="main-nav" aria-label="Principal">
+      <ul>
+        <li><a href="index.html#inicio">Inicio</a></li>
+        <li><a href="buscar.html" aria-current="page">Buscar artistas</a></li>
+        <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="reglamento.html">Reglamento</a></li>
+        <li><a class="nav-bmic" href="bmic.html">BMIC</a></li>
+        <li class="nav-cta-mobile"><a href="registro.html">Regístrate</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-cta header-cta" href="registro.html">Regístrate</a>
+    <button class="nav-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Abrir menú"><span></span></button>
+  </div>
+</header>
+
+<main>
+<section class="page-hero">
+  <div class="wrap">
+    <p class="kicker">Directorio</p>
+    <h1 class="display">Buscar artistas</h1>
+    <p>Encuentra proyectos musicales por nombre, género y territorio.</p>
+  </div>
+</section>
+
+<section class="placeholder-body">
+  <div class="wrap">
+    <form class="search-mock" onsubmit="return false" aria-label="Buscador (próximamente)">
+      <input type="search" placeholder="Nombre del proyecto" aria-label="Nombre del proyecto" disabled>
+      <select aria-label="Género" disabled><option>Género</option></select>
+      <select aria-label="Territorio" disabled><option>Departamento / ciudad</option></select>
+    </form>
+    <div class="placeholder-card" style="margin-top:24px">
+      <p><strong>El buscador estará disponible próximamente.</strong> Mientras tanto, registra tu proyecto para que puedan encontrarte.</p>
+      <a class="btn btn-cta" href="registro.html">Registra tu proyecto</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="index.html"><span class="brand-bb">billboard<sup>®</sup></span><span class="brand-mr">MUSICROSTER<sup>®</sup></span></a>
+        <p>El directorio que registra e identifica proyectos musicales para conectarlos con las oportunidades de la industria.</p>
+      </div>
+      <div>
+        <h4>MusicRoster</h4>
+        <ul>
+          <li><a href="registro.html">Regístrate</a></li>
+          <li><a href="buscar.html">Buscar artistas</a></li>
+          <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Información</h4>
+        <ul>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="reglamento.html">Reglamento</a></li>
+          <li><a href="bmic.html">BMIC</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Billboard® MusicRoster®</span>
+      <span><b>Registro gratuito.</b> Nadie debe cobrarte por registrarte.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
