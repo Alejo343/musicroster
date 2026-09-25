@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Registro — Admin Billboard MusicRoster</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/styles.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+  </head>
+  <body class="adm" data-page="registro">
+    <div class="adm-shell">
+      <!-- ============ MENÚ LATERAL (igual en todas las páginas del panel) ============ -->
+      <aside class="adm-side" id="adm-side" aria-label="Menú del panel">
+        <a class="brand" href="index.html" aria-label="Billboard MusicRoster — Panel">
+          <span class="brand-bb">billboard<sup>®</sup></span>
+          <span class="brand-mr">MUSICROSTER<sup>®</sup></span>
+        </a>
+        <span class="adm-tag">Administración</span>
+        <nav class="adm-nav">
+          <a href="index.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5" /><rect x="14" y="3" width="7" height="5" rx="1.5" /><rect x="14" y="12" width="7" height="9" rx="1.5" /><rect x="3" y="16" width="7" height="5" rx="1.5" /></svg>
+            Resumen
+          </a>
+          <a href="registros.html" aria-current="page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13" /><circle cx="3.5" cy="6" r="1" /><circle cx="3.5" cy="12" r="1" /><circle cx="3.5" cy="18" r="1" /></svg>
+            Registros
+            <span class="count" data-count="pendiente" title="Pendientes de revisión"></span>
+          </a>
+          <a href="verificacion.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z" /><path d="M8.5 12l2.5 2.5 4.5-5" /></svg>
+            Verificación
+            <span class="count" data-count="verificacion" title="Posibles duplicados por revisar"></span>
+          </a>
+          <span class="adm-nav-label">Sitio</span>
+          <a href="../index.html" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5" /></svg>
+            Ver sitio público
+          </a>
+          <a href="../registro.html" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" /></svg>
+            Formulario de registro
+          </a>
+        </nav>
+        <div class="adm-side-foot">
+          <div class="adm-user">
+            <span class="av" data-user-ini></span>
+            <div><strong data-user-name></strong><small data-user-rol></small></div>
+            <a href="login.html">Salir</a>
+          </div>
+          <button type="button" class="adm-reset" data-reset>Restablecer datos de prueba</button>
+        </div>
+      </aside>
+
+      <main class="adm-main">
+        <header class="adm-top">
+          <button type="button" class="adm-menu" aria-label="Abrir menú" aria-controls="adm-side" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+          </button>
+          <div>
+            <div class="adm-crumb"><a href="registros.html">Registros</a> / <span class="mono" id="crumb-id"></span></div>
+            <h1>Detalle del registro</h1>
+          </div>
+          <div class="adm-top-actions pn">
+            <a class="btn btn-ghost btn-sm" id="prev">← Anterior</a>
+            <a class="btn btn-ghost btn-sm" id="next">Siguiente →</a>
+          </div>
+        </header>
+
+        <div id="detalle">
+          <div class="card det-hero" id="hero"></div>
+
+          <div class="det-grid">
+            <div class="det-main" id="secciones"></div>
+
+            <aside aria-label="Moderación del registro">
+              <section class="card" id="moderacion"></section>
+              <section class="card" id="alertas" hidden></section>
+              <section class="card" aria-labelledby="h-notas">
+                <div class="card-head"><h3 id="h-notas">Notas internas</h3></div>
+                <form class="field" id="nota-form">
+                  <textarea id="nota-txt" rows="2" placeholder="Escribe una nota para el equipo" aria-label="Nueva nota interna"></textarea>
+                  <button type="submit" class="btn btn-dark btn-sm" style="justify-self: end">Agregar nota</button>
+                </form>
+                <div class="notes" id="notas-list"></div>
+              </section>
+              <section class="card" aria-labelledby="h-hist">
+                <div class="card-head"><h3 id="h-hist">Historial</h3></div>
+                <ol class="timeline" id="historial"></ol>
+              </section>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/dropdown.js"></script>
+    <script src="../assets/js/admin-data.js"></script>
+    <script src="../assets/js/admin.js"></script>
+  </body>
+</html>

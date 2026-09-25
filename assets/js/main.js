@@ -4,11 +4,14 @@
 
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
 
   /* ---------- Header y menú ---------- */
   const header = $(".site-header");
-  const onScroll = () => header && header.classList.toggle("is-scrolled", window.scrollY > 20);
+  const onScroll = () =>
+    header && header.classList.toggle("is-scrolled", window.scrollY > 20);
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 
@@ -23,7 +26,7 @@
       a.addEventListener("click", () => {
         document.body.classList.remove("nav-open");
         toggle.setAttribute("aria-expanded", "false");
-      })
+      }),
     );
   }
 
@@ -40,7 +43,7 @@
         }
       });
     },
-    { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+    { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
   );
   $$(".reveal").forEach((el) => io.observe(el));
 
@@ -55,7 +58,10 @@
     let timers = [];
     let running = false;
 
-    const clear = () => { timers.forEach(clearTimeout); timers = []; };
+    const clear = () => {
+      timers.forEach(clearTimeout);
+      timers = [];
+    };
     const at = (ms, fn) => timers.push(setTimeout(fn, ms));
 
     const setStage = (i) => {
@@ -74,7 +80,9 @@
       at(1500, () => setStage(1));
       at(3000, () => {
         setStage(2);
-        [...query].forEach((ch, k) => at(k * 70, () => (typed.textContent += ch)));
+        [...query].forEach((ch, k) =>
+          at(k * 70, () => (typed.textContent += ch)),
+        );
       });
       at(4200, () => hit.classList.add("hit"));
       at(5200, () => setStage(3));
@@ -89,12 +97,20 @@
       n1.classList.add("show");
       n2.classList.add("show");
     } else {
-      new IntersectionObserver((entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting && !running) { running = true; cycle(); }
-          else if (!e.isIntersecting && running) { running = false; clear(); }
-        });
-      }, { threshold: 0.2 }).observe($("#como-funciona"));
+      new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting && !running) {
+              running = true;
+              cycle();
+            } else if (!e.isIntersecting && running) {
+              running = false;
+              clear();
+            }
+          });
+        },
+        { threshold: 0.2 },
+      ).observe($("#como-funciona"));
     }
   }
 
@@ -196,31 +212,36 @@
     ];
 
     const K = 30;
-    const LON0 = -79.6, LAT0 = 12.9, W = (79.6 - 66.7) * K, H = (12.9 + 4.5) * K;
+    const LON0 = -79.6,
+      LAT0 = 12.9,
+      W = (79.6 - 66.7) * K,
+      H = (12.9 + 4.5) * K;
     const px = (lat, lon) => [(lon - LON0) * K, (LAT0 - lat) * K];
 
     // PRNG determinista para que el mapa sea siempre igual
     let seed = 7;
     const rnd = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
-    const pick = (main) => (rnd() < 0.55 ? main : keys[Math.floor(rnd() * keys.length)]);
+    const pick = (main) =>
+      rnd() < 0.55 ? main : keys[Math.floor(rnd() * keys.length)];
 
     let out = "";
 
     // Silueta de Colombia (mledoze/countries, simplificada y proyectada con px)
-    const COL_PATH = "M44 312L42 310L44 308L44 312ZM48 311L47 310L49 307L48 311ZM52 310L51 306L54 309L52 310ZM61 295L58 295L62 291L61 295ZM65 265L62 262L63 261L65 265ZM62 261L66 257L68 259L62 261ZM241 13L251 18L254 26L246 33L229 37L222 50L213 53L201 74L198 94L187 112L191 112L198 108L199 112L205 115L208 128L216 136L218 144L214 149L214 162L216 165L223 167L224 172L228 176L233 177L240 175L252 178L266 174L279 179L284 178L305 203L308 202L311 205L316 201L329 203L348 201L353 198L364 201L363 203L366 207L359 213L360 221L353 228L354 238L352 250L355 256L354 262L359 274L363 275L369 285L353 302L360 303L372 315L372 320L382 350L376 352L376 338L368 324L365 323L351 335L348 334L345 329L342 328L340 331L343 335L307 335L301 333L293 336L293 355L310 356L314 361L314 368L309 368L304 365L294 369L287 369L286 392L300 403L300 410L305 417L307 427L289 514L278 501L273 503L266 500L286 470L279 462L271 462L268 458L262 454L252 458L247 458L243 454L238 454L237 451L231 458L228 458L221 462L210 459L202 462L200 459L195 457L194 454L196 451L194 442L192 441L189 443L183 440L185 435L181 428L178 425L173 425L161 418L161 413L156 403L147 398L145 393L140 393L133 388L130 391L127 389L120 386L115 386L107 377L101 375L96 375L96 379L91 380L87 378L82 380L76 376L67 375L64 368L59 365L58 362L53 363L45 360L28 348L22 340L16 338L22 332L30 334L32 330L27 321L31 314L31 315L34 314L35 312L38 314L40 311L48 311L50 307L52 310L56 309L55 304L66 288L62 289L65 288L64 287L74 277L77 269L70 272L69 269L72 268L72 265L70 264L67 269L65 266L65 262L71 259L68 259L66 257L69 250L68 230L66 223L62 221L63 219L68 219L71 214L63 201L64 199L66 200L68 190L66 186L58 181L58 175L51 170L54 163L56 161L55 156L58 157L61 161L68 156L67 153L72 149L71 144L66 133L64 133L67 127L69 132L74 135L80 142L83 143L83 146L81 146L80 149L85 149L85 135L80 130L88 127L99 119L105 107L110 104L119 103L120 99L118 94L122 82L123 70L126 67L131 65L130 63L137 60L142 53L153 57L159 57L154 58L150 61L150 64L152 63L156 65L163 47L168 46L174 49L189 48L205 36L220 30L224 24L223 20L229 19L228 21L229 22L239 15L236 14L241 13Z";
+    const COL_PATH =
+      "M44 312L42 310L44 308L44 312ZM48 311L47 310L49 307L48 311ZM52 310L51 306L54 309L52 310ZM61 295L58 295L62 291L61 295ZM65 265L62 262L63 261L65 265ZM62 261L66 257L68 259L62 261ZM241 13L251 18L254 26L246 33L229 37L222 50L213 53L201 74L198 94L187 112L191 112L198 108L199 112L205 115L208 128L216 136L218 144L214 149L214 162L216 165L223 167L224 172L228 176L233 177L240 175L252 178L266 174L279 179L284 178L305 203L308 202L311 205L316 201L329 203L348 201L353 198L364 201L363 203L366 207L359 213L360 221L353 228L354 238L352 250L355 256L354 262L359 274L363 275L369 285L353 302L360 303L372 315L372 320L382 350L376 352L376 338L368 324L365 323L351 335L348 334L345 329L342 328L340 331L343 335L307 335L301 333L293 336L293 355L310 356L314 361L314 368L309 368L304 365L294 369L287 369L286 392L300 403L300 410L305 417L307 427L289 514L278 501L273 503L266 500L286 470L279 462L271 462L268 458L262 454L252 458L247 458L243 454L238 454L237 451L231 458L228 458L221 462L210 459L202 462L200 459L195 457L194 454L196 451L194 442L192 441L189 443L183 440L185 435L181 428L178 425L173 425L161 418L161 413L156 403L147 398L145 393L140 393L133 388L130 391L127 389L120 386L115 386L107 377L101 375L96 375L96 379L91 380L87 378L82 380L76 376L67 375L64 368L59 365L58 362L53 363L45 360L28 348L22 340L16 338L22 332L30 334L32 330L27 321L31 314L31 315L34 314L35 312L38 314L40 311L48 311L50 307L52 310L56 309L55 304L66 288L62 289L65 288L64 287L74 277L77 269L70 272L69 269L72 268L72 265L70 264L67 269L65 266L65 262L71 259L68 259L66 257L69 250L68 230L66 223L62 221L63 219L68 219L71 214L63 201L64 199L66 200L68 190L66 186L58 181L58 175L51 170L54 163L56 161L55 156L58 157L61 161L68 156L67 153L72 149L71 144L66 133L64 133L67 127L69 132L74 135L80 142L83 143L83 146L81 146L80 149L85 149L85 135L80 130L88 127L99 119L105 107L110 104L119 103L120 99L118 94L122 82L123 70L126 67L131 65L130 63L137 60L142 53L153 57L159 57L154 58L150 61L150 64L152 63L156 65L163 47L168 46L174 49L189 48L205 36L220 30L224 24L223 20L229 19L228 21L229 22L239 15L236 14L241 13Z";
     out += `<path class="land" d="${COL_PATH}"/>`;
 
-    const regions = [
-      ["Caribe", 12.3, -70.4, 34, 0],
-      ["Pacífico", 5.6, -78.7, 30, -90],
-      ["Andes", 8.7, -74.4, 26, 0],
-      ["Llanos", 5.6, -70.9, 34, 0],
-      ["Amazonía", 0.1, -72.2, 32, 0],
-    ];
-    regions.forEach(([name, lat, lon, size, rot]) => {
-      const [x, y] = px(lat, lon);
-      out += `<text class="region-label" x="${x}" y="${y}" font-size="${size}" text-anchor="middle" transform="rotate(${rot} ${x} ${y})">${name}</text>`;
-    });
+    // const regions = [
+    //   ["Caribe", 12.3, -70.4, 34, 0],
+    //   ["Pacífico", 5.6, -78.7, 30, -90],
+    //   ["Andes", 8.7, -74.4, 26, 0],
+    //   ["Llanos", 5.6, -70.9, 34, 0],
+    //   ["Amazonía", 0.1, -72.2, 32, 0],
+    // ];
+    // regions.forEach(([name, lat, lon, size, rot]) => {
+    //   const [x, y] = px(lat, lon);
+    //   out += `<text class="region-label" x="${x}" y="${y}" font-size="${size}" text-anchor="middle" transform="rotate(${rot} ${x} ${y})">${name}</text>`;
+    // });
 
     // Nube de puntos: muchos proyectos alrededor de cada ciudad
     let dots = "";
@@ -261,9 +282,15 @@
     svg.setAttribute("viewBox", `0 0 ${W.toFixed(0)} ${H.toFixed(0)}`);
     svg.innerHTML = out;
 
-    new IntersectionObserver((entries, obs) => {
-      if (entries[0].isIntersecting) { svg.classList.add("is-in"); obs.disconnect(); }
-    }, { threshold: 0.2 }).observe(svg);
+    new IntersectionObserver(
+      (entries, obs) => {
+        if (entries[0].isIntersecting) {
+          svg.classList.add("is-in");
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.2 },
+    ).observe(svg);
 
     // Tooltip
     const tip = $("#map-tip");

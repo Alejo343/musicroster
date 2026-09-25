@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Resumen — Admin Billboard MusicRoster</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/styles.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+  </head>
+  <body class="adm" data-page="resumen">
+    <div class="adm-shell">
+      <!-- ============ MENÚ LATERAL (igual en todas las páginas del panel) ============ -->
+      <aside class="adm-side" id="adm-side" aria-label="Menú del panel">
+        <a class="brand" href="index.html" aria-label="Billboard MusicRoster — Panel">
+          <span class="brand-bb">billboard<sup>®</sup></span>
+          <span class="brand-mr">MUSICROSTER<sup>®</sup></span>
+        </a>
+        <span class="adm-tag">Administración</span>
+        <nav class="adm-nav">
+          <a href="index.html" aria-current="page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5" /><rect x="14" y="3" width="7" height="5" rx="1.5" /><rect x="14" y="12" width="7" height="9" rx="1.5" /><rect x="3" y="16" width="7" height="5" rx="1.5" /></svg>
+            Resumen
+          </a>
+          <a href="registros.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13" /><circle cx="3.5" cy="6" r="1" /><circle cx="3.5" cy="12" r="1" /><circle cx="3.5" cy="18" r="1" /></svg>
+            Registros
+            <span class="count" data-count="pendiente" title="Pendientes de revisión"></span>
+          </a>
+          <a href="verificacion.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z" /><path d="M8.5 12l2.5 2.5 4.5-5" /></svg>
+            Verificación
+            <span class="count" data-count="verificacion" title="Posibles duplicados por revisar"></span>
+          </a>
+          <span class="adm-nav-label">Sitio</span>
+          <a href="../index.html" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5" /></svg>
+            Ver sitio público
+          </a>
+          <a href="../registro.html" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" /></svg>
+            Formulario de registro
+          </a>
+        </nav>
+        <div class="adm-side-foot">
+          <div class="adm-user">
+            <span class="av" data-user-ini></span>
+            <div><strong data-user-name></strong><small data-user-rol></small></div>
+            <a href="login.html">Salir</a>
+          </div>
+          <button type="button" class="adm-reset" data-reset>Restablecer datos de prueba</button>
+        </div>
+      </aside>
+
+      <main class="adm-main">
+        <header class="adm-top">
+          <button type="button" class="adm-menu" aria-label="Abrir menú" aria-controls="adm-side" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+          </button>
+          <div>
+            <h1>Resumen</h1>
+            <span class="sub">Registros de Billboard MusicRoster · <span id="range-label"></span></span>
+          </div>
+          <div class="adm-top-actions">
+            <div class="seg" id="range" role="group" aria-label="Periodo">
+              <button type="button" data-range="7" aria-pressed="false">7 días</button>
+              <button type="button" data-range="30" aria-pressed="true">30 días</button>
+              <button type="button" data-range="90" aria-pressed="false">90 días</button>
+              <button type="button" data-range="0" aria-pressed="false">Todo</button>
+            </div>
+          </div>
+        </header>
+
+        <div class="kpis">
+          <div class="card kpi">
+            <span class="lbl">Registros</span>
+            <span class="num" id="kpi-total">—</span>
+            <span class="foot" id="kpi-total-foot"></span>
+          </div>
+          <a class="card kpi hot" href="registros.html?estado=pendiente">
+            <svg class="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M9 7h8v8" /></svg>
+            <span class="lbl">Pendientes de revisión</span>
+            <span class="num" id="kpi-pend">—</span>
+            <span class="foot" id="kpi-pend-foot"></span>
+          </a>
+          <div class="card kpi">
+            <span class="lbl">Publicados</span>
+            <span class="num" id="kpi-pub">—</span>
+            <span class="foot" id="kpi-pub-foot"></span>
+          </div>
+          <a class="card kpi" href="verificacion.html">
+            <svg class="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M9 7h8v8" /></svg>
+            <span class="lbl">Posibles duplicados</span>
+            <span class="num" id="kpi-dup">—</span>
+            <span class="foot" id="kpi-dup-foot"></span>
+          </a>
+        </div>
+
+        <div class="dash-grid">
+          <section class="card span-8" aria-labelledby="h-dias">
+            <div class="card-head">
+              <h2 id="h-dias">Registros por día</h2>
+              <span class="meta" id="dias-total"></span>
+            </div>
+            <div class="vbars" id="chart-dias"></div>
+            <div class="vbars-axis" id="chart-dias-axis"></div>
+          </section>
+
+          <section class="card span-4" aria-labelledby="h-estado">
+            <div class="card-head">
+              <h2 id="h-estado">Estado</h2>
+              <span class="meta">registros del periodo</span>
+            </div>
+            <div class="stack" id="estados-stack" aria-hidden="true"></div>
+            <div class="stack-legend" id="estados-legend"></div>
+          </section>
+
+          <section class="card span-4" aria-labelledby="h-tipo">
+            <div class="card-head"><h2 id="h-tipo">Tipo de proyecto</h2></div>
+            <div class="hbars" id="por-tipo"></div>
+          </section>
+
+          <section class="card span-4" aria-labelledby="h-genero">
+            <div class="card-head"><h2 id="h-genero">Género principal</h2><span class="meta">los 8 más frecuentes</span></div>
+            <div class="hbars" id="por-genero"></div>
+          </section>
+
+          <section class="card span-4" aria-labelledby="h-region">
+            <div class="card-head"><h2 id="h-region">Territorio</h2><span class="meta">residencia actual</span></div>
+            <div class="hbars" id="por-region"></div>
+          </section>
+
+          <section class="card span-6" aria-labelledby="h-rango">
+            <div class="card-head"><h2 id="h-rango">Rango de contratación</h2><span class="meta">COP</span></div>
+            <div class="hbars" id="por-rango"></div>
+          </section>
+
+          <section class="card span-6" aria-labelledby="h-quien">
+            <div class="card-head"><h2 id="h-quien">Quién hace el registro</h2></div>
+            <div class="split" id="quien"></div>
+            <p class="muted" style="font-size: 13px; margin: 14px 0 0">
+              Cuando registra un tercero, conviene confirmar que los datos de identificación corresponden al artista
+              o a los integrantes.
+            </p>
+          </section>
+
+          <section class="card span-12 table-card" aria-labelledby="h-recientes">
+            <div class="card-head" style="padding: 20px 22px 0">
+              <h2 id="h-recientes">Últimos registros</h2>
+              <a class="meta" href="registros.html">Ver todos →</a>
+            </div>
+            <div class="table-wrap">
+              <table class="rt">
+                <thead>
+                  <tr><th>Proyecto</th><th>Ciudad</th><th>Registrado</th><th>Estado</th></tr>
+                </thead>
+                <tbody id="recientes"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/admin-data.js"></script>
+    <script src="../assets/js/admin.js"></script>
+  </body>
+</html>
