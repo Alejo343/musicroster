@@ -232,6 +232,8 @@
     otro_composicion: radioVal("otro_composicion"),
     quien_registra: radioVal("quien_registra"),
     identidad: identidad(),
+    // Se suministran datos de otras personas: integrantes, o un tercero registra al artista
+    terceros: identidad() === "colectivo" || (radioVal("quien_registra") && radioVal("quien_registra") !== "artista") ? "si" : "",
     otro_genero: form.querySelector('input[name="otros_generos"][value="Otro"]:checked') ? "si" : "",
   });
 

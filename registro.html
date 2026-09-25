@@ -1,521 +1,1187 @@
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Registra tu proyecto — Billboard MusicRoster</title>
-  <meta name="description" content="Registra tu proyecto musical en Billboard MusicRoster. El registro es gratuito.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
-</head>
-<body class="reg-page">
-
-<header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="index.html" aria-label="Billboard MusicRoster — Inicio">
-      <span class="brand-bb">billboard<sup>®</sup></span>
-      <span class="brand-mr">MUSICROSTER<sup>®</sup></span>
-    </a>
-    <nav class="main-nav" id="main-nav" aria-label="Principal">
-      <ul>
-        <li><a href="index.html#inicio">Inicio</a></li>
-        <li><a href="buscar.html">Buscar artistas</a></li>
-        <li><a href="index.html#como-funciona">Cómo funciona</a></li>
-        <li><a href="faq.html">FAQ</a></li>
-        <li><a href="reglamento.html">Reglamento</a></li>
-        <li><a class="nav-bmic" href="bmic.html">BMIC</a></li>
-        <li class="nav-cta-mobile"><a href="registro.html" aria-current="page">Regístrate</a></li>
-      </ul>
-    </nav>
-    <a class="btn btn-cta header-cta" href="registro.html" aria-current="page">Regístrate</a>
-    <button class="nav-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Abrir menú"><span></span></button>
-  </div>
-</header>
-
-<section class="reg-hero">
-  <div class="wrap">
-    <p class="kicker"><span class="num">●</span> Registro</p>
-    <h1 class="display">Registra tu proyecto en <span>Billboard MusicRoster</span></h1>
-    <ul class="reg-hero-notes">
-      <li class="hl">El registro es gratuito</li>
-      <li>🚨 Nadie debe cobrarte por hacerlo</li>
-    </ul>
-    <p>La información que suministres permitirá identificar correctamente tu proyecto dentro de Billboard MusicRoster.</p>
-  </div>
-</section>
-
-<div class="wrap reg-layout">
-
-  <aside class="reg-aside" aria-label="Progreso del registro">
-    <div class="reg-progress"><i id="progress-bar"></i></div>
-    <ol class="reg-steps" id="reg-steps"></ol>
-    <div class="reg-aside-note">
-      <strong>Registro gratuito</strong>
-      Si alguien te solicita dinero afirmando que debes pagar para registrarte en Billboard MusicRoster, no está autorizado para hacerlo.
-    </div>
-  </aside>
-
-  <div>
-    <form class="reg-form" id="reg-form" novalidate>
-
-      <!-- ============ BLOQUE 1 — PROYECTO ============ -->
-      <fieldset class="reg-step" data-title="Proyecto">
-        <legend>
-          <span class="step-eyebrow">Paso 1 · Proyecto</span>
-          <h2>¿Qué tipo de proyecto musical vas a registrar?</h2>
-        </legend>
-        <p class="step-help">El cuestionario se adapta según tu respuesta.</p>
-
-        <div class="choice-group" data-required-group="tipo">
-          <div class="choice-grid cols-3">
-            <label class="choice">
-              <input type="radio" name="tipo" value="solista" required>
-              <span class="card"><span class="glyph"><i style="--c:var(--g-urbano);width:26px;height:26px"></i></span><strong>Artista solista</strong><small>Un proyecto con una sola persona como identidad.</small></span>
-            </label>
-            <label class="choice">
-              <input type="radio" name="tipo" value="agrupacion">
-              <span class="card"><span class="glyph"><i style="--c:var(--g-salsa)"></i><i style="--c:var(--g-salsa)"></i><i style="--c:var(--g-salsa)"></i><i style="--c:var(--g-salsa)"></i></span><strong>Agrupación</strong><small>Banda, grupo o colectivo.</small></span>
-            </label>
-            <label class="choice">
-              <input type="radio" name="tipo" value="duo">
-              <span class="card"><span class="glyph"><i style="--c:var(--g-popular);width:20px;height:20px"></i><i style="--c:var(--g-popular);width:20px;height:20px"></i></span><strong>Dúo</strong><small>Dos personas como identidad del proyecto.</small></span>
-            </label>
-            <label class="choice">
-              <input type="radio" name="tipo" value="orquesta">
-              <span class="card"><span class="glyph"><i style="--c:var(--g-vallenato);width:8px;height:8px"></i><i style="--c:var(--g-vallenato);width:8px;height:8px"></i><i style="--c:var(--g-vallenato);width:8px;height:8px"></i><i style="--c:var(--g-vallenato);width:8px;height:8px"></i><i style="--c:var(--g-vallenato);width:8px;height:8px"></i><i style="--c:var(--g-vallenato);width:8px;height:8px"></i><i style="--c:var(--g-vallenato);width:8px;height:8px"></i></span><strong>Orquesta</strong><small>Formato orquestal con dirección.</small></span>
-            </label>
-            <label class="choice">
-              <input type="radio" name="tipo" value="dj">
-              <span class="card"><span class="glyph"><i style="--c:var(--g-electronica);width:26px;height:26px;box-shadow:0 0 0 5px rgba(61,123,255,.25)"></i></span><strong>DJ</strong><small>DJ o proyecto de música electrónica.</small></span>
-            </label>
-            <label class="choice">
-              <input type="radio" name="tipo" value="otro">
-              <span class="card"><span class="glyph" style="font-family:var(--f-display);font-weight:900;font-size:40px;color:var(--g-regional)">+</span><strong>Otro proyecto musical</strong><small>Cualquier otro formato con identidad propia.</small></span>
-            </label>
-          </div>
-          <p class="err">Selecciona el tipo de proyecto.</p>
-        </div>
-
-        <div class="cond" data-show-if="tipo=otro" hidden>
-          <div class="field-grid" style="margin-top:24px">
-            <div class="field full">
-              <label for="otro_desc">¿Qué tipo de proyecto es?</label>
-              <input type="text" id="otro_desc" name="otro_descripcion" required placeholder="Ej.: colectivo de música tradicional, proyecto audiovisual-musical…">
-              <span class="err">Cuéntanos qué tipo de proyecto es.</span>
-            </div>
-          </div>
-          <div class="choice-group" data-required-group="otro_composicion" style="margin-top:18px">
-            <p class="field" style="margin:0 0 8px"><span class="label">¿Cuántas personas conforman la identidad oficial del proyecto?</span></p>
-            <div class="choice-grid cols-2">
-              <label class="choice compact"><input type="radio" name="otro_composicion" value="individual" required><span class="card"><strong>Una persona</strong></span></label>
-              <label class="choice compact"><input type="radio" name="otro_composicion" value="colectivo"><span class="card"><strong>Varias personas</strong></span></label>
-            </div>
-            <p class="err">Selecciona una opción.</p>
-          </div>
-        </div>
-
-        <h3 class="subhead">Nombre</h3>
-        <div class="field-grid">
-          <div class="field full">
-            <label for="nombre_proyecto" id="nombre_label">¿Cuál es el nombre artístico del proyecto?</label>
-            <input type="text" id="nombre_proyecto" name="nombre_proyecto" required autocomplete="off" placeholder="Nombre artístico / nombre de la agrupación">
-            <span class="err">Escribe el nombre del proyecto.</span>
-          </div>
-        </div>
-      </fieldset>
-
-      <!-- ============ BLOQUE 2 — GÉNEROS ============ -->
-      <fieldset class="reg-step" data-title="Géneros" hidden>
-        <legend>
-          <span class="step-eyebrow">Paso 2 · Géneros</span>
-          <h2>Tu sonido</h2>
-        </legend>
-        <p class="step-help">Un proyecto puede tener un género principal y varios géneros asociados.</p>
-
-        <div class="field-grid">
-          <div class="field full">
-            <label for="genero_principal">¿Cuál es el género musical principal de tu proyecto?</label>
-            <select id="genero_principal" name="genero_principal" required>
-              <option value="">Selecciona un género</option>
-            </select>
-            <span class="err">Selecciona el género principal.</span>
-          </div>
-          <div class="field full">
-            <span class="label">¿Tu proyecto se identifica también con otros géneros? <span class="opt">(puedes seleccionar varios · máximo 4)</span></span>
-            <div class="tag-choices" id="otros_generos"></div>
-          </div>
-          <div class="field full cond" data-show-if="otro_genero=si" hidden>
-            <label for="otro_genero_desc">¿Qué otro género?</label>
-            <input type="text" id="otro_genero_desc" name="otro_genero" required>
-            <span class="err">Escribe el otro género.</span>
-          </div>
-        </div>
-      </fieldset>
-
-      <!-- ============ BLOQUE 3 — TERRITORIO ============ -->
-      <fieldset class="reg-step" data-title="Territorio" hidden>
-        <legend>
-          <span class="step-eyebrow">Paso 3 · Identidad y territorio</span>
-          <h2>¿De dónde es tu proyecto?</h2>
-        </legend>
-        <p class="step-help">Así te encontrarán quienes buscan artistas por territorio.</p>
-
-        <div class="field-grid">
-          <div class="field full">
-            <label for="nacionalidad">¿Cuál es la nacionalidad del artista o proyecto?</label>
-            <input type="text" id="nacionalidad" name="nacionalidad" list="paises" required value="Colombia" autocomplete="off">
-            <span class="err">Indica la nacionalidad.</span>
-          </div>
-        </div>
-
-        <h3 class="subhead">Residencia actual</h3>
-        <div class="field-grid" data-territorio>
-          <div class="field">
-            <label for="pais_residencia">¿En qué país reside actualmente?</label>
-            <input type="text" id="pais_residencia" name="pais_residencia" list="paises" required value="Colombia" autocomplete="off" data-pais>
-            <span class="err">Indica el país de residencia.</span>
-          </div>
-          <div class="field">
-            <label for="region_residencia">¿En qué departamento, estado o región?</label>
-            <input type="text" id="region_residencia" name="region_residencia" list="regiones_residencia" required autocomplete="off" data-region>
-            <datalist id="regiones_residencia"></datalist>
-            <span class="err">Indica el departamento, estado o región.</span>
-          </div>
-          <div class="field full">
-            <label for="ciudad_actual">¿En qué ciudad o municipio reside actualmente?</label>
-            <input type="text" id="ciudad_actual" name="ciudad_actual" list="ciudades_residencia" required autocomplete="off" data-ciudad>
-            <datalist id="ciudades_residencia"></datalist>
-            <span class="err">Indica la ciudad o municipio actual.</span>
-          </div>
-        </div>
-
-        <h3 class="subhead">Origen del proyecto</h3>
-        <p class="step-help">¿Dónde nació o se originó el proyecto musical? Puede ser distinto de la residencia actual.</p>
-        <div class="field-grid" data-territorio>
-          <div class="field">
-            <label for="pais_origen">País</label>
-            <input type="text" id="pais_origen" name="pais_origen" list="paises" required value="Colombia" autocomplete="off" data-pais>
-            <span class="err">Indica el país de origen.</span>
-          </div>
-          <div class="field">
-            <label for="region_origen">Departamento / región</label>
-            <input type="text" id="region_origen" name="region_origen" list="regiones_origen" required autocomplete="off" data-region>
-            <datalist id="regiones_origen"></datalist>
-            <span class="err">Indica el departamento o región de origen.</span>
-          </div>
-          <div class="field full">
-            <label for="ciudad_origen">Ciudad / municipio</label>
-            <input type="text" id="ciudad_origen" name="ciudad_origen" list="ciudades_origen" required autocomplete="off" data-ciudad>
-            <datalist id="ciudades_origen"></datalist>
-            <span class="err">Indica la ciudad o municipio de origen.</span>
-          </div>
-        </div>
-      </fieldset>
-
-      <!-- ============ BLOQUE 4 — IDENTIFICACIÓN ============ -->
-      <fieldset class="reg-step" data-title="Identidad" hidden>
-        <legend>
-          <span class="step-eyebrow">Paso 4 · Identificación</span>
-          <h2 id="identidad_title">Identidad del artista</h2>
-        </legend>
-
-        <!-- Solista / DJ / Otro individual -->
-        <div class="cond" data-show-if="identidad=individual" hidden>
-          <p class="step-help">Estos datos identifican a la persona titular del proyecto.</p>
-          <div class="field-grid">
-            <div class="field full">
-              <label for="nombre_completo">Nombre completo del artista</label>
-              <input type="text" id="nombre_completo" name="nombre_completo" required autocomplete="name">
-              <span class="err">Escribe el nombre completo.</span>
-            </div>
-            <div class="field">
-              <label for="tipo_documento">Tipo de documento</label>
-              <select id="tipo_documento" name="tipo_documento" required data-doc-types></select>
-              <span class="err">Selecciona el tipo de documento.</span>
-            </div>
-            <div class="field">
-              <label for="numero_documento">Número de documento</label>
-              <input type="text" id="numero_documento" name="numero_documento" required inputmode="text" pattern="[A-Za-z0-9\-\.]{4,20}">
-              <span class="err">Escribe un número de documento válido.</span>
-            </div>
-            <div class="field full">
-              <label for="pais_expedicion">País de expedición</label>
-              <input type="text" id="pais_expedicion" name="pais_expedicion" list="paises" required value="Colombia" autocomplete="off">
-              <span class="err">Indica el país de expedición.</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Agrupación / Dúo / Orquesta / Otro colectivo -->
-        <div class="cond" data-show-if="identidad=colectivo" hidden>
-          <p class="step-help">¿Quiénes son los miembros oficiales del proyecto? Incluye únicamente a quienes forman parte de la identidad artística de la agrupación.</p>
-          <div class="members" id="members"></div>
-          <button type="button" class="btn-add" id="add-member">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 5v14M5 12h14"/></svg>
-            Agregar integrante
-          </button>
-          <div class="notice">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
-            <span><strong>Aclaración:</strong> no incluyas músicos acompañantes, músicos contratados o músicos de sesión que no formen parte oficialmente del proyecto.</span>
-          </div>
-
-          <h3 class="subhead">Líder o director</h3>
-          <div class="field-grid">
-            <div class="field full">
-              <label for="lider">¿Quién es el líder o director del proyecto?</label>
-              <select id="lider" name="lider" required></select>
-              <span class="hint">El documento del líder o director será la referencia principal del registro de la agrupación.</span>
-              <span class="err">Selecciona al líder o director entre los integrantes.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="notice dark">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
-          <span>Este número no será público. El documento identifica a la persona y permite prevenir duplicidades y suplantaciones.</span>
-        </div>
-      </fieldset>
-
-      <!-- ============ BLOQUE 5 — PRESENCIA MUSICAL E IMAGEN ============ -->
-      <fieldset class="reg-step" data-title="Música" hidden>
-        <legend>
-          <span class="step-eyebrow">Paso 5 · Presencia musical</span>
-          <h2>Dónde suena tu proyecto</h2>
-        </legend>
-        <p class="step-help">Comparte el enlace donde mejor se escucha tu música y tu red social principal.</p>
-
-        <div class="field-grid">
-          <div class="field full">
-            <label for="enlace_musical">¿Cuál es el principal enlace para escuchar tu música?</label>
-            <div class="input-combo">
-              <select name="plataforma_musical" aria-label="Plataforma musical" required data-options="musica"></select>
-              <input type="url" id="enlace_musical" name="enlace_musical" required placeholder="https://">
-            </div>
-            <span class="err">Pega un enlace válido (debe empezar por https://).</span>
-          </div>
-          <div class="field full">
-            <span class="label">¿Tienes otros enlaces musicales? <span class="opt">(opcional)</span></span>
-            <div class="link-rows" id="otros_enlaces" data-kind="musica" data-prefix="otros_enlaces"></div>
-            <button type="button" class="btn-add" data-add-link="otros_enlaces">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 5v14M5 12h14"/></svg>
-              Agregar enlace
-            </button>
-            <span class="err">Revisa los enlaces: deben empezar por https://.</span>
-          </div>
-          <div class="field full">
-            <label for="red_social">¿Cuál es la principal red social del proyecto?</label>
-            <div class="input-combo">
-              <select name="red_social_tipo" aria-label="Red social" required data-options="redes"></select>
-              <input type="text" id="red_social" name="red_social" required placeholder="@usuario o enlace">
-            </div>
-            <span class="err">Indica tu usuario o enlace.</span>
-          </div>
-          <div class="field full">
-            <span class="label">Otras redes sociales <span class="opt">(opcional)</span></span>
-            <div class="link-rows" id="otras_redes" data-kind="redes" data-prefix="otras_redes"></div>
-            <button type="button" class="btn-add" data-add-link="otras_redes">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 5v14M5 12h14"/></svg>
-              Agregar red social
-            </button>
-          </div>
-        </div>
-
-        <h3 class="subhead">Imagen</h3>
-        <div class="field-grid">
-          <div class="field full">
-            <span class="label">Sube una fotografía oficial del proyecto</span>
-            <span class="hint">La imagen será utilizada para identificar visualmente tu proyecto dentro de MusicRoster.</span>
-            <label class="photo-drop" id="photo-drop">
-              <span class="preview" id="photo-preview">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-5-8 7"/></svg>
-              </span>
-              <span>
-                <strong id="photo-name">Sube o arrastra una imagen</strong>
-                <small>Buena resolución, sin marcas de agua y correspondiente al proyecto registrado · JPG, PNG o WEBP · máximo 5 MB.</small>
-              </span>
-              <input type="file" id="foto" name="foto" accept="image/jpeg,image/png,image/webp" required>
-            </label>
-            <span class="err" id="photo-err">Sube la fotografía oficial del proyecto.</span>
-          </div>
-        </div>
-      </fieldset>
-
-      <!-- ============ BLOQUE 6 — CONTRATACIÓN ============ -->
-      <fieldset class="reg-step" data-title="Contratación" hidden>
-        <legend>
-          <span class="step-eyebrow">Paso 6 · Contratación</span>
-          <h2>Contratación</h2>
-        </legend>
-        <p class="step-help">¿Cuál es aproximadamente el valor de contratación de tu proyecto para una presentación en vivo? <em>(Pesos colombianos)</em></p>
-
-        <div class="choice-group" data-required-group="rango_contratacion">
-          <div class="choice-grid cols-3" id="rangos"></div>
-          <p class="err">Selecciona un rango aproximado.</p>
-        </div>
-        <div class="notice">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
-          <span>Este valor es referencial y puede variar según ciudad, país, fecha, formato, producción y características del evento.</span>
-        </div>
-
-        <h3 class="subhead">Contacto para contratación</h3>
-        <div class="field-grid">
-          <div class="field full">
-            <label for="contacto_nombre">¿Quién es el contacto para oportunidades y contratación?</label>
-            <input type="text" id="contacto_nombre" name="contacto_nombre" required autocomplete="name" placeholder="Nombre">
-            <span class="err">Escribe el nombre del contacto.</span>
-          </div>
-          <div class="field">
-            <label for="contacto_whatsapp">WhatsApp de contacto <span class="opt">(con código de país)</span></label>
-            <input type="tel" id="contacto_whatsapp" name="contacto_whatsapp" required placeholder="+57 300 000 0000" pattern="[\+\d\s\-\(\)]{7,20}" autocomplete="tel">
-            <span class="err">Escribe un número válido, con código de país.</span>
-          </div>
-          <div class="field">
-            <label for="contacto_email">Correo electrónico de contacto</label>
-            <input type="email" id="contacto_email" name="contacto_email" required placeholder="contacto@tuproyecto.com" autocomplete="email">
-            <span class="err">Escribe un correo válido.</span>
-          </div>
-        </div>
-      </fieldset>
-
-      <!-- ============ BLOQUE 7 — CONFIRMACIÓN ============ -->
-      <fieldset class="reg-step" data-title="Confirmación" hidden>
-        <legend>
-          <span class="step-eyebrow">Paso 7 · Confirmación</span>
-          <h2>¿Quién está realizando este registro?</h2>
-        </legend>
-        <p class="step-help">Puede hacerlo el artista o alguien de su equipo autorizado.</p>
-
-        <div class="choice-group" data-required-group="quien_registra">
-          <div class="choice-grid cols-3">
-            <label class="choice compact"><input type="radio" name="quien_registra" value="artista" required><span class="card"><strong>El propio artista</strong></span></label>
-            <label class="choice compact"><input type="radio" name="quien_registra" value="integrante"><span class="card"><strong>Un miembro de la agrupación</strong></span></label>
-            <label class="choice compact"><input type="radio" name="quien_registra" value="lider"><span class="card"><strong>Líder / director</strong></span></label>
-            <label class="choice compact"><input type="radio" name="quien_registra" value="manager"><span class="card"><strong>Manager</strong></span></label>
-            <label class="choice compact"><input type="radio" name="quien_registra" value="representante"><span class="card"><strong>Representante</strong></span></label>
-            <label class="choice compact"><input type="radio" name="quien_registra" value="equipo"><span class="card"><strong>Miembro del equipo</strong></span></label>
-            <label class="choice compact"><input type="radio" name="quien_registra" value="otro"><span class="card"><strong>Otro tercero autorizado</strong></span></label>
-          </div>
-          <p class="err">Selecciona una opción.</p>
-        </div>
-
-        <div class="cond" data-show-if="quien_registra!=artista" hidden>
-          <h3 class="subhead">Tus datos</h3>
-          <div class="field-grid">
-            <div class="field full">
-              <label for="registrante_nombre">Nombre completo de quien diligencia</label>
-              <input type="text" id="registrante_nombre" name="registrante_nombre" required autocomplete="name">
-              <span class="err">Escribe tu nombre completo.</span>
-            </div>
-            <div class="field">
-              <label for="registrante_email">Correo electrónico</label>
-              <input type="email" id="registrante_email" name="registrante_email" required autocomplete="email">
-              <span class="err">Escribe un correo válido.</span>
-            </div>
-            <div class="field">
-              <label for="registrante_whatsapp">WhatsApp</label>
-              <input type="tel" id="registrante_whatsapp" name="registrante_whatsapp" required placeholder="+57 300 000 0000" pattern="[\+\d\s\-\(\)]{7,20}" autocomplete="tel">
-              <span class="err">Escribe un número válido.</span>
-            </div>
-          </div>
-          <div class="notice">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
-            <span><strong>Importante:</strong> aunque el formulario sea diligenciado por un tercero, los datos de identificación anteriores deben corresponder al artista o a los miembros oficiales del proyecto.</span>
-          </div>
-        </div>
-
-        <h3 class="subhead">Declaraciones y autorizaciones</h3>
-        <div class="checks">
-          <label class="check"><input type="checkbox" name="decl_info" required><span>Declaro que la información suministrada es verdadera y corresponde al proyecto musical que estoy registrando.</span></label>
-          <label class="check"><input type="checkbox" name="decl_autorizado" required><span>Declaro que soy el artista o que cuento con autorización para realizar este registro.</span></label>
-          <label class="check cond" data-show-if="identidad=colectivo" hidden><input type="checkbox" name="decl_integrantes" required><span>Si he suministrado información de otros integrantes, declaro contar con autorización para hacerlo.</span></label>
-          <label class="check"><input type="checkbox" name="decl_datos" required><span>Autorizo el tratamiento de los datos personales conforme a la Política de Tratamiento de Datos Personales de Billboard MusicRoster.</span></label>
-          <label class="check"><input type="checkbox" name="decl_reglamento" required><span>Declaro haber leído y aceptado el Reglamento de Billboard MusicRoster.</span></label>
-        </div>
-        <p class="err" id="checks-err" style="display:none;color:#d42a20;font-weight:600;font-size:13px;margin-top:12px">Debes aceptar todas las declaraciones para continuar.</p>
-        <div class="doc-links">
-          <a href="reglamento.html" target="_blank" rel="noopener">Ver reglamento</a>
-          <!-- TODO: crear la página de la Política de Tratamiento de Datos Personales -->
-          <a href="politica-datos.html" target="_blank" rel="noopener">Ver política de datos</a>
-        </div>
-      </fieldset>
-
-      <div class="reg-nav">
-        <button type="button" class="btn btn-back" id="btn-back" hidden>← Atrás</button>
-        <span class="spacer"></span>
-        <button type="button" class="btn btn-next" id="btn-next">Continuar →</button>
-        <div class="btn-submit-wrap" id="submit-wrap" hidden>
-          <button type="submit" class="btn btn-cta btn-lg" id="btn-submit">Registrar mi proyecto</button>
-          <small><b>100% gratuito.</b> Nadie debe cobrarte por registrarte.</small>
-        </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registra tu proyecto — Billboard MusicRoster</title>
+    <meta
+      name="description"
+      content="Registra tu proyecto musical en Billboard MusicRoster. El registro es gratuito."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body class="reg-page">
+    <header class="site-header">
+      <div class="wrap">
+        <a
+          class="brand"
+          href="index.html"
+          aria-label="Billboard MusicRoster — Inicio"
+        >
+          <span class="brand-bb">billboard<sup>®</sup></span>
+          <span class="brand-mr">MUSICROSTER<sup>®</sup></span>
+        </a>
+        <nav class="main-nav" id="main-nav" aria-label="Principal">
+          <ul>
+            <li><a href="index.html#inicio">Inicio</a></li>
+            <li><a href="buscar.html">Buscar artistas</a></li>
+            <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="reglamento.html">Reglamento</a></li>
+            <li><a class="nav-bmic" href="bmic.html">BMIC</a></li>
+            <li class="nav-cta-mobile">
+              <a href="registro.html" aria-current="page">Regístrate</a>
+            </li>
+          </ul>
+        </nav>
+        <a
+          class="btn btn-cta header-cta"
+          href="registro.html"
+          aria-current="page"
+          >Regístrate</a
+        >
+        <button
+          class="nav-toggle"
+          aria-controls="main-nav"
+          aria-expanded="false"
+          aria-label="Abrir menú"
+        >
+          <span></span>
+        </button>
       </div>
-    </form>
+    </header>
 
-    <!-- ============ CONFIRMACIÓN ============ -->
-    <section class="reg-form confirm" id="confirm" hidden aria-live="polite">
-      <div class="confirm-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#0b0b0c" stroke-width="3"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
-      <span class="step-eyebrow">Registro completado</span>
-      <h2>Tu proyecto ha sido registrado en Billboard MusicRoster</h2>
-      <div class="project-name" id="confirm-name">[Nombre del proyecto]</div>
-      <p>Hemos recibido correctamente tu información.</p>
-      <div class="code">Número de registro: <b id="confirm-code">—</b></div>
-      <p>Tu número de documento no se mostrará públicamente.</p>
-      <div class="confirm-ctas">
-        <a class="btn btn-cta btn-lg" href="#" id="btn-profile">Ver estado de mi perfil</a>
-        <a class="btn btn-ghost btn-lg" href="index.html">Volver a MusicRoster</a>
+    <section class="reg-hero">
+      <div class="wrap">
+        <p class="kicker"><span class="num">●</span> Registro</p>
+        <h1 class="display">
+          Registra tu proyecto en <span>Billboard MusicRoster</span>
+        </h1>
+        <ul class="reg-hero-notes">
+          <li class="hl">El registro es gratuito</li>
+          <li>🚨 Nadie debe cobrarte por hacerlo</li>
+        </ul>
+        <p>
+          La información que suministres permitirá identificar correctamente tu
+          proyecto dentro de Billboard MusicRoster.
+        </p>
       </div>
     </section>
-  </div>
-</div>
 
-<!-- Plantilla de integrante -->
-<template id="member-tpl">
-  <div class="member">
-    <div class="member-head">
-      <strong>Integrante <span data-idx>1</span></strong>
-      <button type="button" class="btn-remove" data-remove>Quitar</button>
+    <div class="wrap reg-layout">
+      <aside class="reg-aside" aria-label="Progreso del registro">
+        <div class="reg-progress"><i id="progress-bar"></i></div>
+        <ol class="reg-steps" id="reg-steps"></ol>
+        <div class="reg-aside-note">
+          <strong>Registro gratuito</strong>
+          Si alguien te solicita dinero afirmando que debes pagar para
+          registrarte en Billboard MusicRoster, no está autorizado para hacerlo.
+        </div>
+      </aside>
+
+      <div>
+        <form class="reg-form" id="reg-form" novalidate>
+          <!-- ============ BLOQUE 1 — PROYECTO ============ -->
+          <fieldset class="reg-step" data-title="Proyecto">
+            <legend>
+              <span class="step-eyebrow">Paso 1 · Proyecto</span>
+              <h2>¿Qué tipo de proyecto musical vas a registrar?</h2>
+            </legend>
+            <p class="step-help">
+              El cuestionario se adapta según tu respuesta.
+            </p>
+
+            <div class="choice-group" data-required-group="tipo">
+              <div class="choice-grid cols-3">
+                <label class="choice">
+                  <input type="radio" name="tipo" value="solista" required />
+                  <span class="card"
+                    ><span class="glyph"
+                      ><i
+                        style="--c: var(--g-urbano); width: 26px; height: 26px"
+                      ></i></span
+                    ><strong>Artista solista</strong
+                    ><small
+                      >Un proyecto con una sola persona como identidad.</small
+                    ></span
+                  >
+                </label>
+                <label class="choice">
+                  <input type="radio" name="tipo" value="agrupacion" />
+                  <span class="card"
+                    ><span class="glyph"
+                      ><i style="--c: var(--g-salsa)"></i
+                      ><i style="--c: var(--g-salsa)"></i
+                      ><i style="--c: var(--g-salsa)"></i
+                      ><i style="--c: var(--g-salsa)"></i></span
+                    ><strong>Agrupación</strong
+                    ><small>Banda, grupo o colectivo.</small></span
+                  >
+                </label>
+                <label class="choice">
+                  <input type="radio" name="tipo" value="duo" />
+                  <span class="card"
+                    ><span class="glyph"
+                      ><i
+                        style="--c: var(--g-popular); width: 20px; height: 20px"
+                      ></i
+                      ><i
+                        style="--c: var(--g-popular); width: 20px; height: 20px"
+                      ></i></span
+                    ><strong>Dúo</strong
+                    ><small
+                      >Dos personas como identidad del proyecto.</small
+                    ></span
+                  >
+                </label>
+                <label class="choice">
+                  <input type="radio" name="tipo" value="orquesta" />
+                  <span class="card"
+                    ><span class="glyph"
+                      ><i
+                        style="--c: var(--g-vallenato); width: 8px; height: 8px"
+                      ></i
+                      ><i
+                        style="--c: var(--g-vallenato); width: 8px; height: 8px"
+                      ></i
+                      ><i
+                        style="--c: var(--g-vallenato); width: 8px; height: 8px"
+                      ></i
+                      ><i
+                        style="--c: var(--g-vallenato); width: 8px; height: 8px"
+                      ></i
+                      ><i
+                        style="--c: var(--g-vallenato); width: 8px; height: 8px"
+                      ></i
+                      ><i
+                        style="--c: var(--g-vallenato); width: 8px; height: 8px"
+                      ></i
+                      ><i
+                        style="--c: var(--g-vallenato); width: 8px; height: 8px"
+                      ></i></span
+                    ><strong>Orquesta</strong
+                    ><small>Formato orquestal con dirección.</small></span
+                  >
+                </label>
+                <label class="choice">
+                  <input type="radio" name="tipo" value="dj" />
+                  <span class="card"
+                    ><span class="glyph"
+                      ><i
+                        style="
+                          --c: var(--g-electronica);
+                          width: 26px;
+                          height: 26px;
+                          box-shadow: 0 0 0 5px rgba(61, 123, 255, 0.25);
+                        "
+                      ></i></span
+                    ><strong>DJ</strong
+                    ><small>DJ o proyecto de música electrónica.</small></span
+                  >
+                </label>
+                <label class="choice">
+                  <input type="radio" name="tipo" value="otro" />
+                  <span class="card"
+                    ><span
+                      class="glyph"
+                      style="
+                        font-family: var(--f-display);
+                        font-weight: 900;
+                        font-size: 40px;
+                        color: var(--g-regional);
+                      "
+                      >+</span
+                    ><strong>Otro proyecto musical</strong
+                    ><small
+                      >Cualquier otro formato con identidad propia.</small
+                    ></span
+                  >
+                </label>
+              </div>
+              <p class="err">Selecciona el tipo de proyecto.</p>
+            </div>
+
+            <div class="cond" data-show-if="tipo=otro" hidden>
+              <div class="field-grid" style="margin-top: 24px">
+                <div class="field full">
+                  <label for="otro_desc">¿Qué tipo de proyecto es?</label>
+                  <input
+                    type="text"
+                    id="otro_desc"
+                    name="otro_descripcion"
+                    required
+                    placeholder="Ej.: colectivo de música tradicional, proyecto audiovisual-musical…"
+                  />
+                  <span class="err">Cuéntanos qué tipo de proyecto es.</span>
+                </div>
+              </div>
+              <div
+                class="choice-group"
+                data-required-group="otro_composicion"
+                style="margin-top: 18px"
+              >
+                <p class="field" style="margin: 0 0 8px">
+                  <span class="label"
+                    >¿Cuántas personas conforman la identidad oficial del
+                    proyecto?</span
+                  >
+                </p>
+                <div class="choice-grid cols-2">
+                  <label class="choice compact"
+                    ><input
+                      type="radio"
+                      name="otro_composicion"
+                      value="individual"
+                      required
+                    /><span class="card"
+                      ><strong>Una persona</strong></span
+                    ></label
+                  >
+                  <label class="choice compact"
+                    ><input
+                      type="radio"
+                      name="otro_composicion"
+                      value="colectivo"
+                    /><span class="card"
+                      ><strong>Varias personas</strong></span
+                    ></label
+                  >
+                </div>
+                <p class="err">Selecciona una opción.</p>
+              </div>
+            </div>
+
+            <h3 class="subhead">Nombre</h3>
+            <div class="field-grid">
+              <div class="field full">
+                <label for="nombre_proyecto" id="nombre_label"
+                  >¿Cuál es el nombre artístico del proyecto?</label
+                >
+                <input
+                  type="text"
+                  id="nombre_proyecto"
+                  name="nombre_proyecto"
+                  required
+                  autocomplete="off"
+                  placeholder="Nombre artístico / nombre de la agrupación"
+                />
+                <span class="err">Escribe el nombre del proyecto.</span>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- ============ BLOQUE 2 — GÉNEROS ============ -->
+          <fieldset class="reg-step" data-title="Géneros" hidden>
+            <legend>
+              <span class="step-eyebrow">Paso 2 · Géneros</span>
+              <h2>Tu sonido</h2>
+            </legend>
+            <p class="step-help">
+              Un proyecto puede tener un género principal y varios géneros
+              asociados.
+            </p>
+
+            <div class="field-grid">
+              <div class="field full">
+                <label for="genero_principal"
+                  >¿Cuál es el género musical principal de tu proyecto?</label
+                >
+                <select id="genero_principal" name="genero_principal" required>
+                  <option value="">Selecciona un género</option>
+                </select>
+                <span class="err">Selecciona el género principal.</span>
+              </div>
+              <div class="field full">
+                <span class="label"
+                  >¿Tu proyecto se identifica también con otros géneros?
+                  <span class="opt"
+                    >(puedes seleccionar varios · máximo 4)</span
+                  ></span
+                >
+                <div class="tag-choices" id="otros_generos"></div>
+              </div>
+              <div class="field full cond" data-show-if="otro_genero=si" hidden>
+                <label for="otro_genero_desc">¿Qué otro género?</label>
+                <input
+                  type="text"
+                  id="otro_genero_desc"
+                  name="otro_genero"
+                  required
+                />
+                <span class="err">Escribe el otro género.</span>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- ============ BLOQUE 3 — TERRITORIO ============ -->
+          <fieldset class="reg-step" data-title="Territorio" hidden>
+            <legend>
+              <span class="step-eyebrow">Paso 3 · Identidad y territorio</span>
+              <h2>¿De dónde es tu proyecto?</h2>
+            </legend>
+            <p class="step-help">
+              Así te encontrarán quienes buscan artistas por territorio.
+            </p>
+
+            <div class="field-grid">
+              <div class="field full">
+                <label for="nacionalidad"
+                  >¿Cuál es la nacionalidad del artista o proyecto?</label
+                >
+                <input
+                  type="text"
+                  id="nacionalidad"
+                  name="nacionalidad"
+                  list="paises"
+                  required
+                  value="Colombia"
+                  autocomplete="off"
+                />
+                <span class="err">Indica la nacionalidad.</span>
+              </div>
+            </div>
+
+            <h3 class="subhead">Residencia actual</h3>
+            <div class="field-grid" data-territorio>
+              <div class="field">
+                <label for="pais_residencia"
+                  >¿En qué país reside actualmente?</label
+                >
+                <input
+                  type="text"
+                  id="pais_residencia"
+                  name="pais_residencia"
+                  list="paises"
+                  required
+                  value="Colombia"
+                  autocomplete="off"
+                  data-pais
+                />
+                <span class="err">Indica el país de residencia.</span>
+              </div>
+              <div class="field">
+                <label for="region_residencia"
+                  >¿En qué departamento, estado o región?</label
+                >
+                <input
+                  type="text"
+                  id="region_residencia"
+                  name="region_residencia"
+                  list="regiones_residencia"
+                  required
+                  autocomplete="off"
+                  data-region
+                />
+                <datalist id="regiones_residencia"></datalist>
+                <span class="err"
+                  >Indica el departamento, estado o región.</span
+                >
+              </div>
+              <div class="field full">
+                <label for="ciudad_actual"
+                  >¿En qué ciudad o municipio reside actualmente?</label
+                >
+                <input
+                  type="text"
+                  id="ciudad_actual"
+                  name="ciudad_actual"
+                  list="ciudades_residencia"
+                  required
+                  autocomplete="off"
+                  data-ciudad
+                />
+                <datalist id="ciudades_residencia"></datalist>
+                <span class="err">Indica la ciudad o municipio actual.</span>
+              </div>
+            </div>
+
+            <h3 class="subhead">Origen del proyecto</h3>
+            <p class="step-help">
+              ¿Dónde nació o se originó el proyecto musical? Puede ser distinto
+              de la residencia actual.
+            </p>
+            <div class="field-grid" data-territorio>
+              <div class="field">
+                <label for="pais_origen">País</label>
+                <input
+                  type="text"
+                  id="pais_origen"
+                  name="pais_origen"
+                  list="paises"
+                  required
+                  value="Colombia"
+                  autocomplete="off"
+                  data-pais
+                />
+                <span class="err">Indica el país de origen.</span>
+              </div>
+              <div class="field">
+                <label for="region_origen">Departamento / región</label>
+                <input
+                  type="text"
+                  id="region_origen"
+                  name="region_origen"
+                  list="regiones_origen"
+                  required
+                  autocomplete="off"
+                  data-region
+                />
+                <datalist id="regiones_origen"></datalist>
+                <span class="err"
+                  >Indica el departamento o región de origen.</span
+                >
+              </div>
+              <div class="field full">
+                <label for="ciudad_origen">Ciudad / municipio</label>
+                <input
+                  type="text"
+                  id="ciudad_origen"
+                  name="ciudad_origen"
+                  list="ciudades_origen"
+                  required
+                  autocomplete="off"
+                  data-ciudad
+                />
+                <datalist id="ciudades_origen"></datalist>
+                <span class="err">Indica la ciudad o municipio de origen.</span>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- ============ BLOQUE 4 — IDENTIFICACIÓN ============ -->
+          <fieldset class="reg-step" data-title="Identidad" hidden>
+            <legend>
+              <span class="step-eyebrow">Paso 4 · Identificación</span>
+              <h2 id="identidad_title">Identidad del artista</h2>
+            </legend>
+
+            <!-- Solista / DJ / Otro individual -->
+            <div class="cond" data-show-if="identidad=individual" hidden>
+              <p class="step-help">
+                Estos datos identifican a la persona titular del proyecto, que
+                debe ser mayor de 18 años.
+              </p>
+              <div class="field-grid">
+                <div class="field full">
+                  <label for="nombre_completo"
+                    >Nombre completo del artista</label
+                  >
+                  <input
+                    type="text"
+                    id="nombre_completo"
+                    name="nombre_completo"
+                    required
+                    autocomplete="name"
+                  />
+                  <span class="err">Escribe el nombre completo.</span>
+                </div>
+                <div class="field">
+                  <label for="tipo_documento">Tipo de documento</label>
+                  <select
+                    id="tipo_documento"
+                    name="tipo_documento"
+                    required
+                    data-doc-types
+                  ></select>
+                  <span class="err">Selecciona el tipo de documento.</span>
+                </div>
+                <div class="field">
+                  <label for="numero_documento">Número de documento</label>
+                  <input
+                    type="text"
+                    id="numero_documento"
+                    name="numero_documento"
+                    required
+                    inputmode="text"
+                    pattern="[A-Za-z0-9\-\.]{4,20}"
+                  />
+                  <span class="err"
+                    >Escribe un número de documento válido.</span
+                  >
+                </div>
+                <div class="field full">
+                  <label for="pais_expedicion">País de expedición</label>
+                  <input
+                    type="text"
+                    id="pais_expedicion"
+                    name="pais_expedicion"
+                    list="paises"
+                    required
+                    value="Colombia"
+                    autocomplete="off"
+                  />
+                  <span class="err">Indica el país de expedición.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Agrupación / Dúo / Orquesta / Otro colectivo -->
+            <div class="cond" data-show-if="identidad=colectivo" hidden>
+              <p class="step-help">
+                ¿Quiénes son los miembros oficiales del proyecto? Incluye
+                únicamente a quienes forman parte de la identidad artística de
+                la agrupación. Todos deben ser mayores de 18 años.
+              </p>
+              <div class="members" id="members"></div>
+              <button type="button" class="btn-add" id="add-member">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.6"
+                >
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+                Agregar integrante
+              </button>
+              <div class="notice">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 8v5M12 16h.01" />
+                </svg>
+                <span
+                  ><strong>Aclaración:</strong> no incluyas músicos
+                  acompañantes, músicos contratados o músicos de sesión que no
+                  formen parte oficialmente del proyecto.</span
+                >
+              </div>
+
+              <h3 class="subhead">Líder o director</h3>
+              <div class="field-grid">
+                <div class="field full">
+                  <label for="lider"
+                    >¿Quién es el líder o director del proyecto?</label
+                  >
+                  <select id="lider" name="lider" required></select>
+                  <span class="hint"
+                    >El documento del líder o director será la referencia
+                    principal del registro de la agrupación.</span
+                  >
+                  <span class="err"
+                    >Selecciona al líder o director entre los integrantes.</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="notice dark">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="5" y="11" width="14" height="10" rx="2" />
+                <path d="M8 11V7a4 4 0 018 0v4" />
+              </svg>
+              <span
+                ><strong
+                  >El nombre completo aparecerá en el perfil público.</strong
+                >
+                El número de documento no será público: identifica a la persona
+                y permite prevenir duplicidades y suplantaciones.</span
+              >
+            </div>
+          </fieldset>
+
+          <!-- ============ BLOQUE 5 — PRESENCIA MUSICAL E IMAGEN ============ -->
+          <fieldset class="reg-step" data-title="Música" hidden>
+            <legend>
+              <span class="step-eyebrow">Paso 5 · Presencia musical</span>
+              <h2>Dónde suena tu proyecto</h2>
+            </legend>
+            <p class="step-help">
+              Comparte el enlace donde mejor se escucha tu música y tu red
+              social principal.
+            </p>
+
+            <div class="field-grid">
+              <div class="field full">
+                <label for="enlace_musical"
+                  >¿Cuál es el principal enlace para escuchar tu música?</label
+                >
+                <div class="input-combo">
+                  <select
+                    name="plataforma_musical"
+                    aria-label="Plataforma musical"
+                    required
+                    data-options="musica"
+                  ></select>
+                  <input
+                    type="url"
+                    id="enlace_musical"
+                    name="enlace_musical"
+                    required
+                    placeholder="https://"
+                  />
+                </div>
+                <span class="err"
+                  >Pega un enlace válido (debe empezar por https://).</span
+                >
+              </div>
+              <div class="field full">
+                <span class="label"
+                  >¿Tienes otros enlaces musicales?
+                  <span class="opt">(opcional)</span></span
+                >
+                <div
+                  class="link-rows"
+                  id="otros_enlaces"
+                  data-kind="musica"
+                  data-prefix="otros_enlaces"
+                ></div>
+                <button
+                  type="button"
+                  class="btn-add"
+                  data-add-link="otros_enlaces"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.6"
+                  >
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                  Agregar enlace
+                </button>
+                <span class="err"
+                  >Revisa los enlaces: deben empezar por https://.</span
+                >
+              </div>
+              <div class="field full">
+                <label for="red_social"
+                  >¿Cuál es la principal red social del proyecto?</label
+                >
+                <div class="input-combo">
+                  <select
+                    name="red_social_tipo"
+                    aria-label="Red social"
+                    required
+                    data-options="redes"
+                  ></select>
+                  <input
+                    type="text"
+                    id="red_social"
+                    name="red_social"
+                    required
+                    placeholder="@usuario o enlace"
+                  />
+                </div>
+                <span class="err">Indica tu usuario o enlace.</span>
+              </div>
+              <div class="field full">
+                <span class="label"
+                  >Otras redes sociales
+                  <span class="opt">(opcional)</span></span
+                >
+                <div
+                  class="link-rows"
+                  id="otras_redes"
+                  data-kind="redes"
+                  data-prefix="otras_redes"
+                ></div>
+                <button
+                  type="button"
+                  class="btn-add"
+                  data-add-link="otras_redes"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.6"
+                  >
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                  Agregar red social
+                </button>
+              </div>
+            </div>
+
+            <h3 class="subhead">Imagen</h3>
+            <div class="field-grid">
+              <div class="field full">
+                <span class="label"
+                  >Sube una fotografía oficial del proyecto</span
+                >
+                <span class="hint"
+                  >La imagen será utilizada para identificar visualmente tu
+                  proyecto dentro de MusicRoster.</span
+                >
+                <label class="photo-drop" id="photo-drop">
+                  <span class="preview" id="photo-preview">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    >
+                      <rect x="3" y="5" width="18" height="14" rx="2" />
+                      <circle cx="9" cy="11" r="2" />
+                      <path d="M21 17l-5-5-8 7" />
+                    </svg>
+                  </span>
+                  <span>
+                    <strong id="photo-name">Sube o arrastra una imagen</strong>
+                    <small
+                      >Buena resolución, sin marcas de agua y correspondiente al
+                      proyecto registrado · JPG, PNG o WEBP · máximo 5
+                      MB.</small
+                    >
+                  </span>
+                  <input
+                    type="file"
+                    id="foto"
+                    name="foto"
+                    accept="image/jpeg,image/png,image/webp"
+                    required
+                  />
+                </label>
+                <span class="err" id="photo-err"
+                  >Sube la fotografía oficial del proyecto.</span
+                >
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- ============ BLOQUE 6 — CONTRATACIÓN ============ -->
+          <fieldset class="reg-step" data-title="Contratación" hidden>
+            <legend>
+              <span class="step-eyebrow">Paso 6 · Contratación</span>
+              <h2>Contratación</h2>
+            </legend>
+            <p class="step-help">
+              ¿Cuál es aproximadamente el valor de contratación de tu proyecto
+              para una presentación en vivo? <em>(Pesos colombianos)</em>
+            </p>
+
+            <div class="choice-group" data-required-group="rango_contratacion">
+              <div class="choice-grid cols-3" id="rangos"></div>
+              <p class="err">Selecciona un rango aproximado.</p>
+            </div>
+            <div class="notice">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 8v5M12 16h.01" />
+              </svg>
+              <span
+                >Este rango se mostrará en tu perfil público. Es referencial y
+                puede variar según ciudad, país, fecha, formato, producción y
+                características del evento.</span
+              >
+            </div>
+
+            <h3 class="subhead">Contacto para contratación</h3>
+            <div class="field-grid">
+              <div class="field full">
+                <label for="contacto_nombre"
+                  >¿Quién es el contacto para oportunidades y
+                  contratación?</label
+                >
+                <input
+                  type="text"
+                  id="contacto_nombre"
+                  name="contacto_nombre"
+                  required
+                  autocomplete="name"
+                  placeholder="Nombre"
+                />
+                <span class="err">Escribe el nombre del contacto.</span>
+              </div>
+              <div class="field">
+                <label for="contacto_whatsapp"
+                  >WhatsApp de contacto
+                  <span class="opt">(con código de país)</span></label
+                >
+                <input
+                  type="tel"
+                  id="contacto_whatsapp"
+                  name="contacto_whatsapp"
+                  required
+                  placeholder="+57 300 000 0000"
+                  pattern="[\+\d\s\-\(\)]{7,20}"
+                  autocomplete="tel"
+                />
+                <span class="err"
+                  >Escribe un número válido, con código de país.</span
+                >
+              </div>
+              <div class="field">
+                <label for="contacto_email"
+                  >Correo electrónico de contacto</label
+                >
+                <input
+                  type="email"
+                  id="contacto_email"
+                  name="contacto_email"
+                  required
+                  placeholder="contacto@tuproyecto.com"
+                  autocomplete="email"
+                />
+                <span class="err">Escribe un correo válido.</span>
+              </div>
+            </div>
+            <div class="notice">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 8v5M12 16h.01" />
+              </svg>
+              <span
+                ><strong>Estos datos serán públicos</strong> para que puedan
+                contactarte. Te recomendamos usar un número y un correo de uso
+                profesional.</span
+              >
+            </div>
+          </fieldset>
+
+          <!-- ============ BLOQUE 7 — CONFIRMACIÓN ============ -->
+          <fieldset class="reg-step" data-title="Confirmación" hidden>
+            <legend>
+              <span class="step-eyebrow">Paso 7 · Confirmación</span>
+              <h2>¿Quién está realizando este registro?</h2>
+            </legend>
+            <p class="step-help">
+              Puede hacerlo el artista o alguien de su equipo autorizado.
+            </p>
+
+            <div class="choice-group" data-required-group="quien_registra">
+              <div class="choice-grid cols-3">
+                <label class="choice compact"
+                  ><input
+                    type="radio"
+                    name="quien_registra"
+                    value="artista"
+                    required
+                  /><span class="card"
+                    ><strong>El propio artista</strong></span
+                  ></label
+                >
+                <label class="choice compact"
+                  ><input
+                    type="radio"
+                    name="quien_registra"
+                    value="integrante"
+                  /><span class="card"
+                    ><strong>Un miembro de la agrupación</strong></span
+                  ></label
+                >
+                <label class="choice compact"
+                  ><input
+                    type="radio"
+                    name="quien_registra"
+                    value="lider"
+                  /><span class="card"
+                    ><strong>Líder / director</strong></span
+                  ></label
+                >
+                <label class="choice compact"
+                  ><input
+                    type="radio"
+                    name="quien_registra"
+                    value="manager"
+                  /><span class="card"><strong>Manager</strong></span></label
+                >
+                <label class="choice compact"
+                  ><input
+                    type="radio"
+                    name="quien_registra"
+                    value="representante"
+                  /><span class="card"
+                    ><strong>Representante</strong></span
+                  ></label
+                >
+                <label class="choice compact"
+                  ><input
+                    type="radio"
+                    name="quien_registra"
+                    value="equipo"
+                  /><span class="card"
+                    ><strong>Miembro del equipo</strong></span
+                  ></label
+                >
+                <label class="choice compact"
+                  ><input
+                    type="radio"
+                    name="quien_registra"
+                    value="otro"
+                  /><span class="card"
+                    ><strong>Otro tercero autorizado</strong></span
+                  ></label
+                >
+              </div>
+              <p class="err">Selecciona una opción.</p>
+            </div>
+
+            <div class="cond" data-show-if="quien_registra!=artista" hidden>
+              <h3 class="subhead">Tus datos</h3>
+              <div class="field-grid">
+                <div class="field full">
+                  <label for="registrante_nombre"
+                    >Nombre completo de quien diligencia</label
+                  >
+                  <input
+                    type="text"
+                    id="registrante_nombre"
+                    name="registrante_nombre"
+                    required
+                    autocomplete="name"
+                  />
+                  <span class="err">Escribe tu nombre completo.</span>
+                </div>
+                <div class="field">
+                  <label for="registrante_email">Correo electrónico</label>
+                  <input
+                    type="email"
+                    id="registrante_email"
+                    name="registrante_email"
+                    required
+                    autocomplete="email"
+                  />
+                  <span class="err">Escribe un correo válido.</span>
+                </div>
+                <div class="field">
+                  <label for="registrante_whatsapp">WhatsApp</label>
+                  <input
+                    type="tel"
+                    id="registrante_whatsapp"
+                    name="registrante_whatsapp"
+                    required
+                    placeholder="+57 300 000 0000"
+                    pattern="[\+\d\s\-\(\)]{7,20}"
+                    autocomplete="tel"
+                  />
+                  <span class="err">Escribe un número válido.</span>
+                </div>
+              </div>
+              <div class="notice">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 8v5M12 16h.01" />
+                </svg>
+                <span
+                  ><strong>Importante:</strong> aunque el formulario sea
+                  diligenciado por un tercero, los datos de identificación
+                  anteriores deben corresponder al artista o a los miembros
+                  oficiales del proyecto.</span
+                >
+              </div>
+            </div>
+
+            <h3 class="subhead">Declaraciones y autorizaciones</h3>
+            <div class="checks">
+              <label class="check"
+                ><input type="checkbox" name="decl_info" required /><span
+                  >Declaro que la información suministrada es verdadera y
+                  corresponde al proyecto musical registrado.</span
+                ></label
+              >
+              <label class="check"
+                ><input type="checkbox" name="decl_autorizado" required /><span
+                  >Declaro que soy el artista, un miembro del proyecto o una
+                  persona autorizada para realizar este registro.</span
+                ></label
+              >
+              <label class="check cond" data-show-if="terceros=si" hidden
+                ><input type="checkbox" name="decl_integrantes" required /><span
+                  >Cuando suministro información correspondiente a otras
+                  personas, declaro contar con su autorización para hacerlo y
+                  que conocen qué datos serán públicos.</span
+                ></label
+              >
+              <label class="check"
+                ><input type="checkbox" name="decl_mayoria" required /><span
+                  >Declaro que el artista o todos los miembros oficiales del
+                  proyecto, así como quien diligencia este registro, son mayores
+                  de 18 años.</span
+                ></label
+              >
+              <label class="check"
+                ><input type="checkbox" name="decl_datos" required /><span
+                  >Autorizo el tratamiento de los datos personales, incluida la
+                  publicación de los datos del perfil, conforme a la Política de
+                  Tratamiento de Datos Personales de Billboard
+                  MusicRoster.</span
+                ></label
+              >
+              <label class="check"
+                ><input type="checkbox" name="decl_reglamento" required /><span
+                  >Declaro haber leído y aceptado el Reglamento de Billboard
+                  MusicRoster.</span
+                ></label
+              >
+            </div>
+            <p
+              class="err"
+              id="checks-err"
+              style="
+                display: none;
+                color: #d42a20;
+                font-weight: 600;
+                font-size: 13px;
+                margin-top: 12px;
+              "
+            >
+              Debes aceptar todas las declaraciones para continuar.
+            </p>
+            <div class="doc-links">
+              <a href="reglamento.html" target="_blank" rel="noopener"
+                >Ver reglamento</a
+              >
+              <a href="politica-datos.html" target="_blank" rel="noopener"
+                >Ver política de datos</a
+              >
+            </div>
+          </fieldset>
+
+          <div class="reg-nav">
+            <button type="button" class="btn btn-back" id="btn-back" hidden>
+              ← Atrás
+            </button>
+            <span class="spacer"></span>
+            <button type="button" class="btn btn-next" id="btn-next">
+              Continuar →
+            </button>
+            <div class="btn-submit-wrap" id="submit-wrap" hidden>
+              <button type="submit" class="btn btn-cta btn-lg" id="btn-submit">
+                Registrar mi proyecto
+              </button>
+              <small
+                ><b>100% gratuito.</b> Nadie debe cobrarte por
+                registrarte.</small
+              >
+            </div>
+          </div>
+        </form>
+
+        <!-- ============ CONFIRMACIÓN ============ -->
+        <section
+          class="reg-form confirm"
+          id="confirm"
+          hidden
+          aria-live="polite"
+        >
+          <div class="confirm-badge">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#0b0b0c"
+              stroke-width="3"
+            >
+              <path d="M5 12.5l4.5 4.5L19 7.5" />
+            </svg>
+          </div>
+          <span class="step-eyebrow">Registro completado</span>
+          <h2>Tu proyecto ha sido registrado en Billboard MusicRoster</h2>
+          <div class="project-name" id="confirm-name">
+            [Nombre del proyecto]
+          </div>
+          <p>Hemos recibido correctamente tu información.</p>
+          <div class="code">Número de registro: <b id="confirm-code">—</b></div>
+          <p>Tu número de documento no se mostrará públicamente.</p>
+          <div class="confirm-ctas">
+            <a class="btn btn-cta btn-lg" href="#" id="btn-profile"
+              >Ver estado de mi perfil</a
+            >
+            <a class="btn btn-ghost btn-lg" href="index.html"
+              >Volver a MusicRoster</a
+            >
+          </div>
+        </section>
+      </div>
     </div>
-    <div class="field-grid">
-      <div class="field full">
-        <label>Nombre completo</label>
-        <input type="text" data-name="nombre" required>
-        <span class="err">Escribe el nombre completo.</span>
-      </div>
-      <div class="field">
-        <label>Tipo de documento</label>
-        <select data-name="tipo_documento" required data-doc-types></select>
-        <span class="err">Selecciona el tipo de documento.</span>
-      </div>
-      <div class="field">
-        <label>Número de documento</label>
-        <input type="text" data-name="numero_documento" required pattern="[A-Za-z0-9\-\.]{4,20}">
-        <span class="err">Escribe un número válido.</span>
-      </div>
-      <div class="field">
-        <label>País de expedición</label>
-        <input type="text" data-name="pais_expedicion" list="paises" required value="Colombia" autocomplete="off">
-        <span class="err">Indica el país de expedición.</span>
-      </div>
-      <div class="field">
-        <label>Rol dentro del proyecto</label>
-        <select data-name="rol" required data-roles></select>
-        <span class="err">Selecciona el rol.</span>
-      </div>
-      <div class="field full" data-rol-otro hidden>
-        <label>¿Cuál rol?</label>
-        <input type="text" data-name="rol_otro" required disabled>
-        <span class="err">Indica el rol.</span>
-      </div>
-    </div>
-  </div>
-</template>
 
-<datalist id="paises"></datalist>
+    <!-- Plantilla de integrante -->
+    <template id="member-tpl">
+      <div class="member">
+        <div class="member-head">
+          <strong>Integrante <span data-idx>1</span></strong>
+          <button type="button" class="btn-remove" data-remove>Quitar</button>
+        </div>
+        <div class="field-grid">
+          <div class="field full">
+            <label>Nombre completo</label>
+            <input type="text" data-name="nombre" required />
+            <span class="err">Escribe el nombre completo.</span>
+          </div>
+          <div class="field">
+            <label>Tipo de documento</label>
+            <select data-name="tipo_documento" required data-doc-types></select>
+            <span class="err">Selecciona el tipo de documento.</span>
+          </div>
+          <div class="field">
+            <label>Número de documento</label>
+            <input
+              type="text"
+              data-name="numero_documento"
+              required
+              pattern="[A-Za-z0-9\-\.]{4,20}"
+            />
+            <span class="err">Escribe un número válido.</span>
+          </div>
+          <div class="field">
+            <label>País de expedición</label>
+            <input
+              type="text"
+              data-name="pais_expedicion"
+              list="paises"
+              required
+              value="Colombia"
+              autocomplete="off"
+            />
+            <span class="err">Indica el país de expedición.</span>
+          </div>
+          <div class="field">
+            <label>Rol dentro del proyecto</label>
+            <select data-name="rol" required data-roles></select>
+            <span class="err">Selecciona el rol.</span>
+          </div>
+          <div class="field full" data-rol-otro hidden>
+            <label>¿Cuál rol?</label>
+            <input type="text" data-name="rol_otro" required disabled />
+            <span class="err">Indica el rol.</span>
+          </div>
+        </div>
+      </div>
+    </template>
 
-<script src="assets/js/main.js"></script>
-<script src="assets/js/municipios-co.js"></script>
-<script src="assets/js/dropdown.js"></script>
-<script src="assets/js/registro.js"></script>
-</body>
+    <datalist id="paises"></datalist>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/municipios-co.js"></script>
+    <script src="assets/js/dropdown.js"></script>
+    <script src="assets/js/registro.js"></script>
+  </body>
 </html>
