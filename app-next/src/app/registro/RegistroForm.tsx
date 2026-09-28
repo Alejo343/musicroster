@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { useFieldArray, useForm, useWatch, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -207,9 +208,9 @@ export default function RegistroForm() {
         </div>
         <p>Tu número de documento no se mostrará públicamente.</p>
         <div className="confirm-ctas">
-          <a className="btn btn-ghost btn-lg" href="/">
+          <Link className="btn btn-ghost btn-lg" href="/">
             Volver a MusicRoster
-          </a>
+          </Link>
         </div>
       </section>
     );

@@ -20,7 +20,7 @@ async function claveSecreta(): Promise<Uint8Array> {
 }
 
 export type SesionComprador = { sub: string; email: string };
-export type SesionAdmin = { sub: string; email: string; rol: "moderador" | "admin" };
+export type SesionAdmin = { sub: string; email: string; rol: "moderador" | "admin"; nombre: string };
 
 export async function firmarSesionComprador(datos: SesionComprador): Promise<string> {
   const clave = await claveSecreta();
@@ -59,7 +59,7 @@ export async function verificarSesionAdmin(token: string | undefined): Promise<S
     const { payload } = await jwtVerify(token, clave);
     if (payload.tipo !== "admin" || typeof payload.sub !== "string" || typeof payload.email !== "string") return null;
     const rol = payload.rol === "admin" ? "admin" : "moderador";
-    return { sub: payload.sub, email: payload.email, rol };
+    return { sub: payload.sub, email: payload.email, rol, nombre: typeof payload.nombre === "string" ? payload.nombre : payload.email };
   } catch {
     return null;
   }

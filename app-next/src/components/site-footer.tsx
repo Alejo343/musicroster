@@ -1,24 +1,26 @@
+import Link from "next/link";
+
 export default function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="wrap">
         <div className="footer-grid">
           <div>
-            <a className="brand" href="/">
+            <Link className="brand" href="/">
               <span className="brand-bb">
                 billboard<sup>®</sup>
               </span>
               <span className="brand-mr">
                 MUSICROSTER<sup>®</sup>
               </span>
-            </a>
+            </Link>
             <p>El directorio que registra e identifica proyectos musicales para conectarlos con las oportunidades de la industria.</p>
           </div>
           <div>
             <h4>MusicRoster</h4>
             <ul>
               <li>
-                <a href="/registro">Regístrate</a>
+                <Link href="/registro">Regístrate</Link>
               </li>
               <li>
                 <a href="buscar.html">Buscar artistas</a>
@@ -27,7 +29,7 @@ export default function SiteFooter() {
                 <a href="contratar.html">Para quienes contratan</a>
               </li>
               <li>
-                <a href="/#como-funciona">Cómo funciona</a>
+                <Link href="/#como-funciona">Cómo funciona</Link>
               </li>
             </ul>
           </div>
@@ -35,16 +37,16 @@ export default function SiteFooter() {
             <h4>Información</h4>
             <ul>
               <li>
-                <a href="/faq">FAQ</a>
+                <Link href="/faq">FAQ</Link>
               </li>
               <li>
-                <a href="/reglamento">Reglamento</a>
+                <Link href="/reglamento">Reglamento</Link>
               </li>
               <li>
-                <a href="/politica-datos">Política de datos</a>
+                <Link href="/politica-datos">Política de datos</Link>
               </li>
               <li>
-                <a href="/bmic">BMIC</a>
+                <Link href="/bmic">BMIC</Link>
               </li>
             </ul>
           </div>

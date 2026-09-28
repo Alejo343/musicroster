@@ -1,5 +1,7 @@
 // Header común a las páginas públicas (antes duplicado a mano en cada .html — ver CLAUDE.md).
 // Un cambio de navegación ahora se hace en un solo lugar.
+import Link from "next/link";
+
 type Item = { href: string; label: string; activo?: boolean; claseExtra?: string };
 
 // Los enlaces a rutas aún no portadas (buscar/contratar/registro) quedan como en el sitio
@@ -27,14 +29,14 @@ export default function SiteHeader({ activa = null, top = false }: { activa?: Pa
   return (
     <header className="site-header" id={top ? "top" : undefined}>
       <div className="wrap">
-        <a className="brand" href="/" aria-label="Billboard MusicRoster — Inicio">
+        <Link className="brand" href="/" aria-label="Billboard MusicRoster — Inicio">
           <span className="brand-bb">
             billboard<sup>®</sup>
           </span>
           <span className="brand-mr">
             MUSICROSTER<sup>®</sup>
           </span>
-        </a>
+        </Link>
 
         <nav className="main-nav" id="main-nav" aria-label="Principal">
           <ul>

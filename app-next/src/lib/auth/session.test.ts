@@ -19,16 +19,16 @@ describe("sesión de comprador", () => {
   });
 
   it("no confunde un token de admin con uno de comprador", async () => {
-    const tokenAdmin = await firmarSesionAdmin({ sub: "admin_1", email: "laura@musicroster.dev", rol: "moderador" });
+    const tokenAdmin = await firmarSesionAdmin({ sub: "admin_1", email: "laura@musicroster.dev", rol: "moderador", nombre: "Laura Méndez" });
     expect(await verificarSesionComprador(tokenAdmin)).toBeNull();
   });
 });
 
 describe("sesión de admin", () => {
   it("firma y verifica un token válido, con el rol incluido", async () => {
-    const token = await firmarSesionAdmin({ sub: "admin_2", email: "oscar@musicroster.dev", rol: "admin" });
+    const token = await firmarSesionAdmin({ sub: "admin_2", email: "oscar@musicroster.dev", rol: "admin", nombre: "Óscar Ruiz" });
     const sesion = await verificarSesionAdmin(token);
-    expect(sesion).toEqual({ sub: "admin_2", email: "oscar@musicroster.dev", rol: "admin" });
+    expect(sesion).toEqual({ sub: "admin_2", email: "oscar@musicroster.dev", rol: "admin", nombre: "Óscar Ruiz" });
   });
 
   it("no confunde un token de comprador con uno de admin", async () => {

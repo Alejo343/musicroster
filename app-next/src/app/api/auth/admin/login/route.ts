@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "Correo o contraseña inválidos." }, { status: 401 });
   }
 
-  const sesion = await firmarSesionAdmin({ sub: admin.id, email: admin.email, rol: admin.rol });
+  const sesion = await firmarSesionAdmin({ sub: admin.id, email: admin.email, rol: admin.rol, nombre: admin.nombre });
   const respuesta = NextResponse.json({ ok: true, rol: admin.rol });
   respuesta.cookies.set(COOKIE_ADMIN, sesion, {
     httpOnly: true,
