@@ -5,16 +5,14 @@ import SiteFooter from "@/components/site-footer";
 import { leerContenidoEstatico } from "@/lib/contenidoEstatico";
 
 export const metadata: Metadata = {
-  title: "Billboard MusicRoster — Registra tu proyecto musical",
-  description:
-    "El directorio que registra e identifica proyectos musicales para conectarlos con las oportunidades de la industria musical. Registro gratuito para artistas.",
+  title: "FAQ — Billboard MusicRoster",
 };
 
-export default function Home() {
-  const contenido = leerContenidoEstatico("contenido.html");
+export default function FaqPage() {
+  const contenido = leerContenidoEstatico("faq/contenido.html");
   return (
     <>
-      <SiteHeader activa="inicio" top />
+      <SiteHeader activa="faq" />
       <div dangerouslySetInnerHTML={{ __html: contenido }} />
       <SiteFooter />
       <Script src="/assets/js/main.js" strategy="afterInteractive" />
