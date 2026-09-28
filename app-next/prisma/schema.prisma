@@ -1,0 +1,245 @@
+// Esquema de datos de Billboard MusicRoster.
+// Mapea 1:1 el objeto `rec` que hoy genera assets/js/admin-data.js (ver CLAUDE.md).
+// La frontera pública/privada (Arts. 25/26 del Reglamento, sección 6 de la política de datos)
+// se aplica en el código de la app (lib/perfilPublico.ts) con un `select` explícito, nunca aquí.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum EstadoRegistro {
+  pendiente
+  correccion
+  aprobado
+  rechazado
+}
+
+enum TipoProyecto {
+  solista
+  agrupacion
+  duo
+  orquesta
+  dj
+  otro
+}
+
+enum Identidad {
+  individual
+  colectivo
+}
+
+enum RolAdmin {
+  moderador
+  admin
+}
+
+model Project {
+  id        String         @id // referencia MR-AAAA-XXXXXX
+  creado    DateTime       @default(now())
+  estado    EstadoRegistro @default(pendiente)
+  motivo    String?
+
+  tipo             TipoProyecto
+  otroDescripcion  String?
+  otroComposicion  Identidad?
+  identidad        Identidad
+  nombreProyecto   String
+
+  generoPrincipal String
+  otrosGeneros    String[]
+  otroGenero      String?
+
+  nacionalidad      String
+  paisResidencia    String
+  regionResidencia  String
+  ciudadActual      String
+  paisOrigen        String
+  regionOrigen      String
+  ciudadOrigen      String
+
+  // Solo cuando identidad = individual
+  nombreCompleto  String?
+  tipoDocumento   String?
+  numeroDocumento String?
+  paisExpedicion  String?
+
+  miembros Member[]
+
+  plataformaMusical String
+  enlaceMusical     String
+  otrosEnlaces      Json   @default("[]") // [{ plataforma, url }]
+
+  redSocialTipo String
+  redSocial     String
+  otrasRedes    Json   @default("[]") // [{ plataforma, url }]
+
+  foto String? // URL en MinIO
+
+  rangoContratacion String
+
+  contactoNombre    String
+  contactoWhatsapp  String
+  contactoEmail     String
+
+  quienRegistra         String
+  registranteNombre     String?
+  registranteEmail      String?
+  registranteWhatsapp   String?
+
+  declInfo        Boolean @default(false)
+  declAutorizado  Boolean @default(false)
+  declIntegrantes Boolean @default(false)
+  declMayoria     Boolean @default(false)
+  declDatos       Boolean @default(false)
+  declReglamento  Boolean @default(false)
+
+  notas     Note[]
+  historial StatusHistory[]
+
+  hiringRequests HiringRequestProject[]
+
+  // Índices para la detección de duplicados (Art. 60, política de datos secc. 5)
+  @@index([numeroDocumento])
+  @@index([nombreProyecto])
+  @@index([contactoEmail])
+  @@index([estado])
+}
+
+model Member {
+  id              String  @id @default(cuid())
+  project         Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId       String
+  orden           Int
+  nombre          String
+  tipoDocumento   String
+  numeroDocumento String
+  paisExpedicion  String
+  rol             String
+  rolOtro         String?
+  esLider         Boolean @default(false)
+
+  @@index([projectId])
+  @@index([numeroDocumento])
+}
+
+// Historial de moderación del registro. Insert-only: nunca se edita ni se borra una fila.
+// `privado = true` marca la consulta de un dato privado (p. ej. revelar un documento),
+// tal como exige la política de datos.
+model StatusHistory {
+  id        String   @id @default(cuid())
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+  fecha     DateTime @default(now())
+  autor     String
+  accion    String
+  detalle   String?
+  privado   Boolean  @default(false)
+
+  @@index([projectId])
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+  fecha     DateTime @default(now())
+  autor     String
+  texto     String
+
+  @@index([projectId])
+}
+
+// Descarta un caso de posible duplicado (equivalente a AdminData.dismiss/undismiss).
+model DismissedDuplicate {
+  key    String   @id
+  creado DateTime @default(now())
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  nombre       String
+  email        String   @unique
+  passwordHash String
+  rol          RolAdmin @default(moderador)
+  iniciales    String?
+  creado       DateTime @default(now())
+}
+
+model BuyerAccount {
+  id            String   @id @default(cuid())
+  nombre        String
+  email         String   @unique
+  whatsapp      String
+  sector        String?
+  organizacion  String?
+  cargo         String?
+  pais          String?
+  ciudad        String?
+  creado        DateTime @default(now())
+
+  magicLinks      MagicLinkToken[]
+  hiringRequests  HiringRequest[]
+}
+
+// Enlace mágico de acceso para compradores (sin contraseña).
+model MagicLinkToken {
+  id             String        @id @default(cuid())
+  token          String        @unique
+  buyerAccount   BuyerAccount  @relation(fields: [buyerAccountId], references: [id], onDelete: Cascade)
+  buyerAccountId String
+  expiraEn       DateTime
+  usadoEn        DateTime?
+  creado         DateTime      @default(now())
+
+  @@index([buyerAccountId])
+}
+
+// Solicitud de contratación (Art. 30 del Reglamento; política de datos secc. 5/6/7).
+model HiringRequest {
+  id             String   @id @default(cuid())
+  ref            String   @unique // SC-AAAA-XXXXXX
+  buyerAccount   BuyerAccount @relation(fields: [buyerAccountId], references: [id])
+  buyerAccountId String
+
+  tipoEvento     String
+  fecha          String?
+  fechaFlexible  Boolean  @default(false)
+  ciudad         String
+  lugar          String?
+  aforo          Int?
+  duracion       String?
+  presupuesto    String?
+  incluye        String[]
+  mensaje        String
+
+  solicitanteNombre       String
+  solicitanteSector       String?
+  solicitanteOrganizacion String?
+  solicitanteCargo        String?
+  solicitanteEmail        String
+  solicitanteWhatsapp     String
+
+  aceptaDatos      Boolean @default(false)
+  aceptaRango      Boolean @default(false)
+  aceptaReglamento Boolean @default(false)
+
+  creado DateTime @default(now())
+
+  proyectos HiringRequestProject[]
+}
+
+// Tabla puente: una solicitud puede dirigirse a varios proyectos.
+model HiringRequestProject {
+  hiringRequest   HiringRequest @relation(fields: [hiringRequestId], references: [id], onDelete: Cascade)
+  hiringRequestId String
+  project         Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId       String
+
+  @@id([hiringRequestId, projectId])
+  @@index([projectId])
+}

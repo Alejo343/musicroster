@@ -1,0 +1,49 @@
+# El VPS ya corre OpenLiteSpeed como servidor/proxy inverso con TLS —
+# aquí solo se levantan la app y sus servicios de datos, con los puertos
+# publicados en 127.0.0.1 para que únicamente OpenLiteSpeed (en el mismo host)
+# pueda alcanzarlos. Ver instrucciones de "External App" + "Context" en OLS
+# para apuntar cada dominio a su puerto local correspondiente.
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: ./app-next
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - ./app-next/.env
+    depends_on:
+      - postgres
+      - minio
+    ports:
+      - "127.0.0.1:3000:3000"
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-musicroster}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?definir en .env}
+      POSTGRES_DB: ${POSTGRES_DB:-musicroster}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:?definir en .env}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?definir en .env}
+    volumes:
+      - minio_data:/data
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
+
+volumes:
+  postgres_data:
+  minio_data:
