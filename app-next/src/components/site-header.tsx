@@ -4,19 +4,17 @@ import Link from "next/link";
 
 type Item = { href: string; label: string; activo?: boolean; claseExtra?: string };
 
-// Los enlaces a rutas aún no portadas (buscar/contratar/registro) quedan como en el sitio
-// estático original hasta que lleguen sus fases; los ya portados usan su ruta limpia de Next.js.
 const NAV: { href: string; label: string; pagina?: string }[] = [
   { href: "/#inicio", label: "Inicio" },
-  { href: "buscar.html", label: "Buscar artistas" },
-  { href: "contratar.html", label: "Contratar" },
+  { href: "/buscar", label: "Buscar artistas", pagina: "buscar" },
+  { href: "/contratar", label: "Contratar", pagina: "contratar" },
   { href: "/#como-funciona", label: "Cómo funciona" },
   { href: "/faq", label: "FAQ", pagina: "faq" },
   { href: "/reglamento", label: "Reglamento", pagina: "reglamento" },
   { href: "/bmic", label: "BMIC", pagina: "bmic" },
 ];
 
-export type PaginaActiva = "inicio" | "faq" | "reglamento" | "bmic" | "politica-datos" | "registro" | null;
+export type PaginaActiva = "inicio" | "faq" | "reglamento" | "bmic" | "politica-datos" | "registro" | "buscar" | "contratar" | "artista" | "solicitud" | "acceso" | null;
 
 export default function SiteHeader({ activa = null, top = false }: { activa?: PaginaActiva; top?: boolean }) {
   const items: Item[] = NAV.map((n) => ({
@@ -42,20 +40,20 @@ export default function SiteHeader({ activa = null, top = false }: { activa?: Pa
           <ul>
             {items.map((it) => (
               <li key={it.href}>
-                <a href={it.href} className={it.claseExtra} aria-current={it.activo ? "page" : undefined}>
+                <Link href={it.href} className={it.claseExtra} aria-current={it.activo ? "page" : undefined}>
                   {it.label}
-                </a>
+                </Link>
               </li>
             ))}
             <li className="nav-cta-mobile">
-              <a href="/registro" aria-current={activa === "registro" ? "page" : undefined}>Regístrate</a>
+              <Link href="/registro" aria-current={activa === "registro" ? "page" : undefined}>Regístrate</Link>
             </li>
           </ul>
         </nav>
 
-        <a className="btn btn-cta header-cta" href="/registro" aria-current={activa === "registro" ? "page" : undefined}>
+        <Link className="btn btn-cta header-cta" href="/registro" aria-current={activa === "registro" ? "page" : undefined}>
           Regístrate
-        </a>
+        </Link>
         <button className="nav-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Abrir menú">
           <span></span>
         </button>

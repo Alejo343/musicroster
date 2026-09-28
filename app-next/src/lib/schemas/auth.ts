@@ -10,6 +10,7 @@ export const crearCuentaCompradorSchema = z.object({
   cargo: z.string().trim().optional(),
   pais: z.string().trim().optional(),
   ciudad: z.string().trim().optional(),
+  volver: z.string().trim().optional(),
 });
 
 export const solicitarEnlaceSchema = z.object({

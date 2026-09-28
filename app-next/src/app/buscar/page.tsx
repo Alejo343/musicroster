@@ -1,0 +1,28 @@
+import type { Metadata } from "next";
+import Script from "next/script";
+import SiteHeader from "@/components/site-header";
+import SiteFooter from "@/components/site-footer";
+import { obtenerPerfilesPublicos } from "@/lib/directorio/perfilPublico";
+import { requireComprador } from "@/lib/comprador/auth";
+import BuscarApp from "./BuscarApp";
+
+export const metadata: Metadata = {
+  title: "Buscar artistas — Billboard MusicRoster",
+  description: "Directorio de proyectos musicales: busca por nombre, género, tipo de proyecto, territorio y rango de contratación, y contacta directamente.",
+};
+
+export default async function BuscarPage() {
+  const cuenta = await requireComprador("/buscar");
+  const todos = await obtenerPerfilesPublicos();
+
+  return (
+    <>
+      <SiteHeader />
+      <main>
+        <BuscarApp todos={todos} sesion={{ email: cuenta.email, nombre: cuenta.nombre }} />
+      </main>
+      <SiteFooter />
+      <Script src="/assets/js/main.js" strategy="afterInteractive" />
+    </>
+  );
+}

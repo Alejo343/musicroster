@@ -23,10 +23,10 @@ export default function SiteFooter() {
                 <Link href="/registro">Regístrate</Link>
               </li>
               <li>
-                <a href="buscar.html">Buscar artistas</a>
+                <Link href="/buscar">Buscar artistas</Link>
               </li>
               <li>
-                <a href="contratar.html">Para quienes contratan</a>
+                <Link href="/contratar">Para quienes contratan</Link>
               </li>
               <li>
                 <Link href="/#como-funciona">Cómo funciona</Link>
