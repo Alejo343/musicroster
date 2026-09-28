@@ -7,8 +7,12 @@ import { obtenerSesionComprador } from "@/lib/comprador/auth";
 import { solicitudSchema, TIPOS_EVENTO } from "@/lib/schemas/solicitud";
 import { generarReferencia } from "@/lib/referencia";
 import { enviarCorreo } from "@/lib/email";
+import { comprobarLimite } from "@/lib/rateLimitRespuesta";
 
 export async function POST(request: Request) {
+  const limitado = comprobarLimite(request, "solicitud", 10, 30 * 60 * 1000);
+  if (limitado) return limitado;
+
   const sesion = await obtenerSesionComprador();
   if (!sesion) return NextResponse.json({ ok: false, error: "Debes iniciar sesión." }, { status: 401 });
 

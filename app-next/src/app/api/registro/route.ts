@@ -7,8 +7,12 @@ import { registroSchema, identidadDe } from "@/lib/schemas/registro";
 import { validarFoto } from "@/lib/validarFoto";
 import { guardarFoto } from "@/lib/storage";
 import { generarReferencia } from "@/lib/referencia";
+import { comprobarLimite } from "@/lib/rateLimitRespuesta";
 
 export async function POST(request: Request) {
+  const limitado = comprobarLimite(request, "registro", 5, 30 * 60 * 1000);
+  if (limitado) return limitado;
+
   const formData = await request.formData().catch(() => null);
   if (!formData) {
     return NextResponse.json({ ok: false, error: "Formulario inválido." }, { status: 400 });

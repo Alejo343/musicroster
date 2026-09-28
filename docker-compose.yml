@@ -3,6 +3,9 @@
 # publicados en 127.0.0.1 para que únicamente OpenLiteSpeed (en el mismo host)
 # pueda alcanzarlos. Ver instrucciones de "External App" + "Context" en OLS
 # para apuntar cada dominio a su puerto local correspondiente.
+#
+# Respaldo diario de Postgres: scripts/backup-db.sh (instrucciones de cron en el
+# propio script) y scripts/restore-db.sh para restaurar.
 version: "3.9"
 
 services:

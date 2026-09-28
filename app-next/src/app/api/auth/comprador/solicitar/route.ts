@@ -4,8 +4,12 @@ import { prisma } from "@/lib/prisma";
 import { solicitarEnlaceSchema } from "@/lib/schemas/auth";
 import { crearEnlaceMagico } from "@/lib/auth/magicLink";
 import { enviarCorreo } from "@/lib/email";
+import { comprobarLimite } from "@/lib/rateLimitRespuesta";
 
 export async function POST(request: Request) {
+  const limitado = comprobarLimite(request, "comprador-solicitar", 5, 15 * 60 * 1000);
+  if (limitado) return limitado;
+
   const json = await request.json().catch(() => null);
   const parsed = solicitarEnlaceSchema.safeParse(json);
   if (!parsed.success) {
