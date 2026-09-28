@@ -18,7 +18,7 @@ export default function SiteFooter() {
             <h4>MusicRoster</h4>
             <ul>
               <li>
-                <a href="registro.html">Regístrate</a>
+                <a href="/registro">Regístrate</a>
               </li>
               <li>
                 <a href="buscar.html">Buscar artistas</a>

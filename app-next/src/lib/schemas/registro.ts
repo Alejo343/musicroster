@@ -10,6 +10,17 @@ const rolKeys = Object.keys(ROLES_INTEGRANTE) as [string, ...string[]];
 const plataformaMusicaKeys = PLATAFORMAS_MUSICA.map(([v]) => v) as [string, ...string[]];
 const plataformaRedKeys = PLATAFORMAS_REDES.map(([v]) => v) as [string, ...string[]];
 
+// Misma regla que hoy calcula identidad() en assets/js/registro.js: exportada para que
+// el route handler la reutilice al construir el registro (Project.identidad).
+const TIPOS_COLECTIVOS = new Set(["agrupacion", "duo", "orquesta"]);
+
+export function identidadDe(tipo: string | undefined, otroComposicion?: "individual" | "colectivo"): "individual" | "colectivo" | undefined {
+  if (tipo === "solista" || tipo === "dj") return "individual";
+  if (tipo === "otro") return otroComposicion;
+  if (tipo && TIPOS_COLECTIVOS.has(tipo)) return "colectivo";
+  return undefined; // tipo aún no elegido (o desconocido)
+}
+
 export const enlaceSchema = z.object({
   plataforma: z.string().min(1),
   url: z.string().trim().min(1),
@@ -88,12 +99,7 @@ export const registroSchema = z
     declReglamento: z.literal(true, { message: "Debes aceptar el Reglamento." }),
   })
   .superRefine((data, ctx) => {
-    const identidad =
-      data.tipo === "solista" || data.tipo === "dj"
-        ? "individual"
-        : data.tipo === "otro"
-          ? data.otroComposicion
-          : "colectivo";
+    const identidad = identidadDe(data.tipo, data.otroComposicion);
 
     if (data.tipo === "otro" && !data.otroComposicion) {
       ctx.addIssue({ code: "custom", path: ["otroComposicion"], message: "Indica si el proyecto es individual o colectivo." });

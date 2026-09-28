@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { registroSchema } from "./registro";
+import { registroSchema, identidadDe } from "./registro";
 
 const base = {
   tipo: "solista" as const,
@@ -85,5 +85,32 @@ describe("registroSchema — agrupación", () => {
   it("rechaza si no se marca la autorización de los integrantes", () => {
     const r = registroSchema.safeParse({ ...colectivo, declIntegrantes: false });
     expect(r.success).toBe(false);
+  });
+});
+
+describe("identidadDe", () => {
+  it("solista y dj son siempre individual", () => {
+    expect(identidadDe("solista")).toBe("individual");
+    expect(identidadDe("dj")).toBe("individual");
+  });
+
+  it("agrupacion, duo y orquesta son siempre colectivo", () => {
+    expect(identidadDe("agrupacion")).toBe("colectivo");
+    expect(identidadDe("duo")).toBe("colectivo");
+    expect(identidadDe("orquesta")).toBe("colectivo");
+  });
+
+  it("'otro' depende de otroComposicion", () => {
+    expect(identidadDe("otro", "individual")).toBe("individual");
+    expect(identidadDe("otro", "colectivo")).toBe("colectivo");
+    expect(identidadDe("otro")).toBeUndefined();
+  });
+
+  // Regresión: en el formulario, antes de elegir un tipo, `tipo` es undefined.
+  // identidadDe NO debe interpretar eso como "colectivo" (causaba que el paso de
+  // identidad agregara integrantes fantasma incluso para un registro individual).
+  it("no confunde 'sin tipo elegido todavía' con colectivo", () => {
+    expect(identidadDe(undefined as unknown as string)).toBeUndefined();
+    expect(identidadDe("")).toBeUndefined();
   });
 });

@@ -20,6 +20,9 @@
 # production
 /build
 
+# fotos subidas en desarrollo local (sin MinIO configurado) — nunca en producción
+/public/uploads/
+
 # misc
 .DS_Store
 *.pem

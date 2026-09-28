@@ -14,7 +14,7 @@ const NAV: { href: string; label: string; pagina?: string }[] = [
   { href: "/bmic", label: "BMIC", pagina: "bmic" },
 ];
 
-export type PaginaActiva = "inicio" | "faq" | "reglamento" | "bmic" | "politica-datos" | null;
+export type PaginaActiva = "inicio" | "faq" | "reglamento" | "bmic" | "politica-datos" | "registro" | null;
 
 export default function SiteHeader({ activa = null, top = false }: { activa?: PaginaActiva; top?: boolean }) {
   const items: Item[] = NAV.map((n) => ({
@@ -46,12 +46,12 @@ export default function SiteHeader({ activa = null, top = false }: { activa?: Pa
               </li>
             ))}
             <li className="nav-cta-mobile">
-              <a href="registro.html">Regístrate</a>
+              <a href="/registro" aria-current={activa === "registro" ? "page" : undefined}>Regístrate</a>
             </li>
           </ul>
         </nav>
 
-        <a className="btn btn-cta header-cta" href="registro.html">
+        <a className="btn btn-cta header-cta" href="/registro" aria-current={activa === "registro" ? "page" : undefined}>
           Regístrate
         </a>
         <button className="nav-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Abrir menú">
