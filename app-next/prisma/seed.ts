@@ -1,9 +1,13 @@
 // Siembra datos de prueba deterministas para desarrollo/staging.
-// La generación en sí vive en generar-datos-prueba.ts (módulo puro, sin Prisma, testeable).
+// La generación de proyectos vive en generar-datos-prueba.ts (módulo puro, sin Prisma, testeable).
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 import { generate } from "./generar-datos-prueba";
 
 const prisma = new PrismaClient();
+
+// Credenciales de solo desarrollo, para poder probar el login manualmente.
+const ADMIN_PASSWORD_DEV = "cambiar-esta-clave";
 
 async function main() {
   const records = generate();
@@ -15,6 +19,9 @@ async function main() {
   await prisma.member.deleteMany();
   await prisma.project.deleteMany();
   await prisma.dismissedDuplicate.deleteMany();
+  await prisma.magicLinkToken.deleteMany();
+  await prisma.buyerAccount.deleteMany();
+  await prisma.adminUser.deleteMany();
 
   for (const rec of records) {
     await prisma.project.create({
@@ -82,6 +89,25 @@ async function main() {
   }
 
   console.log(`Sembrados ${records.length} proyectos.`);
+
+  const passwordHash = await bcrypt.hash(ADMIN_PASSWORD_DEV, 12);
+  await prisma.adminUser.createMany({
+    data: [
+      { nombre: "Laura Méndez", email: "laura@musicroster.dev", passwordHash, rol: "moderador", iniciales: "LM" },
+      { nombre: "Óscar Ruiz", email: "oscar@musicroster.dev", passwordHash, rol: "admin", iniciales: "OR" },
+    ],
+  });
+  await prisma.buyerAccount.create({
+    data: {
+      nombre: "María Pérez", email: "maria@empresa-demo.co", whatsapp: "+57 300 000 0000",
+      sector: "Eventos corporativos", organizacion: "Empresa Demo", cargo: "Coordinadora", pais: "Colombia", ciudad: "Bogotá D.C.",
+    },
+  });
+
+  console.log("\nCuentas de prueba (solo desarrollo):");
+  console.log(`  Admin (rol moderador): laura@musicroster.dev / ${ADMIN_PASSWORD_DEV}`);
+  console.log(`  Admin (rol admin):     oscar@musicroster.dev / ${ADMIN_PASSWORD_DEV}`);
+  console.log("  Comprador (enlace mágico): maria@empresa-demo.co");
 }
 
 main()
