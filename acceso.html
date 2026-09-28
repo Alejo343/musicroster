@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cuenta para buscar artistas — Billboard MusicRoster</title>
+  <meta name="description" content="Crea tu cuenta gratuita en Billboard MusicRoster para buscar proyectos musicales, ver sus datos de contacto y enviar solicitudes de contratación.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="acc-page" data-page="acceso">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Billboard MusicRoster — Inicio">
+      <span class="brand-bb">billboard<sup>®</sup></span>
+      <span class="brand-mr">MUSICROSTER<sup>®</sup></span>
+    </a>
+    <nav class="main-nav" id="main-nav" aria-label="Principal">
+      <ul>
+        <li><a href="index.html#inicio">Inicio</a></li>
+        <li><a href="buscar.html">Buscar artistas</a></li>
+        <li><a href="contratar.html">Contratar</a></li>
+        <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="reglamento.html">Reglamento</a></li>
+        <li><a class="nav-bmic" href="bmic.html">BMIC</a></li>
+        <li class="nav-cta-mobile"><a href="registro.html">Regístrate</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-cta header-cta" href="registro.html">Regístrate</a>
+    <button class="nav-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Abrir menú"><span></span></button>
+  </div>
+</header>
+
+<main class="acc">
+  <!-- ===================== LADO VISUAL: el directorio bloqueado ===================== -->
+  <section class="acc-art">
+    <div class="acc-art-copy">
+      <p class="kicker">Para quienes buscan y contratan</p>
+      <h1 class="display">El directorio <span>se abre</span> con tu cuenta</h1>
+      <ul class="acc-perks">
+        <li><b>Busca</b> por género, tipo de proyecto, territorio y presupuesto.</li>
+        <li><b>Contacta</b> directo: WhatsApp y correo de quien atiende las contrataciones.</li>
+        <li><b>Solicita</b> disponibilidad a varios proyectos con una sola solicitud.</li>
+      </ul>
+      <p class="acc-free"><b>$0</b> La cuenta para buscar es gratuita.</p>
+    </div>
+
+    <!-- Vista previa del directorio, borrosa hasta ingresar -->
+    <div class="acc-preview" aria-hidden="true">
+      <div class="acc-preview-bar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <span>salsa · Cali</span>
+      </div>
+      <div class="acc-preview-grid" id="acc-preview"></div>
+      <div class="acc-lock">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+        <strong><span id="acc-n">+60</span> proyectos esperando</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FORMULARIOS ===================== -->
+  <section class="acc-panel">
+    <div class="acc-box">
+      <div class="acc-tabs" role="tablist" aria-label="Acceso">
+        <button type="button" role="tab" id="tab-crear" aria-controls="panel-crear" aria-selected="true">Crear cuenta</button>
+        <button type="button" role="tab" id="tab-ingresar" aria-controls="panel-ingresar" aria-selected="false" tabindex="-1">Ingresar</button>
+      </div>
+
+      <!-- Crear cuenta -->
+      <div class="acc-view" role="tabpanel" id="panel-crear" aria-labelledby="tab-crear">
+        <h2>Crea tu cuenta</h2>
+        <p class="acc-sub">Te toma un minuto. Solo la usamos para darte acceso y gestionar tus solicitudes.</p>
+
+        <form class="acc-form" id="form-crear" novalidate>
+          <div class="field">
+            <span class="label">¿Para quién buscas?</span>
+            <div class="acc-sectors">
+              <label><input type="radio" name="sector" value="industria" checked><span>Industria musical</span></label>
+              <label><input type="radio" name="sector" value="publico"><span>Entidad pública</span></label>
+              <label><input type="radio" name="sector" value="privado"><span>Empresa o marca</span></label>
+              <label><input type="radio" name="sector" value="social"><span>Evento particular</span></label>
+              <label><input type="radio" name="sector" value="internacional"><span>Internacional</span></label>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <div class="field full">
+              <label for="c-nombre">Nombre completo</label>
+              <input type="text" id="c-nombre" name="nombre" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="c-org">Organización <span class="opt">(si aplica)</span></label>
+              <input type="text" id="c-org" name="organizacion" autocomplete="organization" placeholder="Festival, empresa, alcaldía…">
+            </div>
+            <div class="field">
+              <label for="c-cargo">Cargo <span class="opt">(opcional)</span></label>
+              <input type="text" id="c-cargo" name="cargo" autocomplete="organization-title">
+            </div>
+            <div class="field">
+              <label for="c-email">Correo electrónico</label>
+              <input type="email" id="c-email" name="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="c-whatsapp">WhatsApp</label>
+              <input type="tel" id="c-whatsapp" name="whatsapp" autocomplete="tel" placeholder="+57 300 000 0000" required>
+            </div>
+            <div class="field">
+              <label for="c-pais">País</label>
+              <input type="text" id="c-pais" name="pais" autocomplete="country-name" value="Colombia" required>
+            </div>
+            <div class="field">
+              <label for="c-ciudad">Ciudad</label>
+              <input type="text" id="c-ciudad" name="ciudad" autocomplete="address-level2" required>
+            </div>
+            <div class="field full">
+              <label for="c-pass">Contraseña</label>
+              <div class="acc-pass">
+                <input type="password" id="c-pass" name="password" autocomplete="new-password" minlength="8" required>
+                <button type="button" class="acc-eye" data-ver="c-pass" aria-label="Mostrar contraseña">Ver</button>
+              </div>
+              <span class="hint">Mínimo 8 caracteres.</span>
+            </div>
+          </div>
+
+          <div class="checks">
+            <label class="check"><input type="checkbox" name="acepta_datos" required><span>Autorizo el tratamiento de mis datos para crear mi cuenta y gestionar mis solicitudes, según la <a href="politica-datos.html" target="_blank">Política de datos</a>.</span></label>
+            <label class="check"><input type="checkbox" name="acepta_uso" required><span>Usaré los datos de contacto de los artistas solo para oportunidades de contratación, sin envíos masivos ni publicidad, y acepto el <a href="reglamento.html" target="_blank">Reglamento</a>.</span></label>
+          </div>
+
+          <button type="submit" class="btn btn-cta btn-lg acc-submit">Crear cuenta
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+
+        <p class="acc-switch">¿Ya tienes cuenta? <a href="#ingresar" data-tab="ingresar">Ingresa</a></p>
+      </div>
+
+      <!-- Ingresar -->
+      <div class="acc-view" role="tabpanel" id="panel-ingresar" aria-labelledby="tab-ingresar" hidden>
+        <h2>Ingresa a tu cuenta</h2>
+        <p class="acc-sub">Ingresa para seguir buscando y ver tus solicitudes.</p>
+
+        <form class="acc-form" id="form-ingresar" novalidate>
+          <div class="field">
+            <label for="i-email">Correo electrónico</label>
+            <input type="email" id="i-email" name="email" autocomplete="username" required>
+          </div>
+          <div class="field">
+            <div class="acc-label-row">
+              <label for="i-pass">Contraseña</label>
+              <a href="#" class="acc-forgot">¿La olvidaste?</a>
+            </div>
+            <div class="acc-pass">
+              <input type="password" id="i-pass" name="password" autocomplete="current-password" required>
+              <button type="button" class="acc-eye" data-ver="i-pass" aria-label="Mostrar contraseña">Ver</button>
+            </div>
+          </div>
+          <label class="dir-check"><input type="checkbox" name="recordar" checked> Mantener la sesión en este dispositivo</label>
+          <button type="submit" class="btn btn-cta btn-lg acc-submit">Ingresar
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+
+        <p class="acc-switch">¿Primera vez? <a href="#crear" data-tab="crear">Crea tu cuenta gratis</a></p>
+      </div>
+
+      <!-- Confirmación (vista) -->
+      <div class="acc-view acc-done" id="panel-listo" hidden aria-live="polite">
+        <div class="confirm-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#0b0b0c" stroke-width="3" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+        <h2 id="listo-t">Tu cuenta está lista</h2>
+        <p class="acc-sub" id="listo-p"></p>
+        <div class="acc-done-ctas">
+          <a class="btn btn-ink btn-lg" id="listo-ir" href="buscar.html">Empezar a buscar</a>
+          <button class="acc-logout" type="button" id="listo-salir" hidden>No soy yo · Cerrar sesión</button>
+        </div>
+      </div>
+
+      <div class="acc-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>
+        <span>¿Eres artista? Esta cuenta es para quienes contratan. Para aparecer en el directorio, <a href="registro.html">registra tu proyecto</a>.</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/admin-data.js"></script>
+<script src="assets/js/directorio.js"></script>
+<script src="assets/js/contratar.js"></script>
+</body>
+</html>

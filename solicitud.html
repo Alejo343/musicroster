@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solicitud de contratación — Billboard MusicRoster</title>
+  <meta name="description" content="Pide disponibilidad y cotización a uno o varios proyectos musicales de Billboard MusicRoster con una sola solicitud.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="reg-page" data-page="solicitud">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="Billboard MusicRoster — Inicio">
+      <span class="brand-bb">billboard<sup>®</sup></span>
+      <span class="brand-mr">MUSICROSTER<sup>®</sup></span>
+    </a>
+    <nav class="main-nav" id="main-nav" aria-label="Principal">
+      <ul>
+        <li><a href="index.html#inicio">Inicio</a></li>
+        <li><a href="buscar.html">Buscar artistas</a></li>
+        <li><a href="contratar.html">Contratar</a></li>
+        <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="reglamento.html">Reglamento</a></li>
+        <li><a class="nav-bmic" href="bmic.html">BMIC</a></li>
+        <li class="nav-cta-mobile"><a href="registro.html">Regístrate</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-cta header-cta" href="registro.html">Regístrate</a>
+    <button class="nav-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Abrir menú"><span></span></button>
+  </div>
+</header>
+
+<main>
+<section class="reg-hero">
+  <div class="wrap">
+    <p class="kicker">Para quienes contratan</p>
+    <h1 class="display">Solicitud de <span>contratación</span></h1>
+    <p>Cuéntanos tu evento una sola vez y la solicitud llega al contacto de cada proyecto que elegiste para que te respondan con disponibilidad y condiciones.</p>
+    <ul class="reg-hero-notes">
+      <li class="hl">Uno o varios proyectos a la vez</li>
+      <li>Enviarla no te obliga a contratar</li>
+      <li>Cualquier costo se informa antes de comprometerte</li>
+    </ul>
+  </div>
+</section>
+
+<div class="wrap reg-layout" id="sol-layout">
+  <aside class="reg-aside sol-aside">
+    <p class="sol-aside-title">Proyectos en tu solicitud <b id="sol-n"></b></p>
+    <ul class="sol-picks" id="sol-picks"></ul>
+    <a class="btn-add" href="buscar.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      Agregar proyectos
+    </a>
+    <div class="reg-aside-note">
+      <strong>¿Aún no sabes a quién contratar?</strong>
+      Envía la solicitud sin proyectos: el equipo de MusicRoster puede sugerirte opciones según tu evento.
+    </div>
+  </aside>
+
+  <form class="reg-form" id="sol-form" novalidate>
+    <h2 class="subhead">1 · Tu evento</h2>
+
+    <div class="field full choice-group" data-required-group="tipo_evento">
+      <span class="label">Tipo de evento</span>
+      <div class="choice-grid cols-3" id="tipos-evento"></div>
+      <p class="err">Elige el tipo de evento.</p>
+    </div>
+
+    <div class="field-grid sol-grid">
+      <div class="field">
+        <label for="fecha">Fecha</label>
+        <input type="date" id="fecha" name="fecha" required>
+        <label class="dir-check"><input type="checkbox" name="fecha_flexible" id="fecha_flexible"> La fecha es flexible o aún no está definida</label>
+        <p class="err">Indica la fecha o marca que es flexible.</p>
+      </div>
+      <div class="field">
+        <label for="ciudad">Ciudad del evento</label>
+        <input type="text" id="ciudad" name="ciudad" placeholder="Ej.: Cali, Valle del Cauca" autocomplete="address-level2" required>
+        <p class="err">Indica la ciudad.</p>
+      </div>
+      <div class="field">
+        <label for="lugar">Lugar <span class="opt">(opcional)</span></label>
+        <input type="text" id="lugar" name="lugar" placeholder="Teatro, coliseo, hotel, plaza…">
+      </div>
+      <div class="field">
+        <label for="aforo">Asistentes esperados</label>
+        <select id="aforo" name="aforo" required>
+          <option value="">Selecciona</option>
+          <option>Menos de 100</option>
+          <option>100 – 500</option>
+          <option>500 – 2.000</option>
+          <option>2.000 – 10.000</option>
+          <option>Más de 10.000</option>
+        </select>
+        <p class="err">Elige un aproximado.</p>
+      </div>
+      <div class="field">
+        <label for="duracion">Duración de la presentación</label>
+        <select id="duracion" name="duracion">
+          <option value="Por definir">Por definir</option>
+          <option>Hasta 45 minutos</option>
+          <option>1 hora</option>
+          <option>1 hora 30 minutos</option>
+          <option>2 horas o más</option>
+          <option>Varias tandas</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="presupuesto">Presupuesto por proyecto</label>
+        <select id="presupuesto" name="presupuesto"></select>
+        <span class="hint">En pesos colombianos. Ayuda a que te respondan con opciones realistas.</span>
+      </div>
+      <div class="field full">
+        <span class="label">El evento ofrece <span class="opt">(opcional)</span></span>
+        <div class="tag-choices">
+          <label><input type="checkbox" name="incluye" value="Sonido y luces"><span>Sonido y luces</span></label>
+          <label><input type="checkbox" name="incluye" value="Backline"><span>Backline</span></label>
+          <label><input type="checkbox" name="incluye" value="Transporte"><span>Transporte</span></label>
+          <label><input type="checkbox" name="incluye" value="Alojamiento"><span>Alojamiento</span></label>
+          <label><input type="checkbox" name="incluye" value="Alimentación"><span>Alimentación</span></label>
+        </div>
+      </div>
+      <div class="field full">
+        <label for="mensaje">Detalles para los artistas</label>
+        <textarea id="mensaje" name="mensaje" rows="4" maxlength="1500" placeholder="Formato que buscas, horario, público, repertorio, si es un evento abierto o privado…" required></textarea>
+        <p class="err">Cuéntales un poco del evento.</p>
+      </div>
+    </div>
+
+    <h2 class="subhead">2 · Quién solicita</h2>
+    <div class="field-grid">
+      <div class="field">
+        <label for="nombre">Nombre completo</label>
+        <input type="text" id="nombre" name="nombre" autocomplete="name" required>
+        <p class="err">Escribe tu nombre.</p>
+      </div>
+      <div class="field">
+        <label for="sector">Sector</label>
+        <select id="sector" name="sector" required>
+          <option value="">Selecciona</option>
+          <option value="industria">Industria musical (festival, promotor, booking, sello…)</option>
+          <option value="publico">Entidad pública u operador de programa público</option>
+          <option value="privado">Empresa, marca, hotel o agencia</option>
+          <option value="social">Evento social o particular</option>
+          <option value="internacional">Comprador o festival internacional</option>
+        </select>
+        <p class="err">Elige el sector.</p>
+      </div>
+      <div class="field">
+        <label for="organizacion">Organización <span class="opt">(si aplica)</span></label>
+        <input type="text" id="organizacion" name="organizacion" autocomplete="organization">
+      </div>
+      <div class="field">
+        <label for="cargo">Cargo <span class="opt">(opcional)</span></label>
+        <input type="text" id="cargo" name="cargo" autocomplete="organization-title">
+      </div>
+      <div class="field">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" name="email" autocomplete="email" required>
+        <p class="err">Escribe un correo válido.</p>
+      </div>
+      <div class="field">
+        <label for="whatsapp">WhatsApp</label>
+        <input type="tel" id="whatsapp" name="whatsapp" autocomplete="tel" placeholder="+57 300 000 0000" required>
+        <p class="err">Escribe un número de contacto.</p>
+      </div>
+    </div>
+
+    <h2 class="subhead">3 · Aceptaciones</h2>
+    <div class="checks">
+      <label class="check"><input type="checkbox" name="acepta_datos" required><span>Autorizo el tratamiento de mis datos para gestionar esta solicitud y que se compartan con el contacto de los proyectos a los que la dirijo, según la <a href="politica-datos.html" target="_blank">Política de datos</a>.</span></label>
+      <label class="check"><input type="checkbox" name="acepta_rango" required><span>Entiendo que el rango de contratación de cada perfil es orientativo y que enviar la solicitud no obliga a ninguna de las partes.</span></label>
+      <label class="check"><input type="checkbox" name="acepta_reglamento" required><span>Usaré los datos de contacto de los artistas solo para esta oportunidad y acepto el <a href="reglamento.html#art-30" target="_blank">Reglamento</a> de MusicRoster.</span></label>
+    </div>
+
+    <div class="reg-nav">
+      <a class="btn btn-back" href="buscar.html">Seguir buscando</a>
+      <span class="spacer"></span>
+      <div class="btn-submit-wrap">
+        <button class="btn btn-cta btn-lg" type="submit" id="sol-enviar">Enviar solicitud</button>
+        <small id="sol-resumen"></small>
+      </div>
+    </div>
+  </form>
+
+  <section class="confirm" id="sol-confirm" hidden aria-live="polite"></section>
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="index.html"><span class="brand-bb">billboard<sup>®</sup></span><span class="brand-mr">MUSICROSTER<sup>®</sup></span></a>
+        <p>El directorio que registra e identifica proyectos musicales para conectarlos con las oportunidades de la industria.</p>
+      </div>
+      <div>
+        <h4>MusicRoster</h4>
+        <ul>
+          <li><a href="registro.html">Regístrate</a></li>
+          <li><a href="buscar.html">Buscar artistas</a></li>
+          <li><a href="contratar.html">Para quienes contratan</a></li>
+          <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Información</h4>
+        <ul>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="reglamento.html">Reglamento</a></li>
+          <li><a href="politica-datos.html">Política de datos</a></li>
+          <li><a href="bmic.html">BMIC</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Billboard® MusicRoster®</span>
+      <span><b>Registro gratuito.</b> Nadie debe cobrarte por registrarte.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/admin-data.js"></script>
+<script src="assets/js/directorio.js"></script>
+<script src="assets/js/dropdown.js"></script>
+<script src="assets/js/contratar.js"></script>
+</body>
+</html>

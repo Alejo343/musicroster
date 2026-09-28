@@ -4,12 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Buscar artistas — Billboard MusicRoster</title>
+  <meta name="description" content="Directorio de proyectos musicales: busca por nombre, género, tipo de proyecto, territorio y rango de contratación, y contacta directamente.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body>
+<body data-page="buscar">
 
 <header class="site-header">
   <div class="wrap">
@@ -21,6 +22,7 @@
       <ul>
         <li><a href="index.html#inicio">Inicio</a></li>
         <li><a href="buscar.html" aria-current="page">Buscar artistas</a></li>
+        <li><a href="contratar.html">Contratar</a></li>
         <li><a href="index.html#como-funciona">Cómo funciona</a></li>
         <li><a href="faq.html">FAQ</a></li>
         <li><a href="reglamento.html">Reglamento</a></li>
@@ -34,28 +36,117 @@
 </header>
 
 <main>
-<section class="page-hero">
+<section class="dir-hero">
   <div class="wrap">
-    <p class="kicker">Directorio</p>
-    <h1 class="display">Buscar artistas</h1>
-    <p>Encuentra proyectos musicales por nombre, género y territorio.</p>
+    <div class="dir-hero-top">
+      <p class="kicker">Directorio · Para quienes contratan</p>
+      <p class="dir-cuenta" id="dir-cuenta"></p>
+    </div>
+    <h1 class="display">Encuentra el <span>proyecto</span> para tu evento</h1>
+    <form class="dir-search" id="dir-search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <label class="sr-only" for="q">Buscar</label>
+      <input type="search" id="q" name="q" placeholder="Nombre del proyecto, integrante o ciudad" autocomplete="off">
+      <button class="btn btn-cta" type="submit">Buscar</button>
+    </form>
+    <div class="dir-quick" aria-label="Géneros con más proyectos">
+      <span>Explora</span>
+      <ul class="dir-quick-list" id="dir-quick"></ul>
+    </div>
   </div>
 </section>
 
-<section class="placeholder-body">
-  <div class="wrap">
-    <form class="search-mock" onsubmit="return false" aria-label="Buscador (próximamente)">
-      <input type="search" placeholder="Nombre del proyecto" aria-label="Nombre del proyecto" disabled>
-      <select aria-label="Género" disabled><option>Género</option></select>
-      <select aria-label="Territorio" disabled><option>Departamento / ciudad</option></select>
-    </form>
-    <div class="placeholder-card" style="margin-top:24px">
-      <p><strong>El buscador estará disponible próximamente.</strong> Mientras tanto, registra tu proyecto para que puedan encontrarte.</p>
-      <a class="btn btn-cta" href="registro.html">Registra tu proyecto</a>
+<section class="dir-body">
+  <div class="wrap dir-layout">
+    <aside class="dir-filters" id="dir-filters" aria-label="Filtros">
+      <form id="filtros">
+        <div class="dir-filters-head">
+          <strong>Filtros</strong>
+          <button class="btn-remove" type="button" id="limpiar">Limpiar</button>
+        </div>
+
+        <fieldset class="dir-group">
+          <legend>Tipo de proyecto</legend>
+          <div class="tag-choices" id="f-tipos"></div>
+        </fieldset>
+
+        <div class="dir-group field">
+          <label for="f-genero">Género</label>
+          <select id="f-genero" name="genero"></select>
+        </div>
+
+        <fieldset class="dir-group">
+          <legend>Territorio</legend>
+          <div class="dir-seg" role="radiogroup" aria-label="Buscar por">
+            <label><input type="radio" name="territorio" value="residencia" checked><span>Dónde vive</span></label>
+            <label><input type="radio" name="territorio" value="origen"><span>De dónde es</span></label>
+          </div>
+          <div class="field">
+            <label class="sr-only" for="f-region">Departamento o región</label>
+            <select id="f-region" name="region"></select>
+          </div>
+        </fieldset>
+
+        <fieldset class="dir-group">
+          <legend>Presupuesto por presentación</legend>
+          <div class="field">
+            <label class="sr-only" for="f-presupuesto">Presupuesto</label>
+            <select id="f-presupuesto" name="presupuesto"></select>
+          </div>
+          <label class="dir-check"><input type="checkbox" name="segunEvento" checked> Incluir los que cotizan según el evento</label>
+          <p class="dir-hint">Valores en pesos colombianos. El rango es orientativo y se negocia con cada proyecto.</p>
+        </fieldset>
+
+        <button class="btn btn-ink dir-filters-done" type="button" id="filtros-listo">Ver resultados</button>
+      </form>
+    </aside>
+
+    <div class="dir-results">
+      <div class="dir-toolbar">
+        <button class="btn dir-filters-toggle" type="button" aria-controls="dir-filters" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></svg>
+          Filtros <b id="n-filtros"></b>
+        </button>
+        <p class="dir-count" id="dir-count" aria-live="polite"></p>
+        <div class="field dir-sort">
+          <label class="sr-only" for="orden">Ordenar</label>
+          <select id="orden" name="orden">
+            <option value="relevancia">Más relevantes</option>
+            <option value="recientes">Más recientes</option>
+            <option value="nombre">Nombre A–Z</option>
+            <option value="rango_asc">Rango: menor a mayor</option>
+            <option value="rango_desc">Rango: mayor a menor</option>
+          </select>
+        </div>
+      </div>
+      <ul class="dir-active" id="dir-active" aria-label="Filtros aplicados"></ul>
+
+      <div class="pgrid" id="resultados"></div>
+
+      <div class="dir-empty" id="dir-empty" hidden>
+        <strong>No hay proyectos con esos filtros</strong>
+        <p>Prueba con otro género, amplía el territorio o el presupuesto. También puedes enviarnos una solicitud y te ayudamos a encontrar opciones.</p>
+        <div class="dir-empty-ctas">
+          <button class="btn btn-ink" type="button" data-limpiar>Quitar filtros</button>
+          <a class="btn btn-line" href="solicitud.html">Enviar una solicitud</a>
+        </div>
+      </div>
+
+      <div class="dir-more">
+        <button class="btn btn-line" type="button" id="ver-mas" hidden>Ver más proyectos</button>
+      </div>
     </div>
   </div>
 </section>
 </main>
+
+<div class="sel-bar" id="sel-bar" hidden>
+  <div class="wrap">
+    <div class="sel-bar-faces" id="sel-faces" aria-hidden="true"></div>
+    <p><b id="sel-n"></b> <span id="sel-txt"></span></p>
+    <a class="btn btn-cta" href="solicitud.html">Solicitar disponibilidad</a>
+  </div>
+</div>
 
 <footer class="site-footer">
   <div class="wrap">
@@ -69,6 +160,7 @@
         <ul>
           <li><a href="registro.html">Regístrate</a></li>
           <li><a href="buscar.html">Buscar artistas</a></li>
+          <li><a href="contratar.html">Para quienes contratan</a></li>
           <li><a href="index.html#como-funciona">Cómo funciona</a></li>
         </ul>
       </div>
@@ -90,5 +182,9 @@
 </footer>
 
 <script src="assets/js/main.js"></script>
+<script src="assets/js/admin-data.js"></script>
+<script src="assets/js/directorio.js"></script>
+<script src="assets/js/dropdown.js"></script>
+<script src="assets/js/contratar.js"></script>
 </body>
 </html>

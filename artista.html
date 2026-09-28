@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BMIC — Billboard MusicRoster</title>
+  <title>Perfil del proyecto — Billboard MusicRoster</title>
+  <meta name="description" content="Perfil público de un proyecto musical registrado en Billboard MusicRoster: música, integrantes, territorio, rango y contacto para contratación.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body>
+<body data-page="artista">
 
 <header class="site-header">
   <div class="wrap">
@@ -25,7 +26,7 @@
         <li><a href="index.html#como-funciona">Cómo funciona</a></li>
         <li><a href="faq.html">FAQ</a></li>
         <li><a href="reglamento.html">Reglamento</a></li>
-        <li><a class="nav-bmic" href="bmic.html" aria-current="page">BMIC</a></li>
+        <li><a class="nav-bmic" href="bmic.html">BMIC</a></li>
         <li class="nav-cta-mobile"><a href="registro.html">Regístrate</a></li>
       </ul>
     </nav>
@@ -34,24 +35,17 @@
   </div>
 </header>
 
-<main>
-<section class="page-hero">
-  <div class="wrap">
-    <p class="kicker">Billboard Music Industry Certification</p>
-    <h1 class="display">BMIC</h1>
-    <p>Conoce y certifica el nivel de desarrollo profesional de tu proyecto mediante un proceso basado en evidencia.</p>
-  </div>
-</section>
-
-<section class="placeholder-body">
-  <div class="wrap">
-    <div class="placeholder-card" style="border-color:rgba(216,178,90,.5)">
-      <p>Página de BMIC — Billboard Music Industry Certification. Reemplazar este enlace por la URL oficial de BMIC cuando esté disponible.</p>
-      <a class="btn btn-ghost" href="index.html">Volver a MusicRoster</a>
-    </div>
-  </div>
-</section>
+<main id="perfil">
+  <!-- contratar.js pinta aquí el perfil a partir de ?id=MR-AAAA-XXXXXX -->
 </main>
+
+<div class="sel-bar" id="sel-bar" hidden>
+  <div class="wrap">
+    <div class="sel-bar-faces" id="sel-faces" aria-hidden="true"></div>
+    <p><b id="sel-n"></b> <span id="sel-txt"></span></p>
+    <a class="btn btn-cta" href="solicitud.html">Solicitar disponibilidad</a>
+  </div>
+</div>
 
 <footer class="site-footer">
   <div class="wrap">
@@ -87,5 +81,8 @@
 </footer>
 
 <script src="assets/js/main.js"></script>
+<script src="assets/js/admin-data.js"></script>
+<script src="assets/js/directorio.js"></script>
+<script src="assets/js/contratar.js"></script>
 </body>
 </html>
