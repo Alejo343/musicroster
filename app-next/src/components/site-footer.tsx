@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BMIC_URL } from "@/lib/enlaces";
 
 export default function SiteFooter() {
   return (
@@ -46,7 +47,7 @@ export default function SiteFooter() {
                 <Link href="/politica-datos">Política de datos</Link>
               </li>
               <li>
-                <Link href="/bmic">BMIC</Link>
+                <a href={BMIC_URL} target="_blank" rel="noopener">BMIC</a>
               </li>
             </ul>
           </div>

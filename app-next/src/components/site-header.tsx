@@ -2,20 +2,21 @@
 // Un cambio de navegación ahora se hace en un solo lugar.
 import Link from "next/link";
 import HeaderEfectos from "./header-efectos";
+import { BMIC_URL } from "@/lib/enlaces";
 
-type Item = { href: string; label: string; activo?: boolean; claseExtra?: string };
+type Item = { href: string; label: string; activo?: boolean; claseExtra?: string; externo?: boolean };
 
-const NAV: { href: string; label: string; pagina?: string }[] = [
+const NAV: { href: string; label: string; pagina?: string; externo?: boolean }[] = [
   { href: "/#inicio", label: "Inicio" },
   { href: "/buscar", label: "Buscar artistas", pagina: "buscar" },
   { href: "/contratar", label: "Contratar", pagina: "contratar" },
   { href: "/#como-funciona", label: "Cómo funciona" },
   { href: "/faq", label: "FAQ", pagina: "faq" },
   { href: "/reglamento", label: "Reglamento", pagina: "reglamento" },
-  { href: "/bmic", label: "BMIC", pagina: "bmic" },
+  { href: BMIC_URL, label: "BMIC", externo: true },
 ];
 
-export type PaginaActiva = "inicio" | "faq" | "reglamento" | "bmic" | "politica-datos" | "registro" | "buscar" | "contratar" | "artista" | "solicitud" | "acceso" | null;
+export type PaginaActiva = "inicio" | "faq" | "reglamento" | "politica-datos" | "registro" | "buscar" | "contratar" | "artista" | "solicitud" | "acceso" | null;
 
 // ocultar: hrefs de NAV que una página no muestra (p. ej. /buscar no enlaza a sí misma ni a "Cómo funciona").
 export default function SiteHeader({ activa = null, top = false, ocultar = [] }: { activa?: PaginaActiva; top?: boolean; ocultar?: string[] }) {
@@ -23,7 +24,8 @@ export default function SiteHeader({ activa = null, top = false, ocultar = [] }:
     href: n.href,
     label: n.label,
     activo: n.pagina === activa,
-    claseExtra: n.pagina === "bmic" ? "nav-bmic" : undefined,
+    claseExtra: n.href === BMIC_URL ? "nav-bmic" : undefined,
+    externo: n.externo,
   }));
 
   return (
@@ -42,9 +44,15 @@ export default function SiteHeader({ activa = null, top = false, ocultar = [] }:
           <ul>
             {items.map((it) => (
               <li key={it.href}>
-                <Link href={it.href} className={it.claseExtra} aria-current={it.activo ? "page" : undefined}>
-                  {it.label}
-                </Link>
+                {it.externo ? (
+                  <a href={it.href} className={it.claseExtra} target="_blank" rel="noopener">
+                    {it.label}
+                  </a>
+                ) : (
+                  <Link href={it.href} className={it.claseExtra} aria-current={it.activo ? "page" : undefined}>
+                    {it.label}
+                  </Link>
+                )}
               </li>
             ))}
             <li className="nav-cta-mobile">

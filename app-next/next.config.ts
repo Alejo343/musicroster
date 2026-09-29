@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
+import { BMIC_URL } from "./src/lib/enlaces";
 
 const nextConfig: NextConfig = {
+  // BMIC vive en su propio sitio; /bmic queda como atajo para enlaces viejos.
+  async redirects() {
+    return [{ source: "/bmic", destination: BMIC_URL, permanent: false }];
+  },
   async headers() {
     return [
       {

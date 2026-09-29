@@ -3,7 +3,7 @@ import { leerContenidoEstatico } from "./contenidoEstatico";
 
 describe("contenido estático portado", () => {
   it("cada página trae su <main> completo", () => {
-    for (const ruta of ["contenido.html", "reglamento/contenido.html", "politica-datos/contenido.html", "faq/contenido.html", "bmic/contenido.html"]) {
+    for (const ruta of ["contenido.html", "reglamento/contenido.html", "politica-datos/contenido.html", "faq/contenido.html"]) {
       const html = leerContenidoEstatico(ruta);
       expect(html).toContain("<main>");
       expect(html.length).toBeGreaterThan(100);
@@ -19,13 +19,13 @@ describe("contenido estático portado", () => {
     expect((politica.match(/class="tbd"/g) ?? []).length).toBe(11);
   });
 
-  it("reescribió los enlaces internos ya portados (reglamento/política/bmic/inicio)", () => {
+  it("reescribió los enlaces internos ya portados (reglamento/política/inicio)", () => {
     const reglamento = leerContenidoEstatico("reglamento/contenido.html");
     expect(reglamento).toContain('href="/politica-datos"');
     expect(reglamento).not.toContain('href="politica-datos.html"');
 
     const faq = leerContenidoEstatico("faq/contenido.html");
-    expect(faq).toContain('href="/bmic"');
+    expect(faq).toContain('href="https://bmic.billboard.com.co/"');
     expect(faq).not.toContain('href="bmic.html"');
   });
 });
