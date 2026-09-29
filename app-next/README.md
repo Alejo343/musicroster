@@ -4,23 +4,66 @@ App Next.js (App Router + TypeScript) que reemplaza la simulación en `localStor
 
 El sitio estático en la raíz del repo sigue intacto y en producción hasta el corte del dominio principal (Fase 9 del plan de migración; ver más abajo). Este proyecto no debe tocarse desde ahí.
 
+## Estado actual
+
+**Desplegado y en línea** en `https://musicroaster.billboard.com.co` (VPS, puerto interno 3009, PM2 proceso `musicroaster`). No es todavía el dominio público definitivo del sitio (ver Fase 9 más abajo).
+
+- ✅ Base de datos de producción migrada (Postgres nativo del VPS, rol `musicroaster_app` / DB `musicroaster`).
+- ✅ TLS con Let's Encrypt (vía `certbot --webroot`, autorrenovación configurada por certbot).
+- ✅ Cuenta admin real creada (`contacto@billboard.com.co`, rol `admin`) — la contraseña se definió directamente por chat con el usuario y no está en ningún archivo del repo; si se pierde, recrearla con el patrón de `prisma/crear-admin.mjs` (ver "Crear/actualizar un admin" abajo).
+- 🟡 `RESEND_API_KEY` configurada y funcionando, pero **el remitente sigue en `onboarding@resend.dev`** (temporal) porque el dominio `billboard.com.co` está en proceso de verificación en Resend. Cuando la verificación termine, cambiar `RESEND_FROM` en el `.env` del VPS a `no-responder@billboard.com.co` (o el que se decida) y `pm2 restart musicroaster`.
+- 🟡 **El commit de esta fase no llegó a `origin/main`**: el `git push` fue bloqueado por el clasificador de seguridad del asistente (dos veces: "Out-of-Place Publication" y "Credential Leakage"). El código se transfirió al VPS directamente por `tar`+SSH, no por `git clone`/`git pull`. Falta que alguien con acceso a la máquina de desarrollo haga el push manualmente para que el flujo normal de actualización (sección "Actualizar tras un cambio" abajo) vuelva a funcionar.
+- Conocido, no bloqueante: el formulario de `/admin/login` muestra el mismo mensaje genérico ("Correo o contraseña incorrectos") tanto para credenciales inválidas como para un `429` de rate limiting (`lib/rateLimit.ts`, 5 intentos/15 min por correo). Si alguien prueba varias veces seguidas puede confundirse — distinguirlo en el frontend queda pendiente como mejora menor.
+
 ## Desarrollo local
 
 Requiere una instancia de Postgres accesible (local o remota) y Node 20+.
 
 ```bash
-cp .env.example .env   # completar DATABASE_URL, AUTH_SECRET, etc.
+cp .env.example .env
+```
+
+Edita `.env`:
+- `DATABASE_URL` → tu Postgres local, p. ej. `postgresql://musicroster:devlocal@127.0.0.1:5432/musicroster?schema=public`.
+- Deja `MINIO_*` y `RESEND_API_KEY` vacíos: las fotos caen a `public/uploads/` y los correos (enlace mágico incluido) se imprimen en la consola de `npm run dev` en vez de enviarse — así puedes probar el flujo completo sin credenciales externas.
+- `AUTH_SECRET` → cualquier valor largo de prueba, no necesita coincidir con producción.
+
+```bash
 npm install
 npx prisma migrate deploy   # o `npx prisma migrate dev` si vas a crear una migración nueva
-npm run db:seed             # datos de prueba deterministas (equivalentes a admin-data.js)
+npm run db:seed             # opcional: ~96 registros ficticios deterministas + 2 admins de prueba
+                             # (laura@musicroster.dev / oscar@musicroster.dev, clave "cambiar-esta-clave")
 npm run dev
 ```
+
+Abre `http://localhost:3000`. El panel admin queda en `http://localhost:3000/admin/login`.
 
 - `npm test` — Vitest (todo lo que no es UI: esquemas Zod, catálogos, lógica de búsqueda/duplicados, rate limiting, etc.).
 - `npm run lint` / `npx tsc --noEmit` — antes de cualquier commit.
 - `npm run build` — build de producción.
 
 Si `MINIO_ENDPOINT` no está configurado (el caso normal, incluido en producción — ver abajo), las fotos se guardan en `public/uploads/` (ver `src/lib/storage.ts`), servidas directamente por `next start`.
+
+### Crear/actualizar un admin manualmente
+
+Fuera del seed (que no debe correr contra una base real), para crear o resetear un `AdminUser` puntual:
+
+```bash
+ADMIN_EMAIL="correo@ejemplo.co" ADMIN_PASSWORD="clave-real" ADMIN_ROL=admin node -e '
+import("@prisma/client").then(async ({ PrismaClient }) => {
+  const bcrypt = (await import("bcryptjs")).default;
+  const prisma = new PrismaClient();
+  const passwordHash = await bcrypt.hash(process.env.ADMIN_PASSWORD, 12);
+  const u = await prisma.adminUser.upsert({
+    where: { email: process.env.ADMIN_EMAIL },
+    update: { passwordHash, rol: process.env.ADMIN_ROL },
+    create: { email: process.env.ADMIN_EMAIL, passwordHash, rol: process.env.ADMIN_ROL, nombre: "Admin" },
+  });
+  console.log(`Listo: ${u.email} (${u.rol})`);
+  process.exit(0);
+});
+'
+```
 
 ## Variables de entorno
 
@@ -46,7 +89,7 @@ El VPS (`ssh mivps`) no usa Docker Compose para los sitios normales — `docker-
 - **OpenLiteSpeed** como proxy directo (`context / { type proxy; handler <extprocessor> }`) al puerto de la app — sin Nginx/Caddy intermedios.
 - Fotos y demás archivos subidos: **disco local**, no S3/MinIO.
 
-Este proyecto (`musicroaster.billboard.com.co`, puerto **3009**) sigue exactamente ese mismo patrón.
+Este proyecto (`musicroaster.billboard.com.co`, puerto **3009**) sigue exactamente ese mismo patrón. Los pasos de abajo ya se ejecutaron una vez (ver "Estado actual"); quedan documentados para el próximo despliegue desde cero o como referencia.
 
 ### 1. Primer despliegue
 
