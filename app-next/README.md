@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Billboard MusicRoster — app-next
 
-## Getting Started
+App Next.js (App Router + TypeScript) que reemplaza la simulación en `localStorage` del sitio estático de la raíz del repo por un backend real: Postgres (Prisma), MinIO para fotos, correo transaccional (Resend) para el enlace mágico de compradores y las notificaciones, y sesiones firmadas en cookies httpOnly.
 
-First, run the development server:
+El sitio estático en la raíz del repo sigue intacto y en producción hasta el corte (ver abajo). Este proyecto no debe tocarse desde ahí.
+
+## Desarrollo local
+
+Requiere una instancia de Postgres accesible (local o remota) y Node 20+.
 
 ```bash
+cp .env.example .env   # completar DATABASE_URL, AUTH_SECRET, etc.
+npm install
+npx prisma migrate deploy   # o `npx prisma migrate dev` si vas a crear una migración nueva
+npm run db:seed             # datos de prueba deterministas (equivalentes a admin-data.js)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `npm test` — Vitest (todo lo que no es UI: esquemas Zod, catálogos, lógica de búsqueda/duplicados, rate limiting, etc.).
+- `npm run lint` / `npx tsc --noEmit` — antes de cualquier commit.
+- `npm run build` — build de producción (`output: "standalone"`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+En dev, si `MINIO_ENDPOINT` no está configurado, las fotos se guardan en `public/uploads/` (ver `src/lib/storage.ts`). En producción siempre debe usarse MinIO.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Variables de entorno
 
-## Learn More
+Ver `.env.example` para la lista completa. Resumen:
 
-To learn more about Next.js, take a look at the following resources:
+| Variable | Para qué |
+|---|---|
+| `DATABASE_URL` | Conexión Prisma a Postgres |
+| `MINIO_*` | Almacenamiento de fotos de perfil (S3-compatible) |
+| `RESEND_API_KEY`, `RESEND_FROM` | Enlace mágico, confirmaciones, avisos de solicitud |
+| `AUTH_SECRET` | Firma de sesiones (comprador y admin), vía `jose` |
+| `DOMINIO`, `DOMINIO_ARCHIVOS` | Documentación de qué dominio apunta a qué servicio en OpenLiteSpeed |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`AUTH_SECRET` debe ser un valor aleatorio largo (`openssl rand -base64 48`), distinto entre dev y producción, y nunca commiteado.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Despliegue en el VPS (Docker Compose + OpenLiteSpeed)
 
-## Deploy on Vercel
+El VPS ya corre **OpenLiteSpeed** como servidor/proxy con TLS. `docker-compose.yml` (en la raíz del repo) levanta `app`, `postgres` y `minio`, todos publicados **solo en `127.0.0.1`** — OLS es lo único que los expone al público.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 1. Primer despliegue
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+git clone <repo> && cd musicroster
+cp app-next/.env.example app-next/.env   # completar con los valores reales de producción
+docker compose up --build -d
+docker compose exec app npx prisma migrate deploy
+docker compose exec app npm run db:seed   # opcional: solo si quieres datos de prueba, normalmente NO en prod
+```
+
+### 2. Configurar OpenLiteSpeed
+
+Para la app (`DOMINIO`, p. ej. `musicroster.tudominio.co`):
+1. **External App** (tipo *Web Server*) apuntando a `localhost:3000`.
+2. **Context** `/` en el vhost del dominio, `Type: Proxy`, apuntando a ese External App.
+3. Certificado TLS del dominio vía el panel de OLS (LiteSpeed/Let's Encrypt integrado).
+
+Repetir lo mismo para MinIO (`DOMINIO_ARCHIVOS`, p. ej. `archivos.tudominio.co`) apuntando a `localhost:9000`. `MINIO_PUBLIC_URL` en `.env` debe coincidir con ese dominio: es la URL que queda guardada en Postgres para cada foto, así que si se define mal las fotos ya guardadas quedan rotas.
+
+### 3. Respaldos
+
+`scripts/backup-db.sh` (raíz del repo) hace `pg_dump` + gzip, con retención de 14 días. Instalar en cron del VPS:
+
+```
+crontab -e
+0 3 * * * /ruta/al/repo/scripts/backup-db.sh >> /var/log/musicroster-backup.log 2>&1
+```
+
+`scripts/restore-db.sh backups/archivo.sql.gz` para restaurar (pide confirmación explícita).
+
+### 4. Actualizar tras un cambio
+
+```bash
+git pull
+docker compose up --build -d
+docker compose exec app npx prisma migrate deploy   # solo si hay migraciones nuevas
+```
+
+### 5. Verificación post-despliegue
+
+- `curl -s https://<DOMINIO>/api/health` → `{"ok":true,"db":"up"}`.
+- Cabeceras de seguridad presentes (`curl -I`).
+- Flujo de enlace mágico real (revisa que llegue el correo, no el fallback de consola de dev).
+- Subida de foto en `/registro` termina en una URL de `DOMINIO_ARCHIVOS`, no en `localhost`.
+
+## Pendiente para el corte final (Fase 8)
+
+Antes de apuntar el dominio principal del sitio (el que hoy sirve el HTML estático) a esta app:
+
+1. **Reemplazar los `.tbd`** de `/reglamento` y `/politica-datos` — requiere que NGNART entregue razón social, NIT, dirección, correo, área responsable y fecha de vigencia. No se inventan.
+2. **Decisión legal**: Reglamento Arts. 25/29 (perfil público) vs. Art. 58 (niveles de acceso) — si "público" es sin condición o solo para compradores con cuenta. Ya implementado como "requiere cuenta"; falta la confirmación del área legal para que el texto del Reglamento no quede contradictorio.
+3. Confirmar en producción real (no local): enlace mágico, export CSV completo bloqueado para rol `moderador`, rate limiting, `/api/health`, respaldo real y una restauración de prueba.
+4. Cuando todo lo anterior esté confirmado: cambiar el DNS/vhost del dominio principal de OLS para que apunte al External App de esta app en vez de servir los `.html` estáticos de la raíz del repo.
