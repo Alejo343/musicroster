@@ -16,7 +16,7 @@ export default async function BuscarPage() {
 
   return (
     <>
-      <SiteHeader />
+      <SiteHeader ocultar={["/buscar", "/#como-funciona"]} />
       <main>
         <BuscarApp todos={todos} sesion={{ email: cuenta.email, nombre: cuenta.nombre }} />
       </main>

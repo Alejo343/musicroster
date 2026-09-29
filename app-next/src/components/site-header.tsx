@@ -17,8 +17,9 @@ const NAV: { href: string; label: string; pagina?: string }[] = [
 
 export type PaginaActiva = "inicio" | "faq" | "reglamento" | "bmic" | "politica-datos" | "registro" | "buscar" | "contratar" | "artista" | "solicitud" | "acceso" | null;
 
-export default function SiteHeader({ activa = null, top = false }: { activa?: PaginaActiva; top?: boolean }) {
-  const items: Item[] = NAV.map((n) => ({
+// ocultar: hrefs de NAV que una página no muestra (p. ej. /buscar no enlaza a sí misma ni a "Cómo funciona").
+export default function SiteHeader({ activa = null, top = false, ocultar = [] }: { activa?: PaginaActiva; top?: boolean; ocultar?: string[] }) {
+  const items: Item[] = NAV.filter((n) => !ocultar.includes(n.href)).map((n) => ({
     href: n.href,
     label: n.label,
     activo: n.pagina === activa,
