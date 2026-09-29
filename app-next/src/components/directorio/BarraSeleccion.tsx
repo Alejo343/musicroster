@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { useCarrito } from "@/lib/directorio/useCarrito";
 import { iniciales } from "@/lib/directorio/formato";
@@ -8,6 +9,13 @@ import { iniciales } from "@/lib/directorio/formato";
 // pintar las iniciales de la selección sin otra ida al servidor.
 export default function BarraSeleccion({ mapa }: { mapa: Record<string, { nombre: string; acento: string }> }) {
   const { ids } = useCarrito();
+
+  // Deja espacio bajo el footer para que la barra fija no lo tape (body.has-sel-bar en globals.css).
+  useEffect(() => {
+    document.body.classList.toggle("has-sel-bar", ids.length > 0);
+    return () => document.body.classList.remove("has-sel-bar");
+  }, [ids.length]);
+
   if (!ids.length) return null;
 
   const ultimos = ids.slice(-4).filter((id) => mapa[id]);

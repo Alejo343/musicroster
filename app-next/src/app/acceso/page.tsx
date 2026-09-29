@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Script from "next/script";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import { obtenerPerfilesPublicos } from "@/lib/directorio/perfilPublico";
@@ -19,7 +18,7 @@ export default async function AccesoPage({ searchParams }: { searchParams: Promi
   const perfiles = await obtenerPerfilesPublicos();
 
   return (
-    <>
+    <div className="acc-page">
       <SiteHeader />
       <main className="acc">
         {sesion ? (
@@ -40,7 +39,6 @@ export default async function AccesoPage({ searchParams }: { searchParams: Promi
         )}
       </main>
       <SiteFooter />
-      <Script src="/assets/js/main.js" strategy="afterInteractive" />
-    </>
+    </div>
   );
 }

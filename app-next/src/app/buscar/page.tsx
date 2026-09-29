@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import { obtenerPerfilesPublicos } from "@/lib/directorio/perfilPublico";
@@ -22,7 +21,6 @@ export default async function BuscarPage() {
         <BuscarApp todos={todos} sesion={{ email: cuenta.email, nombre: cuenta.nombre }} />
       </main>
       <SiteFooter />
-      <Script src="/assets/js/main.js" strategy="afterInteractive" />
     </>
   );
 }

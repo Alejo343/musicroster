@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import { obtenerPerfilesPublicos } from "@/lib/directorio/perfilPublico";
@@ -17,7 +16,7 @@ export default async function SolicitudPage() {
   const mapa = Object.fromEntries(todos.map((p) => [p.id, { nombre: p.nombre, genero: p.genero, rangoLabel: p.rangoLabel, acento: p.acento }]));
 
   return (
-    <>
+    <div className="reg-page">
       <SiteHeader />
       <main>
         <section className="reg-hero">
@@ -35,7 +34,6 @@ export default async function SolicitudPage() {
         <SolicitudForm mapa={mapa} cuenta={{ nombre: cuenta.nombre, email: cuenta.email, whatsapp: cuenta.whatsapp, organizacion: cuenta.organizacion, cargo: cuenta.cargo, sector: cuenta.sector }} />
       </main>
       <SiteFooter />
-      <Script src="/assets/js/main.js" strategy="afterInteractive" />
-    </>
+    </div>
   );
 }

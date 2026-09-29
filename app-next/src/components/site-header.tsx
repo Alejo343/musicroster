@@ -1,6 +1,7 @@
 // Header común a las páginas públicas (antes duplicado a mano en cada .html — ver CLAUDE.md).
 // Un cambio de navegación ahora se hace en un solo lugar.
 import Link from "next/link";
+import HeaderEfectos from "./header-efectos";
 
 type Item = { href: string; label: string; activo?: boolean; claseExtra?: string };
 
@@ -57,6 +58,7 @@ export default function SiteHeader({ activa = null, top = false }: { activa?: Pa
         <button className="nav-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Abrir menú">
           <span></span>
         </button>
+        <HeaderEfectos />
       </div>
     </header>
   );

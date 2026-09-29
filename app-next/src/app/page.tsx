@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
+import LandingEfectos from "@/components/landing-efectos";
 import { leerContenidoEstatico } from "@/lib/contenidoEstatico";
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export default function Home() {
       <SiteHeader activa="inicio" top />
       <div dangerouslySetInnerHTML={{ __html: contenido }} />
       <SiteFooter />
-      <Script src="/assets/js/main.js" strategy="afterInteractive" />
+      <LandingEfectos />
     </>
   );
 }

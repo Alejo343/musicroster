@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import { leerContenidoEstatico } from "@/lib/contenidoEstatico";
@@ -17,7 +16,6 @@ export default function ReglamentoPage() {
       <SiteHeader activa="reglamento" />
       <div dangerouslySetInnerHTML={{ __html: contenido }} />
       <SiteFooter />
-      <Script src="/assets/js/main.js" strategy="afterInteractive" />
     </>
   );
 }

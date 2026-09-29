@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import RegistroForm from "./RegistroForm";
@@ -11,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function RegistroPage() {
   return (
-    <>
+    <div className="reg-page">
       <SiteHeader activa="registro" />
       <section className="reg-hero">
         <div className="wrap">
@@ -30,7 +29,6 @@ export default function RegistroPage() {
       </section>
       <RegistroForm />
       <SiteFooter />
-      <Script src="/assets/js/main.js" strategy="afterInteractive" />
-    </>
+    </div>
   );
 }

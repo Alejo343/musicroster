@@ -57,6 +57,12 @@ export default function BuscarApp({ todos, sesion }: { todos: PerfilPublico[]; s
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, tipos, genero, territorio, region, presupuesto, segunEvento, orden]);
 
+  // Con el panel de filtros abierto en móvil, bloquea el scroll de fondo (body.filters-open en globals.css).
+  useEffect(() => {
+    document.body.classList.toggle("filters-open", filtrosAbiertos);
+    return () => document.body.classList.remove("filters-open");
+  }, [filtrosAbiertos]);
+
   const cambiarFiltro = () => setVisibles(POR_PAGINA);
 
   const activos: [string, () => void][] = [];

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Script from "next/script";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import { obtenerPerfilesPublicos, obtenerPerfilPublico } from "@/lib/directorio/perfilPublico";
@@ -34,7 +33,6 @@ export default async function ArtistaPage({ params }: { params: Promise<{ id: st
           </section>
         </main>
         <SiteFooter />
-        <Script src="/assets/js/main.js" strategy="afterInteractive" />
       </>
     );
   }
@@ -50,7 +48,6 @@ export default async function ArtistaPage({ params }: { params: Promise<{ id: st
         <PerfilArtista p={perfil} similares={sim} mapa={mapa} />
       </main>
       <SiteFooter />
-      <Script src="/assets/js/main.js" strategy="afterInteractive" />
     </>
   );
 }

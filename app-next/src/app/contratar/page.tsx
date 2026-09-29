@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Script from "next/script";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import TarjetaProyecto from "@/components/directorio/TarjetaProyecto";
@@ -178,7 +177,6 @@ export default async function ContratarPage() {
         </section>
       </main>
       <SiteFooter />
-      <Script src="/assets/js/main.js" strategy="afterInteractive" />
     </>
   );
 }
