@@ -1,8 +1,8 @@
 # Billboard MusicRoster — app-next
 
-App Next.js (App Router + TypeScript) que reemplaza la simulación en `localStorage` del sitio estático de la raíz del repo por un backend real: Postgres (Prisma), MinIO para fotos, correo transaccional (Resend) para el enlace mágico de compradores y las notificaciones, y sesiones firmadas en cookies httpOnly.
+App Next.js (App Router + TypeScript) que reemplaza la simulación en `localStorage` del sitio estático de la raíz del repo por un backend real: Postgres (Prisma), correo transaccional (Resend) para el enlace mágico de compradores y las notificaciones, y sesiones firmadas en cookies httpOnly.
 
-El sitio estático en la raíz del repo sigue intacto y en producción hasta el corte (ver abajo). Este proyecto no debe tocarse desde ahí.
+El sitio estático en la raíz del repo sigue intacto y en producción hasta el corte del dominio principal (Fase 9 del plan de migración; ver más abajo). Este proyecto no debe tocarse desde ahí.
 
 ## Desarrollo local
 
@@ -18,9 +18,9 @@ npm run dev
 
 - `npm test` — Vitest (todo lo que no es UI: esquemas Zod, catálogos, lógica de búsqueda/duplicados, rate limiting, etc.).
 - `npm run lint` / `npx tsc --noEmit` — antes de cualquier commit.
-- `npm run build` — build de producción (`output: "standalone"`).
+- `npm run build` — build de producción.
 
-En dev, si `MINIO_ENDPOINT` no está configurado, las fotos se guardan en `public/uploads/` (ver `src/lib/storage.ts`). En producción siempre debe usarse MinIO.
+Si `MINIO_ENDPOINT` no está configurado (el caso normal, incluido en producción — ver abajo), las fotos se guardan en `public/uploads/` (ver `src/lib/storage.ts`), servidas directamente por `next start`.
 
 ## Variables de entorno
 
@@ -29,67 +29,156 @@ Ver `.env.example` para la lista completa. Resumen:
 | Variable | Para qué |
 |---|---|
 | `DATABASE_URL` | Conexión Prisma a Postgres |
-| `MINIO_*` | Almacenamiento de fotos de perfil (S3-compatible) |
+| `MINIO_*` | Opcional — solo si se decide migrar fotos a object storage más adelante; el VPS actual no lo usa |
 | `RESEND_API_KEY`, `RESEND_FROM` | Enlace mágico, confirmaciones, avisos de solicitud |
 | `AUTH_SECRET` | Firma de sesiones (comprador y admin), vía `jose` |
-| `DOMINIO`, `DOMINIO_ARCHIVOS` | Documentación de qué dominio apunta a qué servicio en OpenLiteSpeed |
+| `PORT` | Puerto donde escucha `next start`; OpenLiteSpeed hace proxy a él |
+| `DOMINIO` | Documentación de qué dominio sirve este despliegue |
 
 `AUTH_SECRET` debe ser un valor aleatorio largo (`openssl rand -base64 48`), distinto entre dev y producción, y nunca commiteado.
 
-## Despliegue en el VPS (Docker Compose + OpenLiteSpeed)
+## Despliegue en el VPS (PM2 + Postgres nativo + OpenLiteSpeed)
 
-El VPS ya corre **OpenLiteSpeed** como servidor/proxy con TLS. `docker-compose.yml` (en la raíz del repo) levanta `app`, `postgres` y `minio`, todos publicados **solo en `127.0.0.1`** — OLS es lo único que los expone al público.
+El VPS (`ssh mivps`) no usa Docker Compose para los sitios normales — `docker-compose.yml`, `Dockerfile` y `scripts/backup-db.sh`/`restore-db.sh` en la raíz del repo son de un plan de despliegue anterior, escrito **sin conocer el servidor real**, y no se usan. El patrón real de todos los sitios `*.billboard.com.co` existentes (`bmic`, `canciones`, `market`, `billboard-colombia`) es:
+
+- Proceso Node nativo gestionado con **PM2**.
+- **Postgres nativo compartido** del VPS (un rol + base de datos por sitio dentro del mismo cluster).
+- **OpenLiteSpeed** como proxy directo (`context / { type proxy; handler <extprocessor> }`) al puerto de la app — sin Nginx/Caddy intermedios.
+- Fotos y demás archivos subidos: **disco local**, no S3/MinIO.
+
+Este proyecto (`musicroaster.billboard.com.co`, puerto **3009**) sigue exactamente ese mismo patrón.
 
 ### 1. Primer despliegue
 
 ```bash
-git clone <repo> && cd musicroster
-cp app-next/.env.example app-next/.env   # completar con los valores reales de producción
-docker compose up --build -d
-docker compose exec app npx prisma migrate deploy
-docker compose exec app npm run db:seed   # opcional: solo si quieres datos de prueba, normalmente NO en prod
+# En el VPS, como root:
+
+# Base de datos (Postgres nativo)
+sudo -u postgres psql -c "CREATE ROLE musicroaster_app LOGIN PASSWORD '<clave-generada>';"
+sudo -u postgres psql -c "CREATE DATABASE musicroaster OWNER musicroaster_app;"
+
+# Código
+git clone https://github.com/Alejo343/musicroster /var/www/musicroaster
+cd /var/www/musicroaster/app-next
+cp .env.example .env   # completar DATABASE_URL (host 127.0.0.1), AUTH_SECRET, RESEND_*, PORT=3009
+
+npm ci
+npx prisma migrate deploy
+npm run build
+
+# PM2 (ver ecosystem.config.js de ejemplo abajo)
+pm2 start ecosystem.config.js
+pm2 save
 ```
 
-### 2. Configurar OpenLiteSpeed
+`ecosystem.config.js` (mismo formato que `/var/www/billboard-colombia/backend/ecosystem.config.js`):
 
-Para la app (`DOMINIO`, p. ej. `musicroster.tudominio.co`):
-1. **External App** (tipo *Web Server*) apuntando a `localhost:3000`.
-2. **Context** `/` en el vhost del dominio, `Type: Proxy`, apuntando a ese External App.
-3. Certificado TLS del dominio vía el panel de OLS (LiteSpeed/Let's Encrypt integrado).
-
-Repetir lo mismo para MinIO (`DOMINIO_ARCHIVOS`, p. ej. `archivos.tudominio.co`) apuntando a `localhost:9000`. `MINIO_PUBLIC_URL` en `.env` debe coincidir con ese dominio: es la URL que queda guardada en Postgres para cada foto, así que si se define mal las fotos ya guardadas quedan rotas.
-
-### 3. Respaldos
-
-`scripts/backup-db.sh` (raíz del repo) hace `pg_dump` + gzip, con retención de 14 días. Instalar en cron del VPS:
-
+```js
+module.exports = {
+  apps: [{
+    name: "musicroaster",
+    script: "npm",
+    args: "start",
+    cwd: "/var/www/musicroaster/app-next",
+    autorestart: true,
+    watch: false,
+    max_memory_restart: "1G",
+    env: { NODE_ENV: "production", PORT: 3009 },
+    error_file: "/var/www/musicroaster/logs/err.log",
+    out_file: "/var/www/musicroaster/logs/out.log",
+    time: true,
+  }],
+};
 ```
-crontab -e
-0 3 * * * /ruta/al/repo/scripts/backup-db.sh >> /var/log/musicroster-backup.log 2>&1
-```
 
-`scripts/restore-db.sh backups/archivo.sql.gz` para restaurar (pide confirmación explícita).
-
-### 4. Actualizar tras un cambio
+### 2. Certificado TLS (certbot, igual que los demás sitios)
 
 ```bash
-git pull
-docker compose up --build -d
-docker compose exec app npx prisma migrate deploy   # solo si hay migraciones nuevas
+certbot certonly --webroot -w /var/www/musicroaster/acme -d musicroaster.billboard.com.co
 ```
 
-### 5. Verificación post-despliegue
+### 3. Vhost de OpenLiteSpeed
 
-- `curl -s https://<DOMINIO>/api/health` → `{"ok":true,"db":"up"}`.
-- Cabeceras de seguridad presentes (`curl -I`).
+En `/usr/local/lsws/conf/httpd_config.conf`, agregar a los listeners `Default` y `Defaultssl`:
+
+```
+map                     musicroaster musicroaster.billboard.com.co
+```
+
+Y un nuevo `extprocessor`:
+
+```
+extprocessor musicroaster_node_proxy {
+  type                    proxy
+  address                 127.0.0.1:3009
+  maxConns                100
+  initTimeout             60
+  retryTimeout            0
+  respBuffer              0
+}
+```
+
+`/usr/local/lsws/conf/vhosts/musicroaster/vhconf.conf` (mismo esqueleto que `thebarrilmarket.conf`):
+
+```
+docRoot                   /var/www/musicroaster/acme
+vhDomain                  musicroaster.billboard.com.co
+
+context /.well-known/ {
+  location                /var/www/musicroaster/acme/.well-known/
+  allowBrowse             1
+  addDefaultCharset       off
+}
+
+context / {
+  type                    proxy
+  handler                 musicroaster_node_proxy
+  addDefaultCharset       off
+}
+
+vhssl  {
+  keyFile                 /etc/letsencrypt/live/musicroaster.billboard.com.co/privkey.pem
+  certFile                /etc/letsencrypt/live/musicroaster.billboard.com.co/fullchain.pem
+  certChain               1
+}
+```
+
+Recargar OpenLiteSpeed (graceful restart) para aplicar.
+
+### 4. Respaldos
+
+Igual que el resto de sitios: `pg_dump` contra el Postgres nativo (no `docker compose exec`, el `scripts/backup-db.sh` de la raíz asume Docker y no aplica tal cual aquí). Instalar en cron:
+
+```bash
+crontab -e
+0 3 * * * pg_dump -U musicroaster_app musicroaster | gzip > /var/backups/musicroaster-$(date +\%F).sql.gz
+```
+
+### 5. Actualizar tras un cambio
+
+```bash
+cd /var/www/musicroaster/app-next
+git pull
+npm ci
+npx prisma migrate deploy   # solo si hay migraciones nuevas
+npm run build
+pm2 restart musicroaster
+```
+
+Las fotos ya subidas quedan en `public/uploads/` (fuera de git, ver `.gitignore`) y no se ven afectadas por `git pull`.
+
+### 6. Verificación post-despliegue
+
+- `pm2 status musicroaster` → `online`, sin reinicios en bucle.
+- `curl -s https://musicroaster.billboard.com.co/api/health` → `{"ok":true,"db":"up"}`.
+- `curl -I https://musicroaster.billboard.com.co/` → 200, cabeceras de seguridad presentes, certificado válido.
 - Flujo de enlace mágico real (revisa que llegue el correo, no el fallback de consola de dev).
-- Subida de foto en `/registro` termina en una URL de `DOMINIO_ARCHIVOS`, no en `localhost`.
+- Subida de foto en `/registro` termina en `https://musicroaster.billboard.com.co/uploads/...` y carga correctamente.
 
-## Pendiente para el corte final (Fase 8)
+## Pendiente para el corte del dominio principal (Fase 9)
 
-Antes de apuntar el dominio principal del sitio (el que hoy sirve el HTML estático) a esta app:
+Antes de apuntar el dominio público definitivo del sitio (el que hoy sirve el HTML estático) a esta app:
 
 1. **Reemplazar los `.tbd`** de `/reglamento` y `/politica-datos` — requiere que NGNART entregue razón social, NIT, dirección, correo, área responsable y fecha de vigencia. No se inventan.
 2. **Decisión legal**: Reglamento Arts. 25/29 (perfil público) vs. Art. 58 (niveles de acceso) — si "público" es sin condición o solo para compradores con cuenta. Ya implementado como "requiere cuenta"; falta la confirmación del área legal para que el texto del Reglamento no quede contradictorio.
-3. Confirmar en producción real (no local): enlace mágico, export CSV completo bloqueado para rol `moderador`, rate limiting, `/api/health`, respaldo real y una restauración de prueba.
-4. Cuando todo lo anterior esté confirmado: cambiar el DNS/vhost del dominio principal de OLS para que apunte al External App de esta app en vez de servir los `.html` estáticos de la raíz del repo.
+3. Haber verificado `musicroaster.billboard.com.co` de forma estable en producción real (sección anterior).

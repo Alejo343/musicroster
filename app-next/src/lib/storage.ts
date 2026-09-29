@@ -1,7 +1,7 @@
 // Almacenamiento de la fotografía oficial del proyecto.
-// Con MINIO_ENDPOINT configurado (VPS/producción) sube a MinIO (S3-compatible).
-// Sin configurar (desarrollo local, sin Docker) cae a disco local bajo public/uploads/,
-// servido directamente por Next.js — nunca se usa en producción.
+// Con MINIO_ENDPOINT configurado sube a MinIO/S3. Sin configurar (el caso real
+// en producción: el VPS no usa MinIO) cae a disco local bajo public/uploads/,
+// servido directamente por Next.js en `next start`.
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
