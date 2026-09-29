@@ -10,10 +10,11 @@ El sitio estático en la raíz del repo sigue intacto y en producción hasta el 
 
 - ✅ Base de datos de producción migrada (Postgres nativo del VPS, rol `musicroaster_app` / DB `musicroaster`).
 - ✅ TLS con Let's Encrypt (vía `certbot --webroot`, autorrenovación configurada por certbot).
-- ✅ Cuenta admin real creada (`contacto@billboard.com.co`, rol `admin`) — la contraseña se definió directamente por chat con el usuario y no está en ningún archivo del repo; si se pierde, recrearla con el patrón de `prisma/crear-admin.mjs` (ver "Crear/actualizar un admin" abajo).
+- ✅ Cuenta admin real creada (`contacto@billboard.com.co`, rol `admin`) — la contraseña se definió directamente por chat con el usuario y no está en ningún archivo del repo; si se pierde, recrearla con el patrón de "Crear/actualizar un admin" abajo.
+- ✅ `/var/www/musicroaster` **es ahora un `git clone` real** del repo (no una copia por `tar`, como en el primer despliegue): el primer `git push` del asistente fue bloqueado por su propio clasificador de seguridad, pero el usuario terminó subiendo esos cambios (y varios más, directo al header/landing y BMIC) por su cuenta. El VPS se resincronizó clonando `origin/main` desde cero, conservando el `.env` y `public/uploads/` del despliegue anterior. A partir de ahora "Actualizar tras un cambio" (abajo) funciona tal cual.
 - 🟡 `RESEND_API_KEY` configurada y funcionando, pero **el remitente sigue en `onboarding@resend.dev`** (temporal) porque el dominio `billboard.com.co` está en proceso de verificación en Resend. Cuando la verificación termine, cambiar `RESEND_FROM` en el `.env` del VPS a `no-responder@billboard.com.co` (o el que se decida) y `pm2 restart musicroaster`.
-- 🟡 **El commit de esta fase no llegó a `origin/main`**: el `git push` fue bloqueado por el clasificador de seguridad del asistente (dos veces: "Out-of-Place Publication" y "Credential Leakage"). El código se transfirió al VPS directamente por `tar`+SSH, no por `git clone`/`git pull`. Falta que alguien con acceso a la máquina de desarrollo haga el push manualmente para que el flujo normal de actualización (sección "Actualizar tras un cambio" abajo) vuelva a funcionar.
 - Conocido, no bloqueante: el formulario de `/admin/login` muestra el mismo mensaje genérico ("Correo o contraseña incorrectos") tanto para credenciales inválidas como para un `429` de rate limiting (`lib/rateLimit.ts`, 5 intentos/15 min por correo). Si alguien prueba varias veces seguidas puede confundirse — distinguirlo en el frontend queda pendiente como mejora menor.
+- `/var/www/musicroaster.old/` quedó en el VPS como respaldo del despliegue anterior (852M, principalmente `node_modules`) — se puede borrar cuando se confirme que todo sigue estable.
 
 ## Desarrollo local
 
