@@ -120,6 +120,8 @@
 .adm-user strong { display: block; }
 .adm-user small { color: var(--muted); }
 .adm-user a { margin-left: auto; color: var(--muted); font-size: 12px; }
+/* En Next "Salir" es un <button> (cierra sesión con POST): se ve igual que el enlace original. */
+.adm-user button { margin-left: auto; padding: 0; border: 0; background: none; color: var(--muted); font-size: 12px; text-decoration: underline; }
 .adm-reset {
   border: 1px dashed rgba(255, 255, 255, 0.2);
   background: transparent;
@@ -314,7 +316,7 @@
 .adm .search-box input[type="search"] { padding-left: 36px; background: var(--white); }
 
 .seg { display: inline-flex; padding: 3px; border-radius: 999px; background: var(--paper-2); }
-.seg button {
+.seg button, .seg a {
   border: 0;
   background: transparent;
   padding: 7px 14px;
@@ -323,7 +325,9 @@
   font-weight: 700;
   color: var(--muted-ink);
 }
-.seg button[aria-pressed="true"] { background: var(--white); color: var(--ink); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); }
+/* En Next el periodo del Resumen son enlaces (?range=) marcados con aria-current. */
+.seg a { text-decoration: none; }
+.seg button[aria-pressed="true"], .seg a[aria-current="true"] { background: var(--white); color: var(--ink); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); }
 
 /* ---------- Resumen ---------- */
 
@@ -415,7 +419,9 @@ a.hbar:hover .name { text-decoration: underline; }
 /* ---------- Tabla de registros ---------- */
 
 .tabs { display: flex; gap: 4px; overflow-x: auto; margin-bottom: 14px; scrollbar-width: none; }
-.tabs button {
+/* En Next pestañas, orden y paginador son enlaces (estado en la URL): mismos estilos que los botones. */
+.tabs button, .tabs a {
+  text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -428,10 +434,10 @@ a.hbar:hover .name { text-decoration: underline; }
   font-weight: 700;
   white-space: nowrap;
 }
-.tabs button:hover { color: var(--ink); background: var(--paper-2); }
-.tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+.tabs button:hover, .tabs a:hover { color: var(--ink); background: var(--paper-2); }
+.tabs button[aria-selected="true"], .tabs a[aria-selected="true"] { background: var(--ink); color: var(--paper); }
 .tabs .n { padding: 0 7px; border-radius: 999px; background: rgba(0, 0, 0, 0.07); font-size: 12px; }
-.tabs button[aria-selected="true"] .n { background: rgba(255, 255, 255, 0.16); }
+.tabs button[aria-selected="true"] .n, .tabs a[aria-selected="true"] .n { background: rgba(255, 255, 255, 0.16); }
 
 .filters-row {
   display: grid;
@@ -479,9 +485,10 @@ table.rt { width: 100%; border-collapse: collapse; font-size: 14px; }
   color: var(--muted-ink);
   white-space: nowrap;
 }
-.rt th button { border: 0; background: none; padding: 0; font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; display: inline-flex; gap: 4px; align-items: center; }
-.rt th button:hover { color: var(--ink); }
-.rt th[aria-sort] button { color: var(--ink); }
+.rt th a { text-decoration: none; }
+.rt th button, .rt th a { border: 0; background: none; padding: 0; font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; display: inline-flex; gap: 4px; align-items: center; }
+.rt th button:hover, .rt th a:hover { color: var(--ink); }
+.rt th[aria-sort] button, .rt th[aria-sort] a { color: var(--ink); }
 .rt td { padding: 12px 14px; border-bottom: 1px solid var(--line-ink); vertical-align: middle; }
 .rt tbody tr { cursor: pointer; transition: background 0.15s; }
 .rt tbody tr:hover { background: #fbf9f4; }
@@ -498,7 +505,8 @@ table.rt { width: 100%; border-collapse: collapse; font-size: 14px; }
 
 .pager { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-top: 1px solid var(--line-ink); font-size: 13px; color: var(--muted-ink); flex-wrap: wrap; }
 .pager .pages { margin-left: auto; display: flex; gap: 4px; }
-.pager button {
+.pager .pages a { display: inline-flex; align-items: center; justify-content: center; color: inherit; text-decoration: none; }
+.pager button, .pager .pages a {
   min-width: 34px;
   height: 34px;
   padding: 0 8px;
@@ -508,7 +516,8 @@ table.rt { width: 100%; border-collapse: collapse; font-size: 14px; }
   font-size: 13px;
   font-weight: 700;
 }
-.pager button[aria-current="page"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.pager button[aria-current="page"], .pager .pages a[aria-current="page"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.pager .pages a[aria-disabled="true"] { opacity: 0.4; pointer-events: none; }
 .pager button:disabled { opacity: 0.4; cursor: default; }
 
 /* Tabla → tarjetas en móvil */

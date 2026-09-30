@@ -2,8 +2,8 @@ import Link from "next/link";
 import { obtenerTodos } from "@/lib/admin/queries";
 import { idsConDuplicadoAbierto } from "@/lib/admin/duplicados";
 import { calcularLista, filtrosPorDefecto, opcionesFiltro, regionDe, type FiltrosLista } from "@/lib/admin/registrosLista";
-import { fmtDate, fmtDateTime } from "@/lib/admin/formato";
-import { ESTADOS_REGISTRO } from "@/lib/catalogos";
+import { fmtDate, fmtDateTime, lugar } from "@/lib/admin/formato";
+import { ESTADOS_REGISTRO, acento } from "@/lib/catalogos";
 import { requireAdmin } from "@/lib/admin/auth";
 import FiltrosRegistros from "@/components/admin/FiltrosRegistros";
 import RegistrosTabla, { type FilaRegistro } from "@/components/admin/RegistrosTabla";
@@ -41,7 +41,7 @@ export default async function RegistrosPage({ searchParams }: { searchParams: Pr
   const filas: FilaRegistro[] = slice.map((r) => {
     const full = porId.get(r.id)!;
     return {
-      id: r.id, nombreProyecto: r.nombreProyecto, tipo: r.tipo, numMiembros: full.miembros.length, genero: r.genero, ciudad: r.ciudad, rango: r.rango,
+      id: r.id, nombreProyecto: r.nombreProyecto, tipo: r.tipo, numMiembros: full.miembros.length, genero: r.genero, acento: acento(r.genero), lugar: lugar(full), rango: r.rango,
       creadoIso: r.creado.toISOString(), creadoLabel: fmtDate(r.creado), creadoTitulo: fmtDateTime(r.creado), estado: r.estado, duplicado: dup.has(r.id),
     };
   });

@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { Fragment, useState, useTransition } from "react";
 import { cambiarEstado } from "@/lib/admin/actions";
 import { useModalMotivo } from "./useModalMotivo";
 import { ESTADOS_REGISTRO, rangoLabel, TIPOS_PROYECTO } from "@/lib/catalogos";
+import { initials } from "@/lib/admin/formato";
 
 export type FilaRegistro = {
   id: string;
@@ -13,7 +14,8 @@ export type FilaRegistro = {
   tipo: string;
   numMiembros: number;
   genero: string;
-  ciudad: string;
+  acento: string;
+  lugar: string;
   rango: string;
   creadoIso: string;
   creadoLabel: string;
@@ -54,6 +56,7 @@ export default function RegistrosTabla({
   };
 
   const flecha = (campo: string) => (sort === campo ? (dir > 0 ? "↑" : "↓") : "");
+  const ariaSort = (campo: string) => (sort === campo ? (dir > 0 ? "ascending" : "descending") : undefined);
 
   const aplicarBulk = async (estado: "aprobado" | "correccion" | "rechazado") => {
     const ids = [...sel];
@@ -100,13 +103,13 @@ export default function RegistrosTabla({
                     }}
                   />
                 </th>
-                <th><Link href={linkOrden("nombre")}>Proyecto <span className="arr">{flecha("nombre")}</span></Link></th>
+                <th aria-sort={ariaSort("nombre")}><Link href={linkOrden("nombre")}>Proyecto <span className="arr">{flecha("nombre")}</span></Link></th>
                 <th>Tipo</th>
                 <th>Género</th>
                 <th>Ciudad</th>
                 <th>Rango</th>
-                <th><Link href={linkOrden("creado")}>Registrado <span className="arr">{flecha("creado")}</span></Link></th>
-                <th><Link href={linkOrden("estado")}>Estado <span className="arr">{flecha("estado")}</span></Link></th>
+                <th aria-sort={ariaSort("creado")}><Link href={linkOrden("creado")}>Registrado <span className="arr">{flecha("creado")}</span></Link></th>
+                <th aria-sort={ariaSort("estado")}><Link href={linkOrden("estado")}>Estado <span className="arr">{flecha("estado")}</span></Link></th>
               </tr>
             </thead>
             <tbody>
@@ -118,6 +121,7 @@ export default function RegistrosTabla({
                   <td className="chk"><input type="checkbox" aria-label={`Seleccionar ${f.nombreProyecto}`} checked={sel.has(f.id)} onChange={() => toggle(f.id)} /></td>
                   <td className="col-proj">
                     <div className="proj">
+                      <span className="avatar" style={{ ["--c" as string]: `var(${f.acento})` }} aria-hidden="true">{initials(f.nombreProyecto)}</span>
                       <div>
                         <strong><Link href={`/admin/registros/${f.id}`}>{f.nombreProyecto}</Link></strong>
                         <small className="mono">{f.id}</small>
@@ -126,11 +130,11 @@ export default function RegistrosTabla({
                   </td>
                   <td data-l="Tipo" className="nowrap">{TIPOS_PROYECTO[f.tipo as keyof typeof TIPOS_PROYECTO]}{f.numMiembros > 0 && <span className="muted"> · {f.numMiembros}</span>}</td>
                   <td data-l="Género">{f.genero}</td>
-                  <td data-l="Ciudad">{f.ciudad}</td>
+                  <td data-l="Ciudad">{f.lugar}</td>
                   <td data-l="Rango" className="nowrap">{rangoLabel(f.rango)}</td>
                   <td data-l="Registrado" className="nowrap" title={f.creadoTitulo}>{f.creadoLabel}</td>
                   <td>
-                    <span className={`badge st-${f.estado}`}>{ESTADOS_REGISTRO[f.estado]}</span>
+                    <span className={`badge st-${f.estado}`}>{ESTADOS_REGISTRO[f.estado]}</span>{" "}
                     {f.duplicado && <span className="flag">Duplicado</span>}
                   </td>
                 </tr>
@@ -141,16 +145,16 @@ export default function RegistrosTabla({
         <div className="pager">
           <span>{total ? `${from}–${hasta} de ${total}` : "0 de 0"}</span>
           <div className="pages">
-            <Link href={linkPagina(Math.max(1, page - 1))} aria-disabled={page === 1}>‹</Link>
+            <Link href={linkPagina(Math.max(1, page - 1))} aria-disabled={page === 1} aria-label="Anterior">‹</Link>
             {Array.from({ length: pages }, (_, i) => i + 1)
               .filter((p) => p === 1 || p === pages || Math.abs(p - page) <= 1)
               .map((p, i, arr) => (
-                <span key={p}>
-                  {i > 0 && arr[i - 1] !== p - 1 && <span>…</span>}
+                <Fragment key={p}>
+                  {i > 0 && arr[i - 1] !== p - 1 && <button type="button" disabled>…</button>}
                   <Link href={linkPagina(p)} aria-current={p === page ? "page" : undefined}>{p}</Link>
-                </span>
+                </Fragment>
               ))}
-            <Link href={linkPagina(Math.min(pages, page + 1))} aria-disabled={page === pages}>›</Link>
+            <Link href={linkPagina(Math.min(pages, page + 1))} aria-disabled={page === pages} aria-label="Siguiente">›</Link>
           </div>
         </div>
       </div>

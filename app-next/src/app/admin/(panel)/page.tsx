@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { obtenerTodos } from "@/lib/admin/queries";
 import { idsConDuplicadoAbierto, contarCasosAbiertos } from "@/lib/admin/duplicados";
@@ -43,7 +44,12 @@ export default async function ResumenPage({ searchParams }: { searchParams: Prom
   const [dup, casosAbiertos] = await Promise.all([idsConDuplicadoAbierto(todos), contarCasosAbiertos(todos)]);
   const r = computeResumen(todos, range);
 
-  const topDia = Math.ceil(r.dias.pico / (r.dias.pico <= 4 ? 1 : r.dias.pico <= 10 ? 2 : 5)) * (r.dias.pico <= 4 ? 1 : r.dias.pico <= 10 ? 2 : 5);
+  // Escala del eje Y, igual que en assets/js/admin.js: paso de 1, 2 o 5 según el pico.
+  const pico = Math.max(1, r.dias.pico);
+  const paso = pico <= 4 ? 1 : pico <= 10 ? 2 : 5;
+  const topDia = Math.ceil(pico / paso) * paso;
+  const marcas: number[] = [];
+  for (let v = 0; v <= topDia; v += paso * (topDia / paso > 4 ? 2 : 1)) marcas.push(v);
 
   return (
     <>
@@ -55,7 +61,7 @@ export default async function ResumenPage({ searchParams }: { searchParams: Prom
         <div className="adm-top-actions">
           <div className="seg" role="group" aria-label="Periodo">
             {RANGOS_PERIODO.map(([v, l]) => (
-              <Link key={v} href={`/admin?range=${v}`} aria-pressed={range === v}>
+              <Link key={v} href={`/admin?range=${v}`} aria-current={range === v ? "true" : undefined}>
                 {l}
               </Link>
             ))}
@@ -70,6 +76,7 @@ export default async function ResumenPage({ searchParams }: { searchParams: Prom
           <span className="foot">{r.kpis.totalDelta === null ? r.periodo : `${r.kpis.totalDelta >= 0 ? "+" : ""}${r.kpis.totalDelta}% frente al periodo anterior`}</span>
         </div>
         <Link className="card kpi hot" href="/admin/registros?estado=pendiente">
+          <svg className="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" /></svg>
           <span className="lbl">Pendientes de revisión</span>
           <span className="num">{r.kpis.pendientes}</span>
           <span className="foot">{r.kpis.pendientes ? `El más antiguo espera desde ${ago(r.kpis.pendienteMasAntiguoFecha)}` : "Nada por revisar"}</span>
@@ -80,6 +87,7 @@ export default async function ResumenPage({ searchParams }: { searchParams: Prom
           <span className="foot">{r.kpis.total ? `${r.kpis.publicadosPct}% de los registros del periodo` : r.periodo}</span>
         </div>
         <Link className="card kpi" href="/admin/verificacion">
+          <svg className="go" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" /></svg>
           <span className="lbl">Posibles duplicados</span>
           <span className="num">{casosAbiertos}</span>
           <span className="foot">{casosAbiertos ? "Casos abiertos por revisar" : "Sin casos abiertos"}</span>
@@ -93,6 +101,14 @@ export default async function ResumenPage({ searchParams }: { searchParams: Prom
             <span className="meta">{plural(r.kpis.total, "registro", "registros")} · pico de {r.dias.pico} en un día</span>
           </div>
           <div className="vbars">
+            <div className="grid" aria-hidden="true">
+              {marcas.map((v) => (
+                <Fragment key={v}>
+                  <i style={{ bottom: `${(v / topDia) * 100}%` }} />
+                  <span style={{ bottom: `${(v / topDia) * 100}%`, top: "auto", transform: "translateY(50%)" }}>{v}</span>
+                </Fragment>
+              ))}
+            </div>
             {r.dias.buckets.map((b, i) => (
               <div className={`col${b.n ? "" : " zero"}`} key={i} title={`${fmtDate(b.fecha)}: ${plural(b.n, "registro", "registros")}`}>
                 <i style={{ height: `${(b.n / topDia) * 100}%` }} />
