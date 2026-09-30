@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
-import { useFieldArray, useForm, useWatch, type Resolver } from "react-hook-form";
+import { useFieldArray, useForm, useWatch, type Resolver, type UseFormSetValue } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   registroSchema,
@@ -10,6 +10,7 @@ import {
   type RegistroInput,
 } from "@/lib/schemas/registro";
 import { validarFoto } from "@/lib/validarFoto";
+import ComboTexto from "@/components/ComboTexto";
 import {
   TIPOS_PROYECTO,
   TIPOS_DOCUMENTO,
@@ -40,6 +41,16 @@ const PASOS: Paso[] = [
 const norm = (s: string) => s.trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 const buscarClave = (obj: Record<string, unknown>, clave: string) =>
   Object.keys(obj).find((k) => norm(k) === norm(clave));
+
+// Círculos de color y descripción de cada tarjeta del Paso 1 (antes hardcodeados en registro.html).
+const GLYPH_TIPO: Record<RegistroInput["tipo"], { glifo: ReactNode; desc: string }> = {
+  solista: { glifo: <span className="glyph"><i style={{ "--c": "var(--g-urbano)", width: 26, height: 26 } as CSSProperties} /></span>, desc: "Un proyecto con una sola persona como identidad." },
+  agrupacion: { glifo: <span className="glyph">{Array.from({ length: 4 }, (_, i) => <i key={i} style={{ "--c": "var(--g-salsa)" } as CSSProperties} />)}</span>, desc: "Banda, grupo o colectivo." },
+  duo: { glifo: <span className="glyph">{Array.from({ length: 2 }, (_, i) => <i key={i} style={{ "--c": "var(--g-popular)", width: 20, height: 20 } as CSSProperties} />)}</span>, desc: "Dos personas como identidad del proyecto." },
+  orquesta: { glifo: <span className="glyph">{Array.from({ length: 7 }, (_, i) => <i key={i} style={{ "--c": "var(--g-vallenato)", width: 8, height: 8 } as CSSProperties} />)}</span>, desc: "Formato orquestal con dirección." },
+  dj: { glifo: <span className="glyph"><i style={{ "--c": "var(--g-electronica)", width: 26, height: 26, boxShadow: "0 0 0 5px rgba(61, 123, 255, 0.25)" } as CSSProperties} /></span>, desc: "DJ o proyecto de música electrónica." },
+  otro: { glifo: <span className="glyph" style={{ fontFamily: "var(--f-display)", fontWeight: 900, fontSize: 40, color: "var(--g-regional)" }}>+</span>, desc: "Cualquier otro formato con identidad propia." },
+};
 
 const valoresIniciales: RegistroInput = {
   tipo: undefined as unknown as RegistroInput["tipo"],
@@ -111,10 +122,8 @@ export default function RegistroForm() {
   const generoPrincipal = useWatch({ control, name: "generoPrincipal" });
   const otrosGenerosSel = useWatch({ control, name: "otrosGeneros" }) ?? [];
   const liderIndex = useWatch({ control, name: "liderIndex" });
-  const paisResidencia = useWatch({ control, name: "paisResidencia" }) ?? "";
-  const regionResidencia = useWatch({ control, name: "regionResidencia" }) ?? "";
-  const paisOrigen = useWatch({ control, name: "paisOrigen" }) ?? "";
-  const regionOrigen = useWatch({ control, name: "regionOrigen" }) ?? "";
+  const nacionalidad = useWatch({ control, name: "nacionalidad" }) ?? "";
+  const paisExpedicion = useWatch({ control, name: "paisExpedicion" }) ?? "";
   const miembrosValores = useWatch({ control, name: "miembros" }) ?? [];
 
   const identidad = identidadDe(tipo, otroComposicion);
@@ -256,7 +265,9 @@ export default function RegistroForm() {
                     <label className="choice" key={valor}>
                       <input type="radio" value={valor} {...register("tipo")} />
                       <span className="card">
+                        {GLYPH_TIPO[valor].glifo}
                         <strong>{etiqueta}</strong>
+                        <small>{GLYPH_TIPO[valor].desc}</small>
                       </span>
                     </label>
                   ))}
@@ -368,7 +379,13 @@ export default function RegistroForm() {
               <div className="field-grid">
                 <div className="field full">
                   <label>¿Cuál es la nacionalidad del artista o proyecto?</label>
-                  <input type="text" list="paises" autoComplete="off" {...register("nacionalidad")} />
+                  <ComboTexto
+                    name="nacionalidad"
+                    value={nacionalidad}
+                    onChange={(v) => setValue("nacionalidad", v, { shouldDirty: true })}
+                    opciones={PAISES}
+                    ariaLabel="Nacionalidad"
+                  />
                   {errors.nacionalidad && <span className="err" style={{ display: "block" }}>{errors.nacionalidad.message}</span>}
                 </div>
               </div>
@@ -376,11 +393,11 @@ export default function RegistroForm() {
               <h3 className="subhead">Residencia actual</h3>
               <CampoTerritorio
                 prefijo="Residencia"
-                pais={paisResidencia}
-                region={regionResidencia}
-                registerPais={register("paisResidencia")}
-                registerRegion={register("regionResidencia")}
-                registerCiudad={register("ciudadActual")}
+                control={control}
+                setValue={setValue}
+                nombrePais="paisResidencia"
+                nombreRegion="regionResidencia"
+                nombreCiudad="ciudadActual"
                 labelPais="¿En qué país reside actualmente?"
                 labelRegion="¿En qué departamento, estado o región?"
                 labelCiudad="¿En qué ciudad o municipio reside actualmente?"
@@ -393,11 +410,11 @@ export default function RegistroForm() {
               <p className="step-help">¿Dónde nació o se originó el proyecto musical? Puede ser distinto de la residencia actual.</p>
               <CampoTerritorio
                 prefijo="Origen"
-                pais={paisOrigen}
-                region={regionOrigen}
-                registerPais={register("paisOrigen")}
-                registerRegion={register("regionOrigen")}
-                registerCiudad={register("ciudadOrigen")}
+                control={control}
+                setValue={setValue}
+                nombrePais="paisOrigen"
+                nombreRegion="regionOrigen"
+                nombreCiudad="ciudadOrigen"
                 labelPais="País"
                 labelRegion="Departamento / región"
                 labelCiudad="Ciudad / municipio"
@@ -439,7 +456,13 @@ export default function RegistroForm() {
                     </div>
                     <div className="field full">
                       <label>País de expedición</label>
-                      <input type="text" list="paises" autoComplete="off" {...register("paisExpedicion")} />
+                      <ComboTexto
+                        name="paisExpedicion"
+                        value={paisExpedicion}
+                        onChange={(v) => setValue("paisExpedicion", v, { shouldDirty: true })}
+                        opciones={PAISES}
+                        ariaLabel="País de expedición"
+                      />
                       {errors.paisExpedicion && <span className="err" style={{ display: "block" }}>{errors.paisExpedicion.message}</span>}
                     </div>
                   </div>
@@ -483,7 +506,14 @@ export default function RegistroForm() {
                             </div>
                             <div className="field">
                               <label>País de expedición</label>
-                              <input type="text" list="paises" autoComplete="off" {...register(`miembros.${i}.paisExpedicion` as const)} />
+                              <ComboTexto
+                                name={`miembros.${i}.paisExpedicion`}
+                                value={miembrosValores[i]?.paisExpedicion ?? ""}
+                                onChange={(v) => setValue(`miembros.${i}.paisExpedicion` as const, v, { shouldDirty: true })}
+                                opciones={PAISES}
+                                ariaLabel={`País de expedición del integrante ${i + 1}`}
+                              />
+                              {errM?.paisExpedicion && <span className="err" style={{ display: "block" }}>{errM.paisExpedicion.message}</span>}
                             </div>
                             <div className="field">
                               <label>Rol dentro del proyecto</label>
@@ -519,7 +549,7 @@ export default function RegistroForm() {
                   <h3 className="subhead">Líder o director</h3>
                   <div className="field-grid">
                     <div className="field full">
-                      <label>¿Quién es el líder o director del proyecto?</label>
+                      <label>¿Cuál de los integrantes tomará el papel de líder para la inscripción?</label>
                       <select
                         value={liderIndex ?? ""}
                         onChange={(e) => setValue("liderIndex", e.target.value === "" ? undefined : Number(e.target.value))}
@@ -753,22 +783,18 @@ export default function RegistroForm() {
           </div>
         </form>
       </div>
-
-      <datalist id="paises">
-        {PAISES.map((p) => <option key={p} value={p} />)}
-      </datalist>
     </div>
   );
 }
 
-// ---------- Territorio: país -> región (datalist) -> ciudad (datalist, DIVIPOLA si es Colombia) ----------
+// ---------- Territorio: país -> región (sugerida) -> ciudad (DIVIPOLA si es Colombia) ----------
 function CampoTerritorio(props: {
   prefijo: string;
-  pais: string;
-  region: string;
-  registerPais: ReturnType<ReturnType<typeof useForm<RegistroInput>>["register"]>;
-  registerRegion: ReturnType<ReturnType<typeof useForm<RegistroInput>>["register"]>;
-  registerCiudad: ReturnType<ReturnType<typeof useForm<RegistroInput>>["register"]>;
+  control: ReturnType<typeof useForm<RegistroInput>>["control"];
+  setValue: UseFormSetValue<RegistroInput>;
+  nombrePais: "paisResidencia" | "paisOrigen";
+  nombreRegion: "regionResidencia" | "regionOrigen";
+  nombreCiudad: "ciudadActual" | "ciudadOrigen";
   labelPais: string;
   labelRegion: string;
   labelCiudad: string;
@@ -776,9 +802,10 @@ function CampoTerritorio(props: {
   erroresRegion?: string;
   erroresCiudad?: string;
 }) {
-  const { prefijo, pais, region, registerPais, registerRegion, registerCiudad, labelPais, labelRegion, labelCiudad, erroresPais, erroresRegion, erroresCiudad } = props;
-  const idRegiones = `regiones-${prefijo}`;
-  const idCiudades = `ciudades-${prefijo}`;
+  const { control, setValue, nombrePais, nombreRegion, nombreCiudad, labelPais, labelRegion, labelCiudad, erroresPais, erroresRegion, erroresCiudad } = props;
+  const pais = useWatch({ control, name: nombrePais }) ?? "";
+  const region = useWatch({ control, name: nombreRegion }) ?? "";
+  const ciudad = useWatch({ control, name: nombreCiudad }) ?? "";
 
   const regiones = useMemo(() => {
     const clave = buscarClave(REGIONES, pais);
@@ -790,7 +817,7 @@ function CampoTerritorio(props: {
     const propios = buscarClave(MUNICIPIOS_CO, region);
     if (propios) return MUNICIPIOS_CO[propios].map(([, nombre]) => nombre);
     // Sin departamento elegido se sugieren todos los municipios de Colombia (varios
-    // departamentos repiten nombre de municipio, p. ej. "La Unión": se deduplica para el datalist).
+    // departamentos repiten nombre de municipio, p. ej. "La Unión": se deduplica).
     return [...new Set(Object.values(MUNICIPIOS_CO).flat().map(([, nombre]) => nombre))];
   }, [pais, region]);
 
@@ -798,23 +825,17 @@ function CampoTerritorio(props: {
     <div className="field-grid">
       <div className="field">
         <label>{labelPais}</label>
-        <input type="text" list="paises" autoComplete="off" {...registerPais} />
+        <ComboTexto name={nombrePais} value={pais} onChange={(v) => setValue(nombrePais, v, { shouldDirty: true })} opciones={PAISES} ariaLabel={labelPais} />
         {erroresPais && <span className="err" style={{ display: "block" }}>{erroresPais}</span>}
       </div>
       <div className="field">
         <label>{labelRegion}</label>
-        <input type="text" list={idRegiones} autoComplete="off" {...registerRegion} />
-        <datalist id={idRegiones}>
-          {regiones.map((r) => <option key={r} value={r} />)}
-        </datalist>
+        <ComboTexto name={nombreRegion} value={region} onChange={(v) => setValue(nombreRegion, v, { shouldDirty: true })} opciones={regiones} ariaLabel={labelRegion} />
         {erroresRegion && <span className="err" style={{ display: "block" }}>{erroresRegion}</span>}
       </div>
       <div className="field full">
         <label>{labelCiudad}</label>
-        <input type="text" list={idCiudades} autoComplete="off" {...registerCiudad} />
-        <datalist id={idCiudades}>
-          {ciudades.map((c) => <option key={c} value={c} />)}
-        </datalist>
+        <ComboTexto name={nombreCiudad} value={ciudad} onChange={(v) => setValue(nombreCiudad, v, { shouldDirty: true })} opciones={ciudades} ariaLabel={labelCiudad} />
         {erroresCiudad && <span className="err" style={{ display: "block" }}>{erroresCiudad}</span>}
       </div>
     </div>

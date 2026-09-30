@@ -2,6 +2,7 @@
 // Espeja las reglas hoy aplicadas en el cliente por assets/js/registro.js (validateStep) y
 // las declaraciones del anexo "Aceptaciones del formulario" (reglamento.html).
 import { z } from "zod";
+import "../zod-es";
 import { TIPOS_PROYECTO, TIPOS_DOCUMENTO, ROLES_INTEGRANTE, PLATAFORMAS_MUSICA, PLATAFORMAS_REDES } from "../catalogos";
 
 const tipoProyectoKeys = Object.keys(TIPOS_PROYECTO) as [string, ...string[]];
@@ -22,27 +23,29 @@ export function identidadDe(tipo: string | undefined, otroComposicion?: "individ
 }
 
 export const enlaceSchema = z.object({
-  plataforma: z.string().min(1),
-  url: z.string().trim().min(1),
+  plataforma: z.string().min(1, "Selecciona la plataforma."),
+  url: z.string().trim().min(1, "Falta el enlace."),
 });
 
 // Un integrante oficial (Art. 9 del Reglamento): mayor de 18, con documento propio.
 export const integranteSchema = z.object({
   nombre: z.string().trim().min(1, "Falta el nombre del integrante."),
-  tipoDocumento: z.enum(tipoDocumentoKeys),
+  tipoDocumento: z.enum(tipoDocumentoKeys, { message: "Falta el tipo de documento." }),
   numeroDocumento: z.string().trim().min(4, "El número de documento es muy corto."),
-  paisExpedicion: z.string().trim().min(1),
-  rol: z.enum(rolKeys),
+  paisExpedicion: z.string().trim().min(1, "Falta el país de expedición."),
+  rol: z.enum(rolKeys, { message: "Falta el rol dentro del proyecto." }),
   rolOtro: z.string().trim().optional(),
 }).superRefine((m, ctx) => {
   if (m.rol === "otro" && !m.rolOtro?.trim()) {
     ctx.addIssue({ code: "custom", path: ["rolOtro"], message: "Especifica el rol." });
   }
-});
+  // when: por defecto Zod se salta el superRefine si algún otro campo del objeto ya falló
+  // (p. ej. rol vacío) — con "when" corre siempre, así "Especifica el rol." no desaparece.
+}, { when: () => true });
 
 export const registroSchema = z
   .object({
-    tipo: z.enum(tipoProyectoKeys),
+    tipo: z.enum(tipoProyectoKeys, { message: "Selecciona el tipo de proyecto." }),
     otroDescripcion: z.string().trim().optional(),
     otroComposicion: z.enum(["individual", "colectivo"]).optional(),
 
@@ -51,17 +54,17 @@ export const registroSchema = z
     otrosGeneros: z.array(z.string()).max(4, "Máximo 4 géneros asociados.").default([]),
     otroGenero: z.string().trim().optional(),
 
-    nacionalidad: z.string().trim().min(1),
-    paisResidencia: z.string().trim().min(1),
-    regionResidencia: z.string().trim().min(1),
-    ciudadActual: z.string().trim().min(1),
-    paisOrigen: z.string().trim().min(1),
-    regionOrigen: z.string().trim().min(1),
-    ciudadOrigen: z.string().trim().min(1),
+    nacionalidad: z.string().trim().min(1, "Falta la nacionalidad."),
+    paisResidencia: z.string().trim().min(1, "Falta el país de residencia."),
+    regionResidencia: z.string().trim().min(1, "Falta el departamento, estado o región."),
+    ciudadActual: z.string().trim().min(1, "Falta la ciudad o municipio."),
+    paisOrigen: z.string().trim().min(1, "Falta el país de origen."),
+    regionOrigen: z.string().trim().min(1, "Falta el departamento, estado o región de origen."),
+    ciudadOrigen: z.string().trim().min(1, "Falta la ciudad o municipio de origen."),
 
     // Identidad individual (solista/DJ, o "otro" con composición individual)
     nombreCompleto: z.string().trim().optional(),
-    tipoDocumento: z.enum(tipoDocumentoKeys).optional(),
+    tipoDocumento: z.enum(tipoDocumentoKeys, { message: "Selecciona el tipo de documento." }).optional(),
     numeroDocumento: z.string().trim().optional(),
     paisExpedicion: z.string().trim().optional(),
 
@@ -69,22 +72,22 @@ export const registroSchema = z
     miembros: z.array(integranteSchema).optional(),
     liderIndex: z.number().int().min(0).optional(),
 
-    plataformaMusical: z.enum(plataformaMusicaKeys),
+    plataformaMusical: z.enum(plataformaMusicaKeys, { message: "Selecciona la plataforma musical." }),
     enlaceMusical: z.string().trim().url("El enlace musical no es una URL válida."),
     otrosEnlaces: z.array(enlaceSchema).default([]),
-    redSocialTipo: z.enum(plataformaRedKeys),
-    redSocial: z.string().trim().min(1),
+    redSocialTipo: z.enum(plataformaRedKeys, { message: "Selecciona la red social." }),
+    redSocial: z.string().trim().min(1, "Falta el usuario o enlace de la red social."),
     otrasRedes: z.array(enlaceSchema).default([]),
 
     foto: z.string().optional(), // se valida aparte (mime/tamaño) al subir el archivo
 
-    rangoContratacion: z.string().trim().min(1),
+    rangoContratacion: z.string().trim().min(1, "Selecciona un rango de contratación."),
 
-    contactoNombre: z.string().trim().min(1),
+    contactoNombre: z.string().trim().min(1, "Falta el nombre del contacto."),
     contactoWhatsapp: z.string().trim().min(7, "El WhatsApp de contacto es muy corto."),
     contactoEmail: z.string().trim().email("El correo de contacto no es válido."),
 
-    quienRegistra: z.string().trim().min(1),
+    quienRegistra: z.string().trim().min(1, "Indica quién realiza este registro."),
     registranteNombre: z.string().trim().optional(),
     registranteEmail: z.string().trim().email().optional().or(z.literal("")),
     registranteWhatsapp: z.string().trim().optional(),
@@ -143,6 +146,13 @@ export const registroSchema = z
     if (data.otrosGeneros.includes(data.generoPrincipal) && data.generoPrincipal !== "Otro") {
       ctx.addIssue({ code: "custom", path: ["otrosGeneros"], message: "El género principal no debe repetirse en los asociados." });
     }
+  }, {
+    // Por defecto Zod se salta el superRefine si CUALQUIER otro campo del objeto ya falló su
+    // propia validación (p. ej. un enum vacío más adelante en el formulario). Como el cuestionario
+    // es un asistente por pasos, casi siempre hay algún campo de un paso futuro aún sin llenar —
+    // sin "when" estas reglas (nombre del titular, integrantes mínimos, líder, declaraciones…)
+    // dejarían de aplicarse en silencio mientras se completa el resto del formulario.
+    when: () => true,
   });
 
 export type RegistroInput = z.infer<typeof registroSchema>;

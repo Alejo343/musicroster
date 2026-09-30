@@ -1,4 +1,5 @@
 import { z } from "zod";
+import "../zod-es";
 
 // Mismos campos que hoy pide acceso.html (tab "crear") — ver assets/js/contratar.js#pageAcceso.
 export const crearCuentaCompradorSchema = z.object({

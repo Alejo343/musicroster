@@ -8,7 +8,6 @@ type Item = { href: string; label: string; activo?: boolean; claseExtra?: string
 
 const NAV: { href: string; label: string; pagina?: string; externo?: boolean }[] = [
   { href: "/#inicio", label: "Inicio" },
-  { href: "/buscar", label: "Buscar artistas", pagina: "buscar" },
   { href: "/contratar", label: "Contratar", pagina: "contratar" },
   { href: "/#como-funciona", label: "Cómo funciona" },
   { href: "/faq", label: "FAQ", pagina: "faq" },
@@ -18,7 +17,9 @@ const NAV: { href: string; label: string; pagina?: string; externo?: boolean }[]
 
 export type PaginaActiva = "inicio" | "faq" | "reglamento" | "politica-datos" | "registro" | "buscar" | "contratar" | "artista" | "solicitud" | "acceso" | null;
 
-// ocultar: hrefs de NAV que una página no muestra (p. ej. /buscar no enlaza a sí misma ni a "Cómo funciona").
+// ocultar: hrefs que una página no muestra (p. ej. /buscar no enlaza a sí misma ni a "Cómo funciona").
+// Las dos acciones principales van fuera del menú, como botones: "Buscar artistas" (quien contrata)
+// y "Registrar proyecto" (artistas, la acción principal, en amarillo).
 export default function SiteHeader({ activa = null, top = false, ocultar = [] }: { activa?: PaginaActiva; top?: boolean; ocultar?: string[] }) {
   const items: Item[] = NAV.filter((n) => !ocultar.includes(n.href)).map((n) => ({
     href: n.href,
@@ -27,6 +28,7 @@ export default function SiteHeader({ activa = null, top = false, ocultar = [] }:
     claseExtra: n.href === BMIC_URL ? "nav-bmic" : undefined,
     externo: n.externo,
   }));
+  const conBuscar = !ocultar.includes("/buscar");
 
   return (
     <header className="site-header" id={top ? "top" : undefined}>
@@ -55,15 +57,27 @@ export default function SiteHeader({ activa = null, top = false, ocultar = [] }:
                 )}
               </li>
             ))}
+            {conBuscar && (
+              <li className="nav-cta-mobile nav-cta-sec">
+                <Link href="/buscar" aria-current={activa === "buscar" ? "page" : undefined}>Buscar artistas</Link>
+              </li>
+            )}
             <li className="nav-cta-mobile">
-              <Link href="/registro" aria-current={activa === "registro" ? "page" : undefined}>Regístrate</Link>
+              <Link href="/registro" aria-current={activa === "registro" ? "page" : undefined}>Registrar proyecto</Link>
             </li>
           </ul>
         </nav>
 
-        <Link className="btn btn-cta header-cta" href="/registro" aria-current={activa === "registro" ? "page" : undefined}>
-          Regístrate
-        </Link>
+        <div className="header-ctas">
+          {conBuscar && (
+            <Link className="btn btn-ghost header-cta" href="/buscar" aria-current={activa === "buscar" ? "page" : undefined}>
+              Buscar artistas
+            </Link>
+          )}
+          <Link className="btn btn-cta header-cta" href="/registro" aria-current={activa === "registro" ? "page" : undefined}>
+            Registrar proyecto
+          </Link>
+        </div>
         <button className="nav-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Abrir menú">
           <span></span>
         </button>

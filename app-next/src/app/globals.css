@@ -259,7 +259,18 @@ em, i, cite, address, dfn, var { font-style: normal; }
 .main-nav a.nav-bmic:hover { color: #f3dc9e; border-color: var(--gold); }
 @keyframes bmic-shine { from { background-position: 150% 0; } to { background-position: -100% 0; } }
 
-.header-cta { flex-shrink: 0; min-height: 44px; padding: 0 22px; font-size: 13px; }
+/* Dos acciones fuera del menú: "Buscar artistas" (contorno) y "Registrar proyecto" (amarillo, la principal) */
+.header-ctas { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.header-cta { flex-shrink: 0; min-height: 44px; padding: 0 20px; font-size: 13px; }
+/* Justo antes de pasar a hamburguesa (1180 px) el menú y los dos botones no caben: se compactan. */
+@media (min-width: 1181px) and (max-width: 1360px) {
+  .site-header .wrap { gap: 16px; }
+  .main-nav ul { gap: 2px; }
+  .main-nav a { padding: 0 9px; letter-spacing: 0.06em; }
+  .main-nav a.nav-bmic { margin-left: 4px; }
+  .header-ctas { gap: 8px; }
+  .header-cta { padding: 0 15px; letter-spacing: 0.08em; }
+}
 
 .nav-toggle {
   display: none;
@@ -291,7 +302,7 @@ em, i, cite, address, dfn, var { font-style: normal; }
 
 @media (max-width: 1180px) {
   .nav-toggle { display: block; }
-  .header-cta { display: none; }
+  .header-ctas { display: none; }
   .main-nav {
     position: fixed;
     inset: var(--header-h) 0 auto 0;
@@ -311,6 +322,9 @@ em, i, cite, address, dfn, var { font-style: normal; }
   .main-nav a.nav-bmic { margin: 8px 0 0; justify-content: flex-start; }
   .main-nav .nav-cta-mobile { display: block; margin-top: 12px; }
   .main-nav .nav-cta-mobile a { display: flex; justify-content: center; height: 56px; background: var(--cta); color: var(--ink); }
+  .main-nav .nav-cta-sec { margin-top: 16px; }
+  .main-nav .nav-cta-sec + .nav-cta-mobile { margin-top: 8px; }
+  .main-nav .nav-cta-sec a { background: transparent; color: var(--white); border: 1.5px solid rgba(255, 255, 255, 0.35); }
 }
 .nav-cta-mobile { display: none; }
 

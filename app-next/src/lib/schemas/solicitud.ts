@@ -1,6 +1,7 @@
 // Solicitud de contratación (Art. 30 del Reglamento; política de datos secc. 5/6/7).
 // Espeja las reglas hoy validadas a mano en assets/js/contratar.js (pageSolicitud → validar()).
 import { z } from "zod";
+import "../zod-es";
 
 // Mismos 6 tipos que hoy TIPOS_EVENTO en assets/js/contratar.js.
 export const TIPOS_EVENTO = [
@@ -58,6 +59,8 @@ export const solicitudSchema = z
     if (!data.fechaFlexible && !data.fecha?.trim()) {
       ctx.addIssue({ code: "custom", path: ["fecha"], message: "Indica una fecha o marca que es flexible." });
     }
-  });
+    // Por defecto Zod salta el superRefine si algún otro campo del objeto ya falló su propia
+    // validación (ver registro.ts, mismo patrón) — con "when" corre siempre.
+  }, { when: () => true });
 
 export type SolicitudInput = z.infer<typeof solicitudSchema>;

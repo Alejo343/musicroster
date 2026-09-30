@@ -4,13 +4,11 @@
 // comportamiento de teclado que enhanceSelect() en assets/js/dropdown.js, así reutiliza sus estilos
 // de globals.css. Controlado: el valor vive en el componente que lo usa.
 import { useEffect, useId, useRef, useState } from "react";
+import { abrirExclusivo, liberar } from "@/lib/dropdownActivo";
 
 type Opcion = readonly [valor: string, etiqueta: string];
 
 const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-
-// Solo uno abierto a la vez en toda la página
-let cerrarAbierto: (() => void) | null = null;
 
 export default function Desplegable({
   id, value, opciones, onChange, ariaLabel, disabled = false,
@@ -34,13 +32,12 @@ export default function Desplegable({
   const cerrar = () => {
     setAbierto(false);
     setArriba(false);
-    if (cerrarAbierto === cerrar) cerrarAbierto = null;
+    liberar(cerrar);
   };
 
   const abrir = (indice?: number) => {
     if (disabled) return;
-    cerrarAbierto?.();
-    cerrarAbierto = cerrar;
+    abrirExclusivo(cerrar);
     const cur = elegidas.findIndex(([v]) => v === value);
     setActivo(indice ?? (cur < 0 ? 0 : cur));
     setAbierto(true);
