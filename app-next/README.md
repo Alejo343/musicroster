@@ -12,7 +12,7 @@ El sitio estático en la raíz del repo sigue intacto y en producción hasta el 
 - ✅ TLS con Let's Encrypt (vía `certbot --webroot`, autorrenovación configurada por certbot).
 - ✅ Cuenta admin real creada (`contacto@billboard.com.co`, rol `admin`) — la contraseña se definió directamente por chat con el usuario y no está en ningún archivo del repo; si se pierde, recrearla con el patrón de "Crear/actualizar un admin" abajo.
 - ✅ `/var/www/musicroaster` **es ahora un `git clone` real** del repo (no una copia por `tar`, como en el primer despliegue): el primer `git push` del asistente fue bloqueado por su propio clasificador de seguridad, pero el usuario terminó subiendo esos cambios (y varios más, directo al header/landing y BMIC) por su cuenta. El VPS se resincronizó clonando `origin/main` desde cero, conservando el `.env` y `public/uploads/` del despliegue anterior. A partir de ahora "Actualizar tras un cambio" (abajo) funciona tal cual.
-- 🟡 `RESEND_API_KEY` configurada y funcionando, pero **el remitente sigue en `onboarding@resend.dev`** (temporal) porque el dominio `billboard.com.co` está en proceso de verificación en Resend. Cuando la verificación termine, cambiar `RESEND_FROM` en el `.env` del VPS a `no-responder@billboard.com.co` (o el que se decida) y `pm2 restart musicroaster`.
+- ✅ Correo con dominio propio: `billboard.com.co` verificado en Resend; en el `.env` del VPS `RESEND_FROM="Billboard MusicRoster <no-responder@billboard.com.co>"` (antes `onboarding@resend.dev`, temporal) y `NOTIFICACIONES_ADMIN=contacto@billboard.com.co`. Los envíos rechazados por Resend quedan en el log de errores de PM2 con el prefijo `[correo]`.
 - Conocido, no bloqueante: el formulario de `/admin/login` muestra el mismo mensaje genérico ("Correo o contraseña incorrectos") tanto para credenciales inválidas como para un `429` de rate limiting (`lib/rateLimit.ts`, 5 intentos/15 min por correo). Si alguien prueba varias veces seguidas puede confundirse — distinguirlo en el frontend queda pendiente como mejora menor.
 - `/var/www/musicroaster.old/` quedó en el VPS como respaldo del despliegue anterior (852M, principalmente `node_modules`) — se puede borrar cuando se confirme que todo sigue estable.
 
@@ -75,6 +75,7 @@ Ver `.env.example` para la lista completa. Resumen:
 | `DATABASE_URL` | Conexión Prisma a Postgres |
 | `MINIO_*` | Opcional — solo si se decide migrar fotos a object storage más adelante; el VPS actual no lo usa |
 | `RESEND_API_KEY`, `RESEND_FROM` | Enlace mágico, confirmaciones, avisos de solicitud |
+| `NOTIFICACIONES_ADMIN` | Buzón del equipo para avisos internos (solicitudes sin proyectos) |
 | `AUTH_SECRET` | Firma de sesiones (comprador y admin), vía `jose` |
 | `PORT` | Puerto donde escucha `next start`; OpenLiteSpeed hace proxy a él |
 | `DOMINIO` | Documentación de qué dominio sirve este despliegue |

@@ -67,8 +67,8 @@ export async function POST(request: Request) {
     await Promise.all(
       proyectos.map((p) => enviarCorreo({ to: p.contactoEmail, subject: `Nueva solicitud de contratación · ${p.nombreProyecto}`, html: cuerpo })),
     );
-  } else if (process.env.RESEND_FROM) {
-    await enviarCorreo({ to: process.env.RESEND_FROM, subject: `Nueva solicitud sin proyectos · ${ref}`, html: cuerpo });
+  } else if (process.env.NOTIFICACIONES_ADMIN) {
+    await enviarCorreo({ to: process.env.NOTIFICACIONES_ADMIN, subject: `Nueva solicitud sin proyectos · ${ref}`, html: cuerpo });
   }
 
   return NextResponse.json({ ok: true, ref });
