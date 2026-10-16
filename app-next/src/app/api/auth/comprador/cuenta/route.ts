@@ -6,6 +6,7 @@ import { crearCuentaCompradorSchema } from "@/lib/schemas/auth";
 import { crearEnlaceMagico } from "@/lib/auth/magicLink";
 import { enviarCorreo } from "@/lib/email";
 import { comprobarLimite } from "@/lib/rateLimitRespuesta";
+import { urlPublica } from "@/lib/urlPublica";
 
 export async function POST(request: Request) {
   const limitado = comprobarLimite(request, "comprador-cuenta", 5, 15 * 60 * 1000);
@@ -22,7 +23,7 @@ export async function POST(request: Request) {
   const cuenta = existente ?? (await prisma.buyerAccount.create({ data: datos }));
 
   const token = await crearEnlaceMagico(cuenta.id);
-  const url = new URL("/api/auth/comprador/verificar", request.url);
+  const url = urlPublica("/api/auth/comprador/verificar", request);
   url.searchParams.set("token", token);
   if (volver) url.searchParams.set("volver", volver);
   await enviarCorreo({

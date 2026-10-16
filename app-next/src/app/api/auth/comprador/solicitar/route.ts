@@ -5,6 +5,7 @@ import { solicitarEnlaceSchema } from "@/lib/schemas/auth";
 import { crearEnlaceMagico } from "@/lib/auth/magicLink";
 import { enviarCorreo } from "@/lib/email";
 import { comprobarLimite } from "@/lib/rateLimitRespuesta";
+import { urlPublica } from "@/lib/urlPublica";
 
 export async function POST(request: Request) {
   const limitado = comprobarLimite(request, "comprador-solicitar", 5, 15 * 60 * 1000);
@@ -21,7 +22,7 @@ export async function POST(request: Request) {
   // No se revela si el correo existe o no (evita enumerar cuentas): siempre se responde ok.
   if (cuenta) {
     const token = await crearEnlaceMagico(cuenta.id);
-    const url = new URL("/api/auth/comprador/verificar", request.url);
+    const url = urlPublica("/api/auth/comprador/verificar", request);
     url.searchParams.set("token", token);
     if (volver) url.searchParams.set("volver", volver);
     await enviarCorreo({

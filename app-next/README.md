@@ -78,7 +78,7 @@ Ver `.env.example` para la lista completa. Resumen:
 | `NOTIFICACIONES_ADMIN` | Buzón del equipo para avisos internos (solicitudes sin proyectos) |
 | `AUTH_SECRET` | Firma de sesiones (comprador y admin), vía `jose` |
 | `PORT` | Puerto donde escucha `next start`; OpenLiteSpeed hace proxy a él |
-| `DOMINIO` | Documentación de qué dominio sirve este despliegue |
+| `DOMINIO` | Dominio público (sin `https://`). En producción arma los enlaces de correo y las redirecciones: detrás del proxy `request.url` llega como `localhost:3009` |
 
 `AUTH_SECRET` debe ser un valor aleatorio largo (`openssl rand -base64 48`), distinto entre dev y producción, y nunca commiteado.
 

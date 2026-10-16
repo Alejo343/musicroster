@@ -6,6 +6,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { COOKIE_ADMIN, COOKIE_COMPRADOR, verificarSesionAdmin, verificarSesionComprador } from "@/lib/auth/session";
+import { urlPublica } from "@/lib/urlPublica";
 
 const RUTAS_COMPRADOR = ["/buscar", "/artista", "/solicitud"];
 
@@ -17,14 +18,14 @@ export async function proxy(request: NextRequest) {
 
   if (esAdmin) {
     const sesion = await verificarSesionAdmin(request.cookies.get(COOKIE_ADMIN)?.value);
-    if (!sesion) return NextResponse.redirect(new URL("/admin/login", request.url));
+    if (!sesion) return NextResponse.redirect(urlPublica("/admin/login", request));
     return NextResponse.next();
   }
 
   if (esComprador) {
     const sesion = await verificarSesionComprador(request.cookies.get(COOKIE_COMPRADOR)?.value);
     if (!sesion) {
-      const url = new URL("/acceso", request.url);
+      const url = urlPublica("/acceso", request);
       url.searchParams.set("volver", pathname + search);
       return NextResponse.redirect(url);
     }
