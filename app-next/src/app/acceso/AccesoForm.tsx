@@ -15,18 +15,53 @@ export default function AccesoForm({ preview, total }: { preview: PerfilPublico[
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Lado izquierdo (vista previa del directorio): igual en los tres estados (tabs, confirmación).
+  const art = (
+    <section className="acc-art">
+      <div className="acc-art-copy">
+        <p className="kicker">Para quienes buscan y contratan</p>
+        <h1 className="display">El directorio <span>se abre</span> con tu cuenta</h1>
+        <ul className="acc-perks">
+          <li><b>Busca</b> por género, tipo de proyecto, territorio y presupuesto.</li>
+          <li><b>Contacta</b> directo: WhatsApp y correo de quien atiende las contrataciones.</li>
+          <li><b>Solicita</b> disponibilidad a varios proyectos con una sola solicitud.</li>
+        </ul>
+        <p className="acc-free"><b>$0</b> La cuenta para buscar es gratuita.</p>
+      </div>
+      <div className="acc-preview" aria-hidden="true">
+        <div className="acc-preview-bar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></svg>
+          <span>salsa · Cali</span>
+        </div>
+        <div className="acc-preview-grid">
+          {preview.map((p) => <TarjetaProyecto p={p} link={false} key={p.id} />)}
+        </div>
+        <div className="acc-lock">
+          <span><strong>{total} proyectos esperando</strong></span>
+        </div>
+      </div>
+    </section>
+  );
+
   if (enviado) {
     return (
-      <div className="acc-view acc-done" aria-live="polite">
-        <div className="confirm-badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#0b0b0c" strokeWidth={3} aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
-        </div>
-        <h2>Revisa tu correo</h2>
-        <p className="acc-sub">
-          Te enviamos un enlace de acceso a <b>{enviado.email}</b>. Ábrelo desde este mismo dispositivo para entrar — vence en 15 minutos.
-        </p>
-        <p className="acc-sub">¿No te llegó? Revisa spam o <button type="button" className="link-btn" onClick={() => setEnviado(null)}>inténtalo de nuevo</button>.</p>
-      </div>
+      <>
+        {art}
+        <section className="acc-panel">
+          <div className="acc-box">
+            <div className="acc-view acc-done" aria-live="polite">
+              <div className="confirm-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#0b0b0c" strokeWidth={3} aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+              </div>
+              <h2>Revisa tu correo</h2>
+              <p className="acc-sub">
+                Te enviamos un enlace de acceso a <b>{enviado.email}</b>. Ábrelo desde este mismo dispositivo para entrar — vence en 15 minutos.
+              </p>
+              <p className="acc-sub">¿No te llegó? Revisa spam o <button type="button" className="link-btn" onClick={() => setEnviado(null)}>inténtalo de nuevo</button>.</p>
+            </div>
+          </div>
+        </section>
+      </>
     );
   }
 
@@ -50,30 +85,7 @@ export default function AccesoForm({ preview, total }: { preview: PerfilPublico[
 
   return (
     <>
-      <section className="acc-art">
-        <div className="acc-art-copy">
-          <p className="kicker">Para quienes buscan y contratan</p>
-          <h1 className="display">El directorio <span>se abre</span> con tu cuenta</h1>
-          <ul className="acc-perks">
-            <li><b>Busca</b> por género, tipo de proyecto, territorio y presupuesto.</li>
-            <li><b>Contacta</b> directo: WhatsApp y correo de quien atiende las contrataciones.</li>
-            <li><b>Solicita</b> disponibilidad a varios proyectos con una sola solicitud.</li>
-          </ul>
-          <p className="acc-free"><b>$0</b> La cuenta para buscar es gratuita.</p>
-        </div>
-        <div className="acc-preview" aria-hidden="true">
-          <div className="acc-preview-bar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4}><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></svg>
-            <span>salsa · Cali</span>
-          </div>
-          <div className="acc-preview-grid">
-            {preview.map((p) => <TarjetaProyecto p={p} link={false} key={p.id} />)}
-          </div>
-          <div className="acc-lock">
-            <span><strong>{total} proyectos esperando</strong></span>
-          </div>
-        </div>
-      </section>
+      {art}
 
       <section className="acc-panel">
         <div className="acc-box">

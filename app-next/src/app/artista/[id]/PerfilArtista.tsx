@@ -34,6 +34,7 @@ function Enlaces({ lista }: { lista: Enlace[] }) {
         <a className="pf-link" href={hrefRed(l.url, l.plataforma)} target="_blank" rel="noopener" key={i}>
           <span className="pf-link-ico" aria-hidden="true">{nombrePlataforma(l.plataforma)[0]}</span>
           <span className="pf-link-txt"><b>{nombrePlataforma(l.plataforma)}</b><small>{corta(l.url)}</small></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" /></svg>
         </a>
       ))}
     </div>
@@ -62,16 +63,24 @@ export default function PerfilArtista({ p, similares, mapa }: { p: PerfilPublico
     <>
       <section className="pf-hero" style={{ ["--a" as string]: `var(${p.acento})` }}>
         <div className="wrap">
-          <Link className="pf-back" href={volver.href}>{volver.texto}</Link>
+          <Link className="pf-back" href={volver.href}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" /></svg>
+            {volver.texto}
+          </Link>
           <div className="pf-hero-grid">
             <Portada p={p} clase="cover-lg" />
             <div className="pf-head">
               <p className="kicker">{p.tipoLabel}{p.integrantes.length ? ` · ${p.integrantes.length} ${p.integrantes.length === 1 ? "integrante" : "integrantes"}` : ""}</p>
               <h1 className="display pf-name">{p.nombre}</h1>
               <ul className="pf-genres">{generos.map((g) => <li key={g}>{g}</li>)}</ul>
-              <p className="pf-place">Vive en <b>{lugar(p.residencia)}</b>{origenDistinto ? <> · Origen <b>{origen}</b></> : null}</p>
+              <p className="pf-place">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0114 0C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>
+                <span>Vive en <b>{lugar(p.residencia)}</b>{origenDistinto ? <> · Origen <b>{origen}</b></> : null}</span>
+              </p>
               <div className="pf-actions">
-                <Link className="btn btn-cta btn-lg" href={`/solicitud?id=${encodeURIComponent(p.id)}`}>Solicitar contratación →</Link>
+                <Link className="btn btn-cta btn-lg" href={`/solicitud?id=${encodeURIComponent(p.id)}`}>
+                  Solicitar contratación <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                </Link>
                 <BotonGuardar id={p.id} nombre={p.nombre} conEtiqueta />
                 <button
                   className="pf-share"
@@ -82,6 +91,7 @@ export default function PerfilArtista({ p, similares, mapa }: { p: PerfilPublico
                     setTimeout(() => setCompartirTexto("Copiar enlace"), 2400);
                   }}
                 >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} aria-hidden="true"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1" /><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1" /></svg>
                   <span>{compartirTexto}</span>
                 </button>
               </div>
@@ -124,7 +134,9 @@ export default function PerfilArtista({ p, similares, mapa }: { p: PerfilPublico
                 <div><dt>Origen del proyecto</dt><dd>{origen || "—"}</dd></div>
                 <div><dt>Nacionalidad</dt><dd>{p.nacionalidad}</dd></div>
               </dl>
-              <Link className="pf-more-link" href={`/buscar?region=${encodeURIComponent(p.residencia.region)}`}>Más proyectos en {p.residencia.region} →</Link>
+              <Link className="pf-more-link" href={`/buscar?region=${encodeURIComponent(p.residencia.region)}`}>
+                Más proyectos en {p.residencia.region} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </Link>
             </section>
           </div>
 
@@ -142,9 +154,11 @@ export default function PerfilArtista({ p, similares, mapa }: { p: PerfilPublico
               <p className="pf-card-k">Contacto para contratación</p>
               <p className="pf-contact-name">{p.contacto.nombre}</p>
               <a className="pf-cbtn" href={`https://wa.me/${digitos}?text=${encodeURIComponent(saludo)}`} target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path d="M4 20l1.3-3.9A8 8 0 1112 20a8 8 0 01-3.9-1z" /><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.3-1.9-1-1 .8a4 4 0 01-2.3-2.3l.8-1-1-1.9z" /></svg>
                 <span><small>WhatsApp</small>{p.contacto.whatsapp}</span>
               </a>
               <a className="pf-cbtn" href={`mailto:${p.contacto.email}?subject=${encodeURIComponent(`Contratación de ${p.nombre} (vía MusicRoster)`)}`}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path d="M4 6h16v12H4z" /><path d="M4 7l8 6 8-6" /></svg>
                 <span><small>Correo</small>{p.contacto.email}</span>
               </a>
               <p className="pf-card-note">Usa estos datos solo para oportunidades de contratación. No se permiten envíos masivos ni publicidad (<Link href="/reglamento#art-45">Reglamento, Art. 45</Link>).</p>

@@ -2932,7 +2932,10 @@ body.has-sel-bar .site-footer { padding-bottom: 110px; }
 .acc-form .checks .check { background: var(--white); }
 .acc-submit { width: 100%; margin-top: 4px; }
 .acc-switch { margin: 22px 0 0; text-align: center; color: var(--muted-ink); }
-.acc-switch a { font-weight: 800; color: var(--ink); }
+.acc-switch a, .acc-switch .link-btn { font-weight: 800; color: var(--ink); }
+/* En Next "Ingresa" / "Crea tu cuenta gratis" / "inténtalo de nuevo" son <button> (cambian de
+   pestaña o reintentan sin navegar), no <a>: se reinician a estilo de enlace. */
+.link-btn { border: 0; background: none; padding: 0; font: inherit; color: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .acc-done { text-align: center; padding: 20px 0; }
 .acc-done .confirm-badge { width: 90px; height: 90px; margin-bottom: 22px; }
 .acc-done .confirm-badge svg { width: 40px; height: 40px; }

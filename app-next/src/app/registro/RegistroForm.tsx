@@ -28,6 +28,10 @@ import {
 
 type Paso = { titulo: string; campos: (keyof RegistroInput)[] };
 
+// Modo de prueba: permite avanzar entre pasos sin completarlos (el envío final sigue validando).
+// Se activa con NEXT_PUBLIC_REGISTRO_MODO_PRUEBA=true; debe quedar apagado en producción.
+const MODO_PRUEBA = process.env.NEXT_PUBLIC_REGISTRO_MODO_PRUEBA === "true";
+
 const PASOS: Paso[] = [
   { titulo: "Proyecto", campos: ["tipo", "otroDescripcion", "otroComposicion", "nombreProyecto"] },
   { titulo: "Géneros", campos: ["generoPrincipal", "otrosGeneros", "otroGenero"] },
@@ -157,7 +161,7 @@ export default function RegistroForm() {
   }, [esColectivo, miembros.fields.length]);
 
   const irA = async (destino: number) => {
-    if (destino > paso) {
+    if (destino > paso && !MODO_PRUEBA) {
       const ok = await trigger(PASOS[paso].campos);
       if (!ok) return;
       if (paso === 4 && !foto) {
@@ -236,7 +240,7 @@ export default function RegistroForm() {
         <ol className="reg-steps">
           {PASOS.map((p, i) => (
             <li key={p.titulo} className={i === paso ? "current" : i < paso ? "done" : undefined}>
-              <button type="button" onClick={() => irA(i)} disabled={i > paso}>
+              <button type="button" onClick={() => irA(i)} disabled={!MODO_PRUEBA && i > paso}>
                 <span className="n">{i + 1}</span>
                 <span className="label">{p.titulo}</span>
               </button>

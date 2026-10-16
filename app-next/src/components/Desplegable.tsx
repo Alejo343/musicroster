@@ -11,9 +11,13 @@ type Opcion = readonly [valor: string, etiqueta: string];
 const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
 export default function Desplegable({
-  id, value, opciones, onChange, ariaLabel, disabled = false,
+  id, value, opciones, onChange, ariaLabel, disabled = false, incluirVacio = false,
 }: {
   id?: string; value: string; opciones: readonly Opcion[]; onChange: (valor: string) => void; ariaLabel?: string; disabled?: boolean;
+  // true cuando value="" es una opción real y elegible (p. ej. "Todos los géneros" en los filtros
+  // de /buscar), no un placeholder sin elegir todavía (el caso de dropdown.js, que sí oculta las
+  // opciones con value="" del panel — así es como los <select> de registro/admin usan "Selecciona").
+  incluirVacio?: boolean;
 }) {
   const base = useId();
   const listaId = `${base}-lista`;
@@ -25,9 +29,9 @@ export default function Desplegable({
   const [activo, setActivo] = useState(-1);
   const tecleado = useRef({ texto: "", timer: 0 as ReturnType<typeof setTimeout> | 0 });
 
-  const elegidas = opciones.filter(([v]) => v !== "");
+  const elegidas = incluirVacio ? opciones : opciones.filter(([v]) => v !== "");
   const actual = opciones.find(([v]) => v === value);
-  const vacio = !actual || actual[0] === "";
+  const vacio = !incluirVacio && (!actual || actual[0] === "");
 
   const cerrar = () => {
     setAbierto(false);
@@ -121,7 +125,7 @@ export default function Desplegable({
         aria-haspopup="listbox"
         aria-expanded={abierto}
         aria-controls={listaId}
-        aria-label={ariaLabel ? (vacio ? ariaLabel : `${ariaLabel}: ${actual[1]}`) : undefined}
+        aria-label={ariaLabel ? (vacio || !actual ? ariaLabel : `${ariaLabel}: ${actual[1]}`) : undefined}
         aria-activedescendant={abierto && activo >= 0 ? `${base}-o${activo}` : undefined}
         disabled={disabled}
         onClick={() => (abierto ? cerrar() : abrir())}

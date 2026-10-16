@@ -5,10 +5,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import TarjetaProyecto from "@/components/directorio/TarjetaProyecto";
 import BarraSeleccion from "@/components/directorio/BarraSeleccion";
+import Desplegable from "@/components/Desplegable";
 import { buscarPerfiles, conteo, generosConConteo, type FiltrosBusqueda } from "@/lib/directorio/buscar";
 import { iniciales } from "@/lib/directorio/formato";
 import type { PerfilPublico } from "@/lib/directorio/perfilPublico";
-import { TIPOS_PROYECTO } from "@/lib/catalogos";
+import { TIPOS_PROYECTO, acento } from "@/lib/catalogos";
 
 const PRESUPUESTOS: [string, string][] = [
   ["0", "Hasta $2 M"], ["1", "Hasta $5 M"], ["2", "Hasta $10 M"], ["3", "Hasta $20 M"], ["4", "Hasta $50 M"], ["5", "Hasta $100 M"],
@@ -97,6 +98,7 @@ export default function BuscarApp({ todos, sesion }: { todos: PerfilPublico[]; s
           </div>
           <h1 className="display">Encuentra el <span>proyecto</span> para tu evento</h1>
           <form className="dir-search" role="search" onSubmit={(e) => { e.preventDefault(); cambiarFiltro(); }}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></svg>
             <label className="sr-only" htmlFor="q">Buscar</label>
             <input type="search" id="q" placeholder="Nombre del proyecto, integrante o ciudad" autoComplete="off" value={q} onChange={(e) => { setQ(e.target.value); cambiarFiltro(); }} />
             <button className="btn btn-cta" type="submit">Buscar</button>
@@ -104,9 +106,16 @@ export default function BuscarApp({ todos, sesion }: { todos: PerfilPublico[]; s
           <div className="dir-quick" aria-label="Géneros con más proyectos">
             <span>Explora</span>
             <ul className="dir-quick-list">
-              {generosRapidos.map(([g]) => (
+              {generosRapidos.map(([g, n]) => (
                 <li key={g}>
-                  <a href="#" className={genero === g ? "is-on" : ""} onClick={(e) => { e.preventDefault(); setGenero(genero === g ? "" : g); cambiarFiltro(); }}>{g}</a>
+                  <a
+                    href="#"
+                    className={genero === g ? "is-on" : ""}
+                    style={{ ["--c" as string]: `var(${acento(g)})` }}
+                    onClick={(e) => { e.preventDefault(); setGenero(genero === g ? "" : g); cambiarFiltro(); }}
+                  >
+                    {g} <small>{n}</small>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -140,10 +149,13 @@ export default function BuscarApp({ todos, sesion }: { todos: PerfilPublico[]; s
 
             <div className="dir-group field">
               <label htmlFor="f-genero">Género</label>
-              <select id="f-genero" value={genero} onChange={(e) => { setGenero(e.target.value); cambiarFiltro(); }}>
-                <option value="">Todos los géneros</option>
-                {generos.map(([g, n]) => <option key={g} value={g}>{g} · {n}</option>)}
-              </select>
+              <Desplegable
+                id="f-genero"
+                value={genero}
+                onChange={(v) => { setGenero(v); cambiarFiltro(); }}
+                opciones={[["", "Todos los géneros"], ...generos.map(([g, n]) => [g, `${g} · ${n}`] as const)]}
+                incluirVacio
+              />
             </div>
 
             <fieldset className="dir-group">
@@ -153,22 +165,28 @@ export default function BuscarApp({ todos, sesion }: { todos: PerfilPublico[]; s
                 <label><input type="radio" checked={territorio === "origen"} onChange={() => { setTerritorio("origen"); setRegion(""); }} /><span>De dónde es</span></label>
               </div>
               <div className="field">
-                <label className="sr-only" htmlFor="f-region">Departamento o región</label>
-                <select id="f-region" value={region} onChange={(e) => { setRegion(e.target.value); cambiarFiltro(); }}>
-                  <option value="">Todo el territorio</option>
-                  {regiones.map(([r, n]) => <option key={r} value={r}>{r} · {n}</option>)}
-                </select>
+                <Desplegable
+                  id="f-region"
+                  value={region}
+                  onChange={(v) => { setRegion(v); cambiarFiltro(); }}
+                  opciones={[["", "Todo el territorio"], ...regiones.map(([r, n]) => [r, `${r} · ${n}`] as const)]}
+                  ariaLabel="Departamento o región"
+                  incluirVacio
+                />
               </div>
             </fieldset>
 
             <fieldset className="dir-group">
               <legend>Presupuesto por presentación</legend>
               <div className="field">
-                <label className="sr-only" htmlFor="f-presupuesto">Presupuesto</label>
-                <select id="f-presupuesto" value={presupuesto} onChange={(e) => { setPresupuesto(e.target.value); cambiarFiltro(); }}>
-                  <option value="">Cualquier presupuesto</option>
-                  {PRESUPUESTOS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-                </select>
+                <Desplegable
+                  id="f-presupuesto"
+                  value={presupuesto}
+                  onChange={(v) => { setPresupuesto(v); cambiarFiltro(); }}
+                  opciones={[["", "Cualquier presupuesto"], ...PRESUPUESTOS]}
+                  ariaLabel="Presupuesto"
+                  incluirVacio
+                />
               </div>
               <label className="dir-check"><input type="checkbox" checked={segunEvento} onChange={(e) => { setSegunEvento(e.target.checked); cambiarFiltro(); }} /> Incluir los que cotizan según el evento</label>
               <p className="dir-hint">Valores en pesos colombianos. El rango es orientativo y se negocia con cada proyecto.</p>
@@ -182,20 +200,26 @@ export default function BuscarApp({ todos, sesion }: { todos: PerfilPublico[]; s
           <div className="dir-results">
             <div className="dir-toolbar">
               <button className="btn dir-filters-toggle" type="button" aria-expanded={filtrosAbiertos} onClick={() => setFiltrosAbiertos(true)}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} aria-hidden="true"><path d="M3 5h18l-7 8v6l-4 2v-8z" /></svg>
                 Filtros {activos.length > 0 && <b>{activos.length}</b>}
               </button>
               <p className="dir-count" aria-live="polite">
                 <b>{resultados.length}</b> {resultados.length === 1 ? "proyecto" : "proyectos"}{q ? ` para "${q}"` : ""}
               </p>
               <div className="field dir-sort">
-                <label className="sr-only" htmlFor="orden">Ordenar</label>
-                <select id="orden" value={orden} onChange={(e) => setOrden(e.target.value)}>
-                  <option value="relevancia">Más relevantes</option>
-                  <option value="recientes">Más recientes</option>
-                  <option value="nombre">Nombre A–Z</option>
-                  <option value="rango_asc">Rango: menor a mayor</option>
-                  <option value="rango_desc">Rango: mayor a menor</option>
-                </select>
+                <Desplegable
+                  id="orden"
+                  value={orden}
+                  onChange={(v) => setOrden(v)}
+                  opciones={[
+                    ["relevancia", "Más relevantes"],
+                    ["recientes", "Más recientes"],
+                    ["nombre", "Nombre A–Z"],
+                    ["rango_asc", "Rango: menor a mayor"],
+                    ["rango_desc", "Rango: mayor a menor"],
+                  ]}
+                  ariaLabel="Ordenar"
+                />
               </div>
             </div>
 
